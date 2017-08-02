@@ -33,21 +33,14 @@ contract Ballot {
 
     // Create a new ballot that is populated with options
     function Ballot(bytes32[] proposalNames) {
-        // chairperson = msg.sender;
-        // voters[chairperson].weight = 1;
-
-        // For each of the provided proposal names,
-        // create a new proposal object and add it
-        // to the end of the array.
-        for (uint i = 0; i < proposalNames.length; i++) {
-            // `Option({...})` creates a temporary
-            // Option object and `proposals.push(...)`
-            // appends it to the end of `proposals`.
-            proposals.push(Option({
-                optionName: proposalNames[i],
-                voteCount: 0
-            }));
-        }
+    	proposals.push(Option({
+    		optionName: 'no',
+    		voteCount: 0
+    	}));
+    	proposals.push(Option({
+    		optionName: 'yes',
+    		voteCount: 0
+    	}));
     }
 
     // Vote on an option that is part of the proposals array
