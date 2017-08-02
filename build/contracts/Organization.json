@@ -1,0 +1,14 @@
+{
+  "contract_name": "Organization",
+  "abi": [
+    {
+      "inputs": [],
+      "payable": false,
+      "type": "constructor"
+    }
+  ],
+  "unlinked_binary": "0x60606040523415600b57fe5b5b5b5b603380601b6000396000f30060606040525bfe00a165627a7a72305820fa4bd461b0c82a9eb94c9eafe5c34de19c478d2da94b442e73c4cb191d21515d0029",
+  "networks": {},
+  "schema_version": "0.0.5",
+  "updated_at": 1501640207228
+}
