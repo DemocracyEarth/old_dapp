@@ -18,9 +18,7 @@ Additionally, due to the risk that coercion through physical violence or threats
 
 * Resistance: voter must be able to override own vote if necessary.
 
-The Democracy Earth token granting voting rights will be branded with the single most important message any democracy can convey: `VOTE`.
-
-`VOTE` tokens can be implemented using smart contracts and operate within the institutional boundaries created by this set of contracts: `Organizations`, `Members`, `Issues`, `Ballots` and `Budgets`. These are the building blocks that help create a governance circuit that can scale to operate liquid democracies within communities of any size.
+The Democracy Earth token granting voting rights will be branded with the single most important message any democracy can convey: _VOTE_. `VOTE` tokens can be implemented using smart contracts and operate within the institutional boundaries created by this set of contracts: `Organizations`, `Members`, `Issues`, `Ballots` and `Budgets`. These are the building blocks that help create a governance circuit that can scale to operate liquid democracies within communities of any size.
 
 <p align="center">
 <img src="images/vote-liquid-democracy-smart-contracts.png" title="Democracy smart contracts">
