@@ -11,21 +11,20 @@ Members are able to:
 */
 
 contract Member {
-    // Key/value pairs of the organization a member belongs to
-    mapping (string => address) organizations;
+    // Member state variables
+    address public creatorAccountAddress;
+    uint public weight;
+    bool public voted;
 
     // Constructor 
-    function Member() {
+    function Member(address creatorAccount) {
+        creatorAccountAddress = creatorAccount;
+        weight = 1;
+        voted = false;
     }
 
-    // Vote on decisions of the member's organization
-    function vote() {
-
-    }
-
-    // Delegate VOTEs to another member
-    function delegate() {
-
-    }
+    // TODO: vote function
+    // TODO: delegate VOTEs to another member
+    // TODO: can members belong to many organizations?
 
 }

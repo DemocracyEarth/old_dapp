@@ -1,7 +1,9 @@
 pragma solidity ^0.4.4;
 
+// import {Member} from "./Member.sol";
+
 /*
-Sovereign instace.
+Sovereign instance.
 
 Defines governance rules, membership approval and allocation of VOTEs.
 
@@ -13,11 +15,16 @@ Every organization has a constitutional smart contract able to:
 */	
 
 contract Organization {
-    // Key/Value pairs of all members of organization
-    mapping (string => address) organizationMembers;
+    // Store a boolean to whether a member belongs to organization or not
+    mapping (address => bool) public members;
+
+	// Organization lead/founder/admin
+	address public chairperson;
 
     // Constructor
-    function Organization() {
+    function Organization(address member) {
+    	// chairperson = msg.sender;
+        members[member] = true;
     }
 
     // TODO: Membership approval (add members to organization)
