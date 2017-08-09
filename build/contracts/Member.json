@@ -2,29 +2,57 @@
   "contract_name": "Member",
   "abi": [
     {
-      "constant": false,
+      "constant": true,
       "inputs": [],
-      "name": "vote",
-      "outputs": [],
+      "name": "voted",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
       "payable": false,
       "type": "function"
     },
     {
-      "constant": false,
+      "constant": true,
       "inputs": [],
-      "name": "delegate",
-      "outputs": [],
+      "name": "weight",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
       "payable": false,
       "type": "function"
     },
     {
+      "constant": true,
       "inputs": [],
+      "name": "memberAddress",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "theMemberAddress",
+          "type": "address"
+        }
+      ],
       "payable": false,
       "type": "constructor"
     }
   ],
-  "unlinked_binary": "0x60606040523415600b57fe5b5b5b5b607a8061001c6000396000f300606060405263ffffffff60e060020a600035041663632a9a528114602a578063c89e436114602a575bfe5b3415603157fe5b60376048565b005b3415603157fe5b60376048565b005b5b565b5b5600a165627a7a7230582003059846bb5dfb6b13d1a7eec381863f9d966645a69734485dce14593ed03bed0029",
+  "unlinked_binary": "0x6060604052341561000f57600080fd5b604051602080610187833981016040528080519150505b60008054600160a060020a031916600160a060020a038316179055600180556002805460ff191690555b505b610126806100616000396000f300606060405263ffffffff7c01000000000000000000000000000000000000000000000000000000006000350416633500f91e81146050578063a1aab33f146074578063e2dad5c6146096575b600080fd5b3415605a57600080fd5b606060cf565b604051901515815260200160405180910390f35b3415607e57600080fd5b608460d8565b60405190815260200160405180910390f35b341560a057600080fd5b60a660de565b60405173ffffffffffffffffffffffffffffffffffffffff909116815260200160405180910390f35b60025460ff1681565b60015481565b60005473ffffffffffffffffffffffffffffffffffffffff16815600a165627a7a7230582012447d1b49e8f519b2eadf75a3a168c25c3b3c175ca7a16b6d218ecfa77bec9e0029",
   "networks": {},
   "schema_version": "0.0.5",
-  "updated_at": 1501640207228
+  "updated_at": 1502247175560
 }
