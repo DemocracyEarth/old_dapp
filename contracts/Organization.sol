@@ -15,15 +15,22 @@ Every organization has a constitutional smart contract able to:
 */	
 
 contract Organization {
-    // Store a boolean to whether a member belongs to organization or not
+    // Store a boolean of whether a member belongs to organization or not
     mapping (address => bool) public members;
 
 	// Organization lead/founder/admin
 	address public chairperson;
 
     // Constructor
-    function Organization(address member) {
-    	// chairperson = msg.sender;
+    function Organization(address firstMember) {
+        chairperson = firstMember;
+        members[firstMember] = true;
+    }
+
+    // Membership approval: adds members and gives them
+    // the right to vote
+    function addMember(address member) {
+        require(msg.sender == chairperson);
         members[member] = true;
     }
 
