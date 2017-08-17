@@ -26,7 +26,7 @@ module.exports = function(callback) {
     // Add the rest of members
     orgInstance.addMember(accounts[1]);
     orgInstance.addMember(accounts[2]);
-    // Check member addition
+    // Check member addition, these should all log as true
     orgInstance.members(accounts[0]).then(console.log);
     orgInstance.members(accounts[1]).then(console.log);
     orgInstance.members(accounts[2]).then(console.log);
