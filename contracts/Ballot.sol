@@ -12,7 +12,7 @@ The building blocks for a ballot are:
 contract Ballot {
 	// This is the type for a single option shown in a ballot
 	struct Option {
-        bytes32 optionName;   // short name (up to 32 bytes)
+        bytes32 optionName; // short name (up to 32 bytes)
         uint voteCount; // number of accumulated votes
     }
 
@@ -36,5 +36,9 @@ contract Ballot {
                 voteCount: 0
             }));
         }
+    }
+
+    function getProposalsLength() public constant returns(uint length) {
+        return proposals.length;
     }
 }
