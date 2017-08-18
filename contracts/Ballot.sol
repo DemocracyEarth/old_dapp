@@ -43,6 +43,14 @@ contract Ballot {
         return proposals.length;
     }
 
+    function getProposalName(uint proposal) public constant returns (bytes32 name) {
+        return proposals[proposal].name;
+    }
+
+    function getProposalVoteCount(uint proposal) public constant returns (uint voteCount) {
+        return proposals[proposal].voteCount;
+    }
+
 
     function receiveVote(uint proposal) public returns (bool successful) {
         proposals[proposal].voteCount += 1;
