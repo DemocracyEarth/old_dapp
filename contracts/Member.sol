@@ -1,5 +1,5 @@
 pragma solidity ^0.4.4;
-
+import "./Ballot.sol";
 /*
 Members belong to an Organization.
 
@@ -23,7 +23,15 @@ contract Member {
         voted = false;
     }
 
-    // TODO: vote function
+    function vote(address ballotAddress, uint proposal) public {
+        // WIP
+        // input: proposal choice, ballot address
+        // output: send proposal 
+        // require that member hasn't voted before, mark that has voted after
+        Ballot ballot = Ballot(ballotAddress);
+        ballot.receiveVote(proposal);
+
+    }
     // TODO: delegate VOTEs to another member
     // TODO: can members belong to many organizations?
 
