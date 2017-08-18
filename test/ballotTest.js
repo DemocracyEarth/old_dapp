@@ -14,14 +14,12 @@ contract('Ballot', function(accounts) {
   it('should receive a vote and sucessfully increse appropiate vote count', function() {
     var ballot = null;
     return Ballot.new(proposals).then(function(ballotInstance) {
-      // WIP
-      // ballot = ballotInstance;
-      // ballotInstance.receiveVote(0);
-      // try doing a receiveVote() and then use a getter to 
-      // read the voteCount value
-      return ballotInstance.proposals(0);
-    }).then(function(returnedResult){
-      console.log(returnedResult);
+      ballotInstance.receiveVote(0);
+      ballotInstance.receiveVote(0);
+      ballotInstance.receiveVote(0);
+      return ballotInstance.getProposalVoteCount(0);
+    }).then(function(returnedVoteCount){
+      assert.equal(returnedVoteCount.toNumber(), 3, 'Number of votes does not match');
     });
   });
 
