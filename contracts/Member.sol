@@ -24,10 +24,7 @@ contract Member {
     }
 
     function vote(address ballotAddress, uint proposal) public {
-        // WIP
-        // input: proposal choice, ballot address
-        // output: send proposal 
-        // require that member hasn't voted before, mark that has voted after
+        // TODO: require that member hasn't voted before, mark that has voted afterwards
         Ballot ballot = Ballot(ballotAddress);
         ballot.receiveVote(proposal);
 
