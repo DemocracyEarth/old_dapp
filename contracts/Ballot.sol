@@ -11,17 +11,17 @@ The building blocks for a ballot are:
 
 contract Ballot {
 	// This is the type for a single option shown in a ballot
-	struct Option {
-        bytes32 optionName; // short name (up to 32 bytes)
+	struct Proposal {
+        bytes32 name; // short name (up to 32 bytes)
         uint voteCount; // number of accumulated votes
     }
 
 
-    // A dynamically-sized array of `Option` structs.
-    Option[] public proposals;
+    // A dynamically-sized array of `Proposal` structs.
+    Proposal[] public proposals;
 
 
-    // Create a new ballot that is populated with options
+    // Create a new ballot that is populated with proposals
     function Ballot(bytes32[] proposalNames) {
 
     	// For each of the provided proposal names,
@@ -32,8 +32,8 @@ contract Ballot {
             // `Proposal({...})` creates a temporary
             // Proposal object and `proposals.push(...)`
             // appends it to the end of `proposals`.
-            proposals.push(Option({
-                optionName: proposalNames[i],
+            proposals.push(Proposal({
+                name: proposalNames[i],
                 voteCount: 0
             }));
         }
@@ -43,8 +43,9 @@ contract Ballot {
         return proposals.length;
     }
 
-    function receiveVote(uint proposalOption) public returns (bool successful) {
-        proposals[proposalOption].voteCount += 1;
+
+    function receiveVote(uint proposal) public returns (bool successful) {
+        proposals[proposal].voteCount += 1;
         return true;
     }
 }
