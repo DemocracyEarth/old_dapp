@@ -11,8 +11,7 @@ contract('Ballot', function(accounts) {
     });
   });
 
-  it('should receive a vote and sucessfully increse appropiate vote count', function() {
-    var ballot = null;
+  it('should receive a vote and sucessfully increase appropiate vote count', function() {
     return Ballot.new(proposals).then(function(ballotInstance) {
       ballotInstance.receiveVote(0);
       ballotInstance.receiveVote(0);
@@ -23,4 +22,14 @@ contract('Ballot', function(accounts) {
     });
   });
 
+  it('should receive votes, compute winning proposal and output winner name', function () {
+    return Ballot.new(proposals).then(function(ballotInstance) {
+      ballotInstance.receiveVote(0);
+      ballotInstance.receiveVote(1);
+      ballotInstance.receiveVote(0);
+      return ballotInstance.winnerName();
+    }).then(function(winner) {
+      assert.equal(web3.toUtf8(winner), 'yes', 'Returned winner name does not match expected');
+    })
+  });
 });
