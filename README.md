@@ -62,10 +62,10 @@ Then follow the steps below to test locally. You can either execute scripts with
 * Turn to project directory terminal and run either:
 
 ```sh
-truffle exec scripts/for-dev-testing/[your script choice]
+$ truffle exec scripts/for-dev-testing/[your script choice]
 ```
 ```sh
-truffle test test/[your test choice]
+$ truffle test test/[your test choice]
 ```
 
 ## Gotchas and known errors
