@@ -43,3 +43,23 @@ An issue can be implemented with any possible ballot design according to the spe
 ## Budgets 
 
 If the final tally of a decision reaches a certain value (`true` or `false`), it can then enforce the final decision by unlocking coins or triggering a transaction sending assets to a specific address. Budgets specify the conditions and funds attached to the final tally of a voted issue.
+
+# How to test locally
+
+Project is being developed with Truffle and testrpc, you will find both Solidity and JS (script/testing). First follow the respective instructions to install both [Truffle](http://truffle.readthedocs.io/en/beta/getting_started/installation/) and [testrpc](https://github.com/ethereumjs/testrpc):
+
+`$ npm install -g truffle`
+`$ npm install -g ethereumjs-testrpc`
+
+Then follow the steps below to test locally. You can either execute scripts with `truffle exec` or run unit tests with `truffle test`, feel free to check out files in `/test` and `/scripts/for-dev-testing` to follow along with code as you run tests.
+
+* Start from the project directory in the terminal with a `git pull` to make sure you are up to date.
+* Open a new terminal and run `testrpc`. Leave this up and running in separate terminal, this will be the simulated blockchain to test on. Note it comes preset with 10 available accounts.
+* Turn to project directory terminal and run either:
+
+`truffle exec scripts/for-dev-testing/[your script choice]`
+`truffle test test/[your test choice]`
+
+## Gotchas and known errors
+
+* It's currently unstable to run all unit tests with just `truffle test`. See [this issue](https://github.com/ethereumjs/testrpc/issues/346) for example on the sort of errors that come up sometimes. Recommended to run each unit test seperately.
