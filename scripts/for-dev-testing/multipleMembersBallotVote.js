@@ -15,6 +15,7 @@ module.exports = function(callback) {
 
   // Instantiate members
   Member.new(accounts[0]).then(function(firstMemberInstance) {
+    console.log('Instantiating three new members...');
     firstMember = firstMemberInstance;
     return Member.new(accounts[1]);
   }).then(function(secondMemberInstance) {
@@ -23,19 +24,23 @@ module.exports = function(callback) {
   }).then(function(thirdMemberInstance) {
     thirdMember = thirdMemberInstance;
     // Then organization
+    console.log('Instantiating new organization with first member as chairperson...');
     return Organization.new(accounts[0]);
   }).then(function(orgInstance) {
     organization = orgInstance;
     // Then ballot
+    console.log('Creating a new ballot with the following proposals: ', proposals);
     return Ballot.new(proposals);
   }).then(function(ballotInstance) {
     ballot = ballotInstance;
     ballotAddress = ballotInstance.address;
   }).then(function() {
     // Next add members to org
+    console.log('Adding rest of members to the organization...');
     organization.addMember(accounts[1]); // analogous to addMember(secondMember.address)
     organization.addMember(accounts[2]);
     // Then members vote on ballot
+    console.log('Members now voting on ballot proposals...');
     firstMember.vote(ballotAddress, 0);
     secondMember.vote(ballotAddress, 0);
     thirdMember.vote(ballotAddress, 1);
