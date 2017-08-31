@@ -48,8 +48,12 @@ If the final tally of a decision reaches a certain value (`true` or `false`), it
 
 Project is being developed with Truffle and testrpc, you will find both Solidity and JS (script/testing). First follow the respective instructions to install both [Truffle](http://truffle.readthedocs.io/en/beta/getting_started/installation/) and [testrpc](https://github.com/ethereumjs/testrpc):
 
-`$ npm install -g truffle`
-`$ npm install -g ethereumjs-testrpc`
+```sh
+$ npm install -g truffle
+```
+```sh
+$ npm install -g ethereumjs-testrpc
+```
 
 Then follow the steps below to test locally. You can either execute scripts with `truffle exec` or run unit tests with `truffle test`, feel free to check out files in `/test` and `/scripts/for-dev-testing` to follow along with code as you run tests.
 
@@ -57,8 +61,12 @@ Then follow the steps below to test locally. You can either execute scripts with
 * Open a new terminal and run `testrpc`. Leave this up and running in separate terminal, this will be the simulated blockchain to test on. Note it comes preset with 10 available accounts.
 * Turn to project directory terminal and run either:
 
-`truffle exec scripts/for-dev-testing/[your script choice]`
-`truffle test test/[your test choice]`
+```sh
+truffle exec scripts/for-dev-testing/[your script choice]
+```
+```sh
+truffle test test/[your test choice]
+```
 
 ## Gotchas and known errors
 
