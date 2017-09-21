@@ -68,6 +68,18 @@ $ truffle exec scripts/for-dev-testing/[your script choice]
 $ truffle test test/[your test choice]
 ```
 
+## ERC20 token proof of concept
+
+To test out the VOTE token with `testrpc`:
+
+* You will need Metamask installed
+* Spin up `testrpc`
+* Do a `truffle compile` and `truffle migrate`. Look for 'VoteToken: 0x...' and copy down the address, you will need it later.
+* Run `npm run dev`. This will open a basic app that displays the token balance and allows you to transfer. You will most likely need to navigate to localhost:3000 _in incognito_ mode ([see issue](https://github.com/trufflesuite/trufflesuite.github.io/issues/190)).
+* Add the token to Metamask [following these instructions](https://support.metamask.io/kb/article/4-managing-tokens) and using the VoteToken address you copied earlier.
+* Create a new account in Metamask by cliking the left option in the upper right corner. You should see two accounts now, and now we can transfer token between them.
+* Copy the address of the second account, direct yourself to the app in the localhost:3000, and send an amount of tokens to the address of the second account. This is the basic test we are doing: you should see from Metamask that the token value for each account changes after each transfer.
+
 ## Gotchas and known errors
 
 * It's currently unstable to run all unit tests with just `truffle test`. See [this issue](https://github.com/ethereumjs/testrpc/issues/346) for example on the sort of errors that come up sometimes. Recommended to run each unit test seperately.
