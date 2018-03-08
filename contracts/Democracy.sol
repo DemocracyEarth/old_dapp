@@ -11,7 +11,7 @@ contract Democracy is Console {
 
     mapping(address => address) delegations;
     mapping(address => Db) votes;
-    mapping(address => bool) exists;
+    mapping(address => bool) public exists;
 
     address[] voters;
     uint public n_voters;
@@ -19,7 +19,10 @@ contract Democracy is Console {
     address public nextExecutive;
 
     event Address(address add);
+    event NewVoter(address add);
+    event TryNewVoter(address add);
     event Addresses(address[] adds);
+    event GetVoter();
 
     event Executive(address exec, uint vts);
 
@@ -30,8 +33,21 @@ contract Democracy is Console {
 
     }
 
-    function getVoters() public view returns (address[]) {
+    function getVoters() public returns (address[]) {
+        GetVoter();
         return voters;
+    }
+
+    /**
+    * TODO: maximum return of 100 should be changed!
+    */
+    function getRepresentatives() public view returns (address[100]) {
+
+        address[100] memory representatives;
+        for (uint8 v = 0; v < n_voters; v++) {
+            representatives[v] = delegations[voters[v]];
+        }
+        return representatives;
     }
 
     /**
@@ -92,6 +108,7 @@ contract Democracy is Console {
     function newVoter() public {
 
         address voterAddress = msg.sender;
+        TryNewVoter(voterAddress);
         require(votes[voterAddress].representees.length == 0); // Same address cannot become a new voter
 
         exists[voterAddress] = true;
@@ -101,6 +118,8 @@ contract Democracy is Console {
         voters.length += 1;
         voters[n_voters] = voterAddress;
         n_voters++;
+
+        NewVoter(voterAddress);
 
     }
 
