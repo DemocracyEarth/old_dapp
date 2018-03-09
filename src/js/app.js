@@ -18,24 +18,31 @@ App = {
             App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
             console.info("No web3 instance defined, using ganache")
         }
-        web3 = new Web3(App.web3Provider);
+        var web3 = new Web3(App.web3Provider);
+
+        web3.eth.getAccounts(function(error, accounts) {
+            if (error) {
+                console.log(error);
+            }
+            var account = accounts[0]; // TODO: shoudn't be the default
+            web3.eth.defaultAccount = account;
+        })
 
         return App.initContract();
     },
 
     initContract: function() {
 
-        $.getJSON('Democracy.json', function(data) {
+        $.getJSON('Delegation.json', function(data) {
             // Get the necessary contract artifact file and instantiate it with truffle-contract
-
             console.info("Loading json contract...: " + data);
 
-            App.contracts.Democracy = TruffleContract(data);
+            App.contracts.Delegation = TruffleContract(data);
 
             // Set the provider for our contract
-            App.contracts.Democracy.setProvider(App.web3Provider);
+            App.contracts.Delegation.setProvider(App.web3Provider);
 
-            // Use our contract to retrieve and mark the adopted pets
+            App.refreshGraph();
             return;
         });
 
@@ -45,7 +52,7 @@ App = {
     bindEvents: function() {
         $(document).on('click', '#newVoter', App.addNewVoter);
         $(document).on('click', '#delegate', App.delegate);
-        $(document).on('click', '.btn-adopt', App.handleAdopt);
+        $(document).on('click', '#refreshGraph', App.refreshGraph);
     },
 
     delegate: function() {
@@ -58,16 +65,16 @@ App = {
                 console.log(error);
             }
 
-            App.contracts.Democracy.deployed().then(function(instance) {
+            App.contracts.Delegation.deployed().then(function(instance) {
 
                 instance.getVoters.call().then(function(voters) {
 
-                    console.log("Delegating from: " + voters[from]);
-                    console.log("Delegating to: " + voters[to]);
+//                    console.log("Delegating from: " + voters[from]);
+//                    console.log("Delegating to: " + voters[to]);
 
                     instance.delegate.sendTransaction(voters[to], {from: voters[from], gas: 1000000}).then(function(result) {
-                        console.log("Delegation successful");
-                        console.log(result);
+//                        console.log("Delegation successful");
+//                        console.log(result);
                         App.refreshGraph();
                     }).catch(function(err) {
                         console.log(err);
@@ -83,7 +90,7 @@ App = {
 
     refreshGraph: function() {
 
-        App.contracts.Democracy.deployed().then(function(instance) {
+        App.contracts.Delegation.deployed().then(function(instance) {
 
             instance.getVoters.call().then(function(voters) {
 
@@ -106,7 +113,7 @@ App = {
                         nodesAndEdges.push({ group: "edges", data: { id: id, source: voters[i], target: representatives[i] }});
                     }
 
-                    cytoscape({
+                    var cy = cytoscape({
                         container: document.getElementById('cy'), // container to render in
 
                         elements: nodesAndEdges,
@@ -115,27 +122,42 @@ App = {
                             {
                                 selector: 'node',
                                 style: {
-                                    'background-color': '#666',
-                                    'label': 'data(id)'
+                                    'background-color': '#F66',
+                                    'label': 'data(id)',
+                                    'font-size' : 20,
+                                    'text-valign': 'bottom',
+                                    'text-opacity': '0.2',
+                                    'text-rotation': '0.2',
+                                    'text-margin-y': '10px'
                                 }
                             },
 
                             {
                                 selector: 'edge',
                                 style: {
-                                    'width': 3,
-                                    'line-color': '#ccc',
-                                    'target-arrow-color': '#ccc',
+                                    'curve-style': 'bezier',
+                                    'width': 2,
+                                    'line-color': '#666',
+                                    'target-arrow-color': '#000',
                                     'target-arrow-shape': 'triangle'
                                 }
                             }
                         ],
 
                         layout: {
-                            name: 'grid',
-                            rows: 1
+                            name: 'circle'
                         }
 
+                    });
+
+                    cy.zoom(0.5);
+                    cy.center();
+
+                    instance.setNextExecutive({gas: 1000000}).then(function(result) {
+                        instance.nextExecutive.call().then(function(executive) {
+//                            console.log("Setting new executive...");
+                            document.getElementById('executive').textContent = executive;
+                        });
                     });
 
                 }).catch(function(err) {
@@ -157,7 +179,7 @@ App = {
 
             var account = accounts[App.nextVoter++];
 
-            App.contracts.Democracy.deployed().then(function(instance) {
+            App.contracts.Delegation.deployed().then(function(instance) {
 
                 instance.newVoter({from: account, gas: 1000000}).then(function(result) { // If we don't set the gas we get Out Of Gas Exception
 //                    console.log("result: " + result);
@@ -171,98 +193,6 @@ App = {
 
             });
 
-        });
-
-    },
-
-    handleAdopt: function(event) {
-
-        web3.eth.getAccounts(function(error, accounts) {
-            if (error) {
-                console.log(error);
-            }
-
-            var account = accounts[0];
-
-            //      web3.eth.defaultAccount = account;
-
-            var balance = web3.eth.getBalance(account, function(sth, bal) {
-                console.log("balance: " + bal);
-            });
-
-            console.log("account: " + account);
-
-            //       web3.version.getNetwork(function(err,res){console.log(res)})
-
-            //       console.log("contracts: " + App.contracts.Democracy);
-
-            App.contracts.Democracy.deployed().then(function(instance) {
-
-                //       instance.getDelegated.call(account).then(function(a) {
-                //                           console.log("representee: " + a);
-                //                           console.log("representative: " + a);
-                //                       }).catch(function(err) {
-                //                            console.log(err);
-                //                       });
-
-                instance.getVoters.call().then(function(voters) {
-                    console.log("voters: " + voters);
-                    console.log(voters);
-
-                    var delegations = new Object();
-                    for (const voter of voters) {
-                        console.log("processing voter: " + voter);
-                        console.log("isAddress: " + web3.isAddress(voter));
-                        instance.getDelegated.call(voter).then(function(representative) {
-                            console.log("representee: " + voter);
-                            console.log("representative: " + representative);
-                            delegations[voter] = representative;
-                        }).catch(function(err) {
-                            console.log(err);
-                        });
-                    }
-                    console.log("delegations: " + delegations);
-                    console.log(delegations);
-                });
-
-                instance.exists.call(account).then(function(answer) {
-
-                    console.log(answer);
-
-                });
-                //
-
-
-                //         console.log("instance: " + instance);
-                //         console.log(instance);
-                //        console.log("account: " + account);
-                //           instance.newVoter({from: account, gas: 1000000}).then(function(result) { // If we don't set the gas we get Out Of Gas Exception
-                //                console.log("result: " + result);
-                //                console.log(result);
-                //
-                //
-                //                return;
-                //             }).catch(function(err) {
-                //                console.log(err.message);
-                //            });
-                //
-                //            instance.exists.call(account).then(function(answer) {
-                //
-                //                                        console.log(answer);
-                //
-                //                                     });
-                //
-                //                         instance.getVoters.call().then(function(result) {
-                //                              console.log("voters: " + result);
-                //                              console.log(result);
-                //                         });
-
-
-
-
-            }).catch(function(err) {
-                console.log(err.message);
-            });
         });
 
     }
