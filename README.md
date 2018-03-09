@@ -44,6 +44,15 @@ An issue can be implemented with any possible ballot design according to the spe
 
 If the final tally of a decision reaches a certain value (`true` or `false`), it can then enforce the final decision by unlocking coins or triggering a transaction sending assets to a specific address. Budgets specify the conditions and funds attached to the final tally of a voted issue.
 
+## Delegation
+
+A liquid democracy organization that seeks to have a single individual with access to the organization finances.
+Every individual is a voter and the voter with the majority of votes assigned is the designated executive.
+
+<p align="center">
+<img src="images/delegation.png" width="400" title="Basic liquid delegation">
+</p>
+
 # How to test locally
 
 Project is being developed with Truffle and testrpc, you will find both Solidity and JS (script/testing). First follow the respective instructions to install both [Truffle](http://truffle.readthedocs.io/en/beta/getting_started/installation/) and [testrpc](https://github.com/ethereumjs/testrpc):
