@@ -50,7 +50,7 @@ A liquid democracy organization that seeks to have a single individual with acce
 Every individual is a voter and the voter with the majority of votes assigned is the designated executive.
 
 <p align="center">
-<img src="images/delegation.png" width="400" title="Basic liquid delegation">
+<img src="images/delegation.png" width="800" title="Basic liquid delegation">
 </p>
 
 # How to test locally
