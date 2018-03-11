@@ -4,6 +4,11 @@ App = {
     nextVoter: 0,
     init: function() {
         var web3 = App.initWeb3();
+
+        fs.readFile("Delegation.sol", function(error, data) {
+            document.getElementById('solidity-contract').innerHTML = data;
+        });
+
         return web3;
     },
 
@@ -15,8 +20,9 @@ App = {
             console.info("Web3 instance defined")
         } else {
             // If no injected web3 instance is detected, fall back to Ganache
-            App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
-            console.info("No web3 instance defined, using ganache")
+            document.getElementById('cy').innerHTML = "<h1 class='display-3 alert alert-danger'>Error: Metamask was not found!</h1> Currently, only metamask is supported!"
+            //App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
+            //console.info("No web3 instance defined, using ganache")
         }
         web3 = new Web3(App.web3Provider);
 
@@ -72,10 +78,15 @@ App = {
 //                    console.log("Delegating from: " + voters[from]);
 //                    console.log("Delegating to: " + voters[to]);
 
-                    instance.delegate.sendTransaction(voters[to], {from: voters[from], gas: 1000000}).then(function(result) {
+                    instance.delegate.sendTransaction(voters[to], {gas: 1000000}).then(function(result) {
 //                        console.log("Delegation successful");
 //                        console.log(result);
-                        App.refreshGraph();
+
+                        instance.setNextExecutive({gas: 1000000}).then(function(result) {
+//                            console.log("Setting new executive...");
+                            App.refreshGraph();
+                        });
+
                     }).catch(function(err) {
                         console.log(err);
                     });
@@ -153,11 +164,8 @@ App = {
                     cy.zoom(0.5);
                     cy.center();
 
-                    instance.setNextExecutive({gas: 1000000}).then(function(result) {
-                        instance.nextExecutive.call().then(function(executive) {
-//                            console.log("Setting new executive...");
-                            document.getElementById('executive').textContent = executive;
-                        });
+                    instance.nextExecutive.call().then(function(executive) {
+                        document.getElementById('executive').textContent = executive;
                     });
 
                 }).catch(function(err) {

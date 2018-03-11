@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <title>The social smart contractx</title>
+    <title>The social smart contract</title>
 
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
@@ -19,26 +19,45 @@
     <![endif]-->
   </head>
   <body>
-    <div class="container">
+
+    <div class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0"><h1 class="navbar-brand col-sm-3 col-md-2 mr-0">The social smart contract</h1></div>
+    <div class="container-fluid">
       <div class="row">
-        <div class="col-xs-12 col-sm-8 col-sm-push-2">
-          <h1 class="text-center">The social smart contract</h1>
-          <hr/>
-          <br/>
-        </div>
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar card">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item mb-2 ml-2 mr-2 mt-2 ">
+                <div class="btn-group mr-2">
+                  <button class="btn btn-sm btn-outline-secondary" type="button" id="newVoter">Add new voter</button>
+                </div>
+              </li>
+              <li class="nav-item mb-2 ml-2 mr-2 mt-2">
+                <div class="btn-group mr-2">
+                  <button class="btn btn-sm btn-outline-secondary" type="button" id="refreshGraph"><span class="sync-alt">Refresh</span></button>
+                </div>
+              </li>
+              <li class="card p-2 nav-item mb-2 ml-2 mr-2 mt-2">
+                <div class="btn-group mr-2">
+                  <button class="btn btn-sm btn-outline-secondary" type="button" id="delegate">Delegate</button>
+                </div>
+                <input class="form-control form-control-sm mb-2 mr-2 mt-2" type="text" name="delegateFrom" placeholder="Metamask account" id="delegateFrom" value="" disabled>
+                <input class="form-control form-control-sm mb-2 mr-2 mt-2" type="text" name="delegateTo" placeholder="to, index e.g. 1" id="delegateTo">
+              </li>
+            </ul>
+
+          </div>
+        </nav>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+          <h2 class="alert alert-info">Current Executive: <span id="executive">None</span></h2>
+
+          <div id="cy">
+
+
+          </div>
+
+          <pre><code id="solidity-contract" class="solidity">...</code></pre>
+        </main>
       </div>
-    </div>
-
-    <button class="btn btn-default" type="button" id="newVoter">Add new voter</button>
-    <button class="btn btn-default" type="button" id="refreshGraph">Refresh</button>
-    <button class="btn btn-default" type="button" id="delegate">Delegate (input counter, not address)</button>
-    <input type="text" name="delegateFrom" placeholder="from e.g. 0" id="delegateFrom">
-    <input type="text" name="delegateTo" placeholder="to e.g. 1" id="delegateTo">
-    <br>
-    <h2>Current Executive: <span id="executive">None</span></h2>
-
-    <div id="cy">
-
 
     </div>
 
