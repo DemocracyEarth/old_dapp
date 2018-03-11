@@ -55,6 +55,7 @@ Every individual is a voter and the voter with the majority of votes assigned is
 
 To load ether, use faucet: https://faucet.bitfwd.xyz/
 
+* npm install -g truffle
 * npm install
 * truffle migrate --network ropsten
 * npm run dev
