@@ -18,7 +18,7 @@ App = {
             App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
             console.info("No web3 instance defined, using ganache")
         }
-        var web3 = new Web3(App.web3Provider);
+        web3 = new Web3(App.web3Provider);
 
         web3.eth.getAccounts(function(error, accounts) {
             if (error) {

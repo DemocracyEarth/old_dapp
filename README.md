@@ -53,6 +53,11 @@ Every individual is a voter and the voter with the majority of votes assigned is
 <img src="images/delegation.png" width="800" title="Basic liquid delegation">
 </p>
 
+To load ether, use faucet: https://faucet.bitfwd.xyz/
+
+* truffle migrate --network ropsten
+* npm run dev
+
 # How to test locally
 
 Project is being developed with Truffle and testrpc, you will find both Solidity and JS (script/testing). First follow the respective instructions to install both [Truffle](http://truffle.readthedocs.io/en/beta/getting_started/installation/) and [testrpc](https://github.com/ethereumjs/testrpc):

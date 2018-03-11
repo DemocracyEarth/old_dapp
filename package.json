@@ -16,6 +16,7 @@
     "lite-server": "^2.3.0"
   },
   "dependencies": {
-    "cytoscape": "^3.2.9"
+    "cytoscape": "^3.2.9",
+    "truffle-hdwallet-provider": "0.0.3"
   }
 }
