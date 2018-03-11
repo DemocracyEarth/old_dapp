@@ -58,7 +58,7 @@ To load ether, use faucet: https://faucet.bitfwd.xyz/
 * npm install -g truffle
 * npm install
 * truffle migrate --network ropsten
-* npm run dev
+* sudo npm run dev
 
 # How to test locally
 
