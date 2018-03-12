@@ -1,0 +1,6 @@
+{
+  "port": 80,
+  "server": {
+    "baseDir": ["./src", "./build/contracts", "./contracts"]
+  }
+}

@@ -4,6 +4,8 @@
 
 # Social Smart Contract
 
+To visualize a live demo, go to [http://delegation.cryptopolitics.global]
+
 > 🚨🚧 _Everything in this repo is still a work in progress and higly experimental. It is not secure to use any of this code in production (mainnet) until proper security audits have been conducted._ 🚧🚨
 
 An ideal voting system must be able to satisfy in the greatest possible extent these conditions:
@@ -46,19 +48,21 @@ If the final tally of a decision reaches a certain value (`true` or `false`), it
 
 # How to test locally
 
-Project is being developed with Truffle and testrpc, you will find both Solidity and JS (script/testing). First follow the respective instructions to install both [Truffle](http://truffle.readthedocs.io/en/beta/getting_started/installation/) and [testrpc](https://github.com/ethereumjs/testrpc):
+Project is being developed with Truffle and Ganache / Metamask (Ropstein test network), you will find both Solidity and JS (script/testing). First follow the respective instructions to install both [Truffle](http://truffle.readthedocs.io/en/beta/getting_started/installation/) and [ganache](http://truffleframework.com/ganache/):
 
+```sh
+$ npm install
+```
 ```sh
 $ npm install -g truffle
 ```
-```sh
-$ npm install -g ethereumjs-testrpc
-```
+
+Download Ganache and install
 
 Then follow the steps below to test locally. You can either execute scripts with `truffle exec` or run unit tests with `truffle test`, feel free to check out files in `/test` and `/scripts/for-dev-testing` to follow along with code as you run tests.
 
 * Start from the project directory in the terminal with a `git pull` to make sure you are up to date.
-* Open a new terminal and run `testrpc`. Leave this up and running in separate terminal, this will be the simulated blockchain to test on. Note it comes preset with 10 available accounts.
+* Start ganache. This will be the simulated blockchain to test on. Note it comes preset with 10 available accounts.
 * Turn to project directory terminal and run either:
 
 ```sh
@@ -67,6 +71,23 @@ $ truffle exec scripts/for-dev-testing/[your script choice]
 ```sh
 $ truffle test test/[your test choice]
 ```
+
+or:
+
+```sh
+$ sudo npm run dev
+```
+If you want to run the web application.
+It will default to use Metamask and testnet. You must have Metamask chrome plugin installed to be able to write to the blockchain from the web app.
+If you want to change it go to: initWeb3() function in App.js.
+To load ether, use faucet: https://faucet.bitfwd.xyz/
+
+### To deploy to the testnet
+
+```sh
+truffle migrate --network ropsten
+```
+
 
 ## Gotchas and known errors
 
