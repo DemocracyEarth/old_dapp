@@ -16,9 +16,6 @@
     "lite-server": "^2.3.0"
   },
   "dependencies": {
-    "cytoscape": "^3.2.9",
-    "highlightjs": "^9.10.0",
-    "highlightjs-solidity": "^1.0.6",
     "truffle-hdwallet-provider": "0.0.3"
   }
 }

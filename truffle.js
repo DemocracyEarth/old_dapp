@@ -1,19 +1,4 @@
-var cytoscape = require('cytoscape');
-var fs = require("fs");
-
-var HDWalletProvider = require("truffle-hdwallet-provider");
 var mnemonic = "boy robust absurd olive bless cable speed close column control hour rabbit" // @aecc's metamask seed words
-
-var hljs = require('highlightjs');
-var hljsDefineSolidity = require('highlightjs-solidity');
-hljsDefineSolidity(hljs);
-hljs.initHighlightingOnLoad();
-
-import fontawesome from '@fortawesome/fontawesome'
-import solid from '@fortawesome/fontawesome-free-solid'
-fontawesome.library.add(solid.syncAlt)
-
-
 module.exports = {
   networks: {
     ropsten: {

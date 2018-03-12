@@ -4,11 +4,6 @@ App = {
     nextVoter: 0,
     init: function() {
         var web3 = App.initWeb3();
-
-        fs.readFile("Delegation.sol", function(error, data) {
-            document.getElementById('solidity-contract').innerHTML = data;
-        });
-
         return web3;
     },
 
@@ -16,25 +11,33 @@ App = {
 
         // Is there an injected web3 instance?
         if (typeof web3 !== 'undefined') {
+            console.info("Web3 instance defined by Metamask or related")
             App.web3Provider = web3.currentProvider;
-            console.info("Web3 instance defined")
         } else {
-            // If no injected web3 instance is detected, fall back to Ganache
-            document.getElementById('cy').innerHTML = "<h1 class='display-3 alert alert-danger'>Error: Metamask was not found!</h1> Currently, only metamask is supported!"
+            console.info("Web3 instance not defined, connecting in read-only mode to the blockchain using an infura node")
+            App.web3Provider = new Web3.providers.HttpProvider('https://ropsten.infura.io/KZSQapS5wjr4Iw7JhgtE'); // Using @aecc's key to connect to a Ropsten node
+            document.getElementById('cy').innerHTML = "<h3 class='display-10 alert alert-danger'>Error: Metamask was not found!</h3> Read-only mode. Metamask is needed to write data to the blockchain."
+            // Remove these comments if you wanna connect to ganache using your own private blockchain
             //App.web3Provider = new Web3.providers.HttpProvider('http://localhost:8545');
             //console.info("No web3 instance defined, using ganache")
         }
-        web3 = new Web3(App.web3Provider);
 
-        web3.eth.getAccounts(function(error, accounts) {
-            if (error) {
-                console.log(error);
-            }
-            var account = accounts[0]; // TODO: shoudn't be the default
-            web3.eth.defaultAccount = account;
-        })
+        try {
+            web3 = new Web3(App.web3Provider);
 
+            web3.eth.getAccounts(function(error, accounts) {
+                if (error) {
+                    console.log(error);
+                }
+                var account = accounts[0];
+                web3.eth.defaultAccount = account;
+            })
+
+        } catch (e) {
+//            console.error(e);
+        }
         return App.initContract();
+
     },
 
     initContract: function() {
