@@ -4,6 +4,8 @@
 
 # Social Smart Contract
 
+To visualize a live demo, go to [http://delegation.cryptopolitics.global]
+
 > 🚨🚧 _Everything in this repo is still a work in progress and higly experimental. It is not secure to use any of this code in production (mainnet) until proper security audits have been conducted._ 🚧🚨
 
 An ideal voting system must be able to satisfy in the greatest possible extent these conditions:
