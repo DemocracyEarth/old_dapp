@@ -62,6 +62,8 @@ App = {
         $(document).on('click', '#newVoter', App.addNewVoter);
         $(document).on('click', '#delegate', App.delegate);
         $(document).on('click', '#refreshGraph', App.refreshGraph);
+        $(document).on('click', '#transfer-healthcare', App.transferHealthCare);
+        $(document).on('click', '#yield-power', App.yieldPower);
     },
 
     delegate: function() {
@@ -100,6 +102,46 @@ App = {
 
         });
 
+    },
+
+    yieldPower: function() {
+        App.contracts.Delegation.deployed().then(function(instance) {
+            instance.yieldPower().then(function(result) {
+                console.log(result);
+                App.refreshGraph();
+            }).catch(function(err) {
+                console.log(err);
+            });
+        });
+    },
+
+    transferHealthCare: function() {
+        App.contracts.Delegation.deployed().then(function(instance) {
+            instance.transferTo(0xf25186b5081ff5ce73482ad761db0eb0d25abfbf).then(function(result) {
+//                console.log(result);
+                App.refreshGraph();
+            }).catch(function(err) {
+                console.log(err);
+            });
+        });
+    },
+
+    amIExecutive: function() {
+        App.contracts.Delegation.deployed().then(function(instance) {
+            instance.executive.call().then(function(executive) {
+                var healthcareButton = document.getElementById('transfer-healthcare')
+                var yieldPowerButton = document.getElementById('yield-power')
+                if (web3.eth.defaultAccount == executive) {
+                    healthcareButton.disabled = false;
+                    yieldPowerButton.disabled = false;
+                } else {
+                    healthcareButton.disabled = true;
+                    yieldPowerButton.disabled = true;
+                }
+            }).catch(function(err) {
+                console.log(err);
+            });
+        });
     },
 
     refreshGraph: function() {
@@ -167,8 +209,14 @@ App = {
                     cy.zoom(0.5);
                     cy.center();
 
-                    instance.nextExecutive.call().then(function(executive) {
+                    instance.executive.call().then(function(executive) {
+//                        console.log("Loading executive...");
                         document.getElementById('executive').textContent = executive;
+                    });
+
+                    instance.nextExecutive.call().then(function(executive) {
+//                        console.log("Loading next executive...");
+                        document.getElementById('next-executive').textContent = executive;
                     });
 
                 }).catch(function(err) {
@@ -177,6 +225,11 @@ App = {
 
             });
 
+            instance.getExecutiveBalance.call().then(function(balance) {
+                document.getElementById('balance').value = balance;
+            });
+
+            App.amIExecutive();
 
         });
     },
@@ -192,7 +245,7 @@ App = {
 
             App.contracts.Delegation.deployed().then(function(instance) {
 
-                instance.newVoter({from: account, gas: 1000000}).then(function(result) { // If we don't set the gas we get Out Of Gas Exception
+                instance.newVoter({from: account, gas: 1000000, value: 200}).then(function(result) { // If we don't set the gas we get Out Of Gas Exception
 //                    console.log("result: " + result);
 //                    console.log(result);
                     console.log("Voter added successfully");

@@ -43,12 +43,25 @@
                 <input class="form-control form-control-sm mb-2 mr-2 mt-2" type="text" name="delegateFrom" placeholder="Metamask account" id="delegateFrom" value="" disabled>
                 <input class="form-control form-control-sm mb-2 mr-2 mt-2" type="text" name="delegateTo" placeholder="to, index e.g. 1" id="delegateTo">
               </li>
+              <li class="card p-2 nav-item mb-2 ml-2 mr-2 mt-2">
+                  <div class="form-group">
+                      <label for="balance">Balance:</label>
+                      <input type="text" class="form-control" id="balance" aria-describedby="balanceHelp" placeholder="0" readonly>
+                      <small id="balanceHelp" class="form-text text-muted">Contract's balance in Wei</small>
+                  </div>
+              </li>
+                <li class="card p-2 nav-item mb-2 ml-2 mr-2 mt-2">
+                    <small class="form-text text-muted mb-2">Executive powers:</small>
+                    <button class="btn btn-sm btn-outline-secondary mb-2" type="button" id="yield-power">Yield Power to Democracy</button>
+                    <button class="btn btn-sm btn-outline-secondary mb-2" type="button" id="transfer-healthcare">Transfer to HealthCare</button>
+                </li>
             </ul>
 
           </div>
         </nav>
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-          <h2 class="alert alert-info">Current Executive: <span id="executive">None</span></h2>
+          <h3 class="alert alert-info">Current Executive: <span id="executive">None</span></h3>
+          <h3 class="alert alert-warning">Majority Voting Power: <span id="next-executive">None</span></h3>
 
           <div id="cy">
           </div>

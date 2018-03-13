@@ -36,9 +36,14 @@ contract Delegation is Console {
     event GetVoter();
     event Executive(address exec, uint vts);
 
+    modifier onlyExecutive {
+        require(msg.sender == executive);
+        _;
+    }
+
     function Delegation() public {
         n_voters = 0;
-        executive = msg.sender;
+//        executive = msg.sender; //TODO
     }
 
     function getVoters() public view returns (address[]) {
@@ -116,10 +121,18 @@ contract Delegation is Console {
     /**
      * Creates a new voter using the sender address as unique identifier
      */
-    function newVoter() public {
+    function newVoter() payable public {
+
+        require(msg.value > 100);
 
         address voterAddress = msg.sender;
         require(votes[voterAddress].representees.length == 0); // Address already defined as a voter cannot become a new voter
+
+        // Set the executive as the first voter
+        if (n_voters == 0) {
+            executive = voterAddress;
+            nextExecutive = voterAddress;
+        }
 
         delegations[voterAddress] = voterAddress;
         votes[voterAddress].representeeActive[voterAddress] = true; // Delegate the vote to myself
@@ -129,6 +142,21 @@ contract Delegation is Console {
 
         NewVoter(voterAddress);
 
+    }
+
+    /**
+    * Select a new executive according to majority of voting power
+    */
+    function yieldPower() onlyExecutive public {
+        executive = nextExecutive;
+    }
+
+    function transferTo(address to) onlyExecutive public {
+        to.transfer(100);
+    }
+
+    function getExecutiveBalance() public view returns (uint) {
+        return this.balance;
     }
 
 }
