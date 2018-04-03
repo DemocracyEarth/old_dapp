@@ -1,12 +1,7 @@
 pragma solidity ^0.4.4;
 
 /*
-A Ballot presents options for voters to participate in regarding a specific Issue
-
-The building blocks for a ballot are: 
-- Interface
-- Options
-- Criteria
+A Ballot presents a topic with options for users to vote
 */
 
 contract Ballot {
@@ -16,10 +11,8 @@ contract Ballot {
         uint voteCount; // number of accumulated votes
     }
 
-
     // A dynamically-sized array of `Proposal` structs.
     Proposal[] public proposals;
-
 
     // Create a new ballot that is populated with proposals
     function Ballot(bytes32[] proposalNames) {
@@ -39,19 +32,19 @@ contract Ballot {
         }
     }
 
-    function getProposalsLength() public constant returns(uint length) {
+    function getProposalsLength() public view returns(uint length) {
         return proposals.length;
     }
 
-    function getProposalName(uint proposal) public constant returns (bytes32 name) {
+    function getProposalName(uint proposal) public view returns (bytes32 name) {
         return proposals[proposal].name;
     }
 
-    function getProposalVoteCount(uint proposal) public constant returns (uint voteCount) {
+    function getProposalVoteCount(uint proposal) public view returns (uint voteCount) {
         return proposals[proposal].voteCount;
     }
 
-    function receiveVote(uint proposal) public returns (bool successful) {
+    function receiveVote(uint proposal) public view returns (bool successful) {
         proposals[proposal].voteCount += 1;
         return true;
     }
@@ -59,7 +52,7 @@ contract Ballot {
     /// @dev Computes the winning proposal taking all
     /// previous votes into account.
     /// TODO: handle drawings
-    function winningProposal() constant
+    function winningProposal() view public
             returns (uint winningProposal)
     {
         uint winningVoteCount = 0;
@@ -74,7 +67,7 @@ contract Ballot {
     // Calls winningProposal() function to get the index
     // of the winner contained in the proposals array and then
     // returns the name of the winner
-    function winnerName() constant
+    function winnerName() view public
             returns (bytes32 winnerName)
     {
         winnerName = proposals[winningProposal()].name;
