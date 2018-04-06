@@ -1,3 +1,6 @@
+require('babel-register');
+require('babel-polyfill');
+
 var mnemonic = "boy robust absurd olive bless cable speed close column control hour rabbit" // @aecc's metamask seed words
 var HDWalletProvider = require("truffle-hdwallet-provider");
 
