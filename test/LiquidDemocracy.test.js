@@ -18,8 +18,8 @@ contract('LiquidDemocracy', function (accounts){
       it('should register new voters', async function () {
         this.liquidDemocracyBallot = await LiquidDemocracy.new(proposals);
         await this.liquidDemocracyBallot.registerNewVoter({ from: accounts[0] });
-        const voter1 = await this.liquidDemocracyBallot.getVoterRegistration(accounts[0]);
-        // console.log(voter1);
+        const voter1 = await this.liquidDemocracyBallot.getVoterData(accounts[0]);
+        should.exist(voter1);
       });
       
     });

@@ -1,9 +1,6 @@
 pragma solidity ^0.4.4;
 
 contract LiquidDemocracy {
-    ////////////////
-    // Data structures
-    ////////////////
 
     // This is the type for a single option shown in a ballot
     struct Proposal {
@@ -11,28 +8,20 @@ contract LiquidDemocracy {
         uint voteCount; // number of accumulated votes
     }
 
-    // A dynamically-sized array of `Proposal` structs.
     Proposal[] public proposals;
 
     // This is the type for a single voter metadata
     struct Voter {
         uint weight;
         bool voted;
-        // bool delegated;
         bool registered;
     }
     
-    mapping(address => Voter) votersRegistration;
+    mapping(address => Voter) votersData;
 
     // TODO - some kind of mapping for delegations 
 
-    ////////////////
-    // Constructor
-    ////////////////
     function LiquidDemocracy(bytes32[] proposalNames) public {
-    	// For each of the provided proposal names,
-        // create a new proposal object and add it
-        // to the end of the array.
         for (uint i = 0; i < proposalNames.length; i++) {
             proposals.push(Proposal({
                 name: proposalNames[i],
@@ -41,31 +30,27 @@ contract LiquidDemocracy {
         }
     }
 
-    ////////////////
-    // Functions
-    ////////////////
-
     // TODO - vote()
     // TODO - delegate()
     // TODO - revoke()
     
     /**
-    * @notice Getter for voterRegistration
+    * @notice Getter for votersData
     * @param voter The voter to obtain
     */
-    function getVoterRegistration(address voter) public view returns (uint, bool, bool) {
-        return (votersRegistration[voter].weight, votersRegistration[voter].registered, votersRegistration[voter].voted);
+    function getVoterData(address voter) public view returns (uint, bool, bool) {
+        return (votersData[voter].weight, votersData[voter].registered, votersData[voter].voted);
     }
     
     /**
     * @notice Register a new voter setting initial Voter elements
     */
     function registerNewVoter() public {
-        address VoterAddress = msg.sender;
+        address voterAddress = msg.sender;
         // Voters already registered cannot register again
-        require(votersRegistration[VoterAddress].registered != true);
+        require(votersData[voterAddress].registered != true);
 
-        votersRegistration[VoterAddress].weight = 1;
-        votersRegistration[VoterAddress].registered = true;
+        votersData[voterAddress].weight = 1;
+        votersData[voterAddress].registered = true;
     }
 }
