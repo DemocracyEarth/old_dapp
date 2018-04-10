@@ -7,7 +7,8 @@ contract LiquidDemocracy {
         bytes32 name; // short name (up to 32 bytes)
         uint voteCount; // number of accumulated votes
     }
-
+    
+    // Keep array populated with binary, yes/no, options for simplicity
     Proposal[] public proposals;
 
     // This is the type for a single voter metadata
