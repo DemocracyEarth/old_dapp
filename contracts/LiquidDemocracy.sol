@@ -3,13 +3,13 @@ pragma solidity ^0.4.4;
 contract LiquidDemocracy {
 
     // This is the type for a single option shown in a ballot
-    struct Proposal {
+    struct BallotOption {
         bytes32 name; // short name (up to 32 bytes)
         uint voteCount; // number of accumulated votes
     }
     
-    // Keep array populated with binary, yes/no, options for simplicity
-    Proposal[] public proposals;
+    // Array is always populated with binary, yes/no, options for simplicity
+    BallotOption[] public ballot;
 
     // This is the type for a single voter metadata
     struct Voter {
@@ -22,10 +22,10 @@ contract LiquidDemocracy {
 
     // TODO - some kind of mapping for delegations 
 
-    function LiquidDemocracy(bytes32[] proposalNames) public {
-        for (uint i = 0; i < proposalNames.length; i++) {
-            proposals.push(Proposal({
-                name: proposalNames[i],
+    function LiquidDemocracy(bytes32[] ballotInstance) public {
+        for (uint i = 0; i < ballotInstance.length; i++) {
+            ballot.push(BallotOption({
+                name: ballotInstance[i],
                 voteCount: 0
             }));
         }
