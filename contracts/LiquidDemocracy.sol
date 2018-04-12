@@ -17,6 +17,8 @@ contract LiquidDemocracy {
         bool voted;
         bool registered;
     }
+
+    mapping(address => address) delegations;
     
     mapping(address => Voter) votersData;
 
@@ -32,7 +34,6 @@ contract LiquidDemocracy {
     }
 
     // TODO - vote()
-    // TODO - delegate()
     // TODO - revoke()
     
     /**
@@ -53,5 +54,49 @@ contract LiquidDemocracy {
 
         votersData[voterAddress].weight = 1;
         votersData[voterAddress].registered = true;
+        delegations[voterAddress] = voterAddress;
+    }
+
+    // Delegations
+
+    /**
+     * Delegate the voting power of a voter to another voter
+     * Only the person calling this function has the power of delegating his/her vote
+     */
+    function delegate(address representative) public {
+
+        address representee = msg.sender;
+        require(delegations[representee] == representee); // At the moment you can apply a delegation once
+        require(votersData[representee].registered);
+        require(votersData[representative].registered);
+
+        delegations[representee] = representative; // Delegate my own vote
+
+        address nextRepresentative = representative;
+        address nextRepresentee = representee;
+
+        // While there is voter that hasn't performed a delegation to another voter
+        // transitively add votes
+        while (delegations[nextRepresentative] != nextRepresentative) {
+
+            votersData[nextRepresentative].weight += votersData[nextRepresentee].weight;
+            votersData[nextRepresentee].weight -= votersData[nextRepresentee].weight;
+
+            nextRepresentee = nextRepresentative;
+            nextRepresentative = delegations[nextRepresentative];
+
+        }
+
+        votersData[nextRepresentative].weight += votersData[nextRepresentee].weight;
+        votersData[nextRepresentee].weight -= votersData[nextRepresentee].weight;
+
+    }
+
+    function getMyWeight() public view returns (uint) {
+        return votersData[msg.sender].weight;
+    }
+
+    function getMyRepresentative() public view returns (address) {
+        return delegations[msg.sender];
     }
 }
