@@ -4,11 +4,9 @@ contract LiquidDemocracy {
 
     // This is the type for a single option shown in a ballot
     struct BallotOption {
-        bytes32 name; // short name (up to 32 bytes)
         uint voteCount; // number of accumulated votes
     }
     
-    // Array is always populated with binary, yes/no, options for simplicity
     BallotOption[] public ballot;
 
     // This is the type for a single voter metadata
@@ -20,12 +18,10 @@ contract LiquidDemocracy {
     
     mapping(address => Voter) votersData;
 
-    // TODO - some kind of mapping for delegations
-
-    function LiquidDemocracy(bytes32[] ballotInstance) public {
-        for (uint i = 0; i < ballotInstance.length; i++) {
+    function LiquidDemocracy() public {
+        // For simplicity, ballot is always populated with only two option in this binary model
+        for (uint i = 0; i < 1; i++) {
             ballot.push(BallotOption({
-                name: ballotInstance[i],
                 voteCount: 0
             }));
         }
@@ -40,21 +36,6 @@ contract LiquidDemocracy {
     */
     function getVoterData(address voter) public view returns (uint, bool, bool) {
         return (votersData[voter].weight, votersData[voter].registered, votersData[voter].voted);
-    }
-    
-    /**
-    * @notice Getter for ballot length
-    */
-    function getBallotLength() public constant returns(uint length) {
-        return ballot.length;
-    }
-
-    /**
-    * @notice Getter for ballot option name
-    * @param ballotOption The desired option to get name from
-    */
-    function getBallotName(uint ballotOption) public constant returns (bytes32 name) {
-        return ballot[ballotOption].name;
     }
 
     /**
