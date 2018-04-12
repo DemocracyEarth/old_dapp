@@ -19,7 +19,7 @@ contract LiquidDemocracy {
     }
 
     mapping(address => address) delegations;
-    
+
     mapping(address => Voter) votersData;
 
     // TODO - some kind of mapping for delegations 
