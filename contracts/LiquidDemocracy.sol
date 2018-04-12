@@ -43,7 +43,7 @@ contract LiquidDemocracy {
     }
     
     /**
-    * @notice Getter for proposals length
+    * @notice Getter for ballot length
     */
     function getBallotLength() public constant returns(uint length) {
         return ballot.length;
@@ -51,18 +51,18 @@ contract LiquidDemocracy {
 
     /**
     * @notice Getter for ballot option name
-    * @param proposal The desired proposal option
+    * @param ballotOption The desired option to get name from
     */
-    function getBallotName(uint proposal) public constant returns (bytes32 name) {
-        return ballot[proposal].name;
+    function getBallotName(uint ballotOption) public constant returns (bytes32 name) {
+        return ballot[ballotOption].name;
     }
 
     /**
     * @notice Getter for ballot option vote count
-    * @param proposal The desired proposal option
+    * @param ballotOption The desired option to read vote count from
     */
-    function getBallotVoteCount(uint proposal) public constant returns (uint voteCount) {
-        return ballot[proposal].voteCount;
+    function getBallotVoteCount(uint ballotOption) public constant returns (uint voteCount) {
+        return ballot[ballotOption].voteCount;
     }
 
     /**
@@ -83,6 +83,7 @@ contract LiquidDemocracy {
     * @param voteOption TODO
     */
     function vote(address voter, uint voteOption) public {
+        // Cannot vote more than once and must be registered
         require(votersData[voter].registered == true);
         require(votersData[voter].voted != true);
         
