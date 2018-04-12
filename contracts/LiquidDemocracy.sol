@@ -19,8 +19,8 @@ contract LiquidDemocracy {
     mapping(address => Voter) votersData;
 
     function LiquidDemocracy() public {
-        // For simplicity, ballot is always populated with only two option in this binary model
-        for (uint i = 0; i < 1; i++) {
+        // For simplicity, ballot is binary only
+        for (uint i = 0; i < 2; i++) {
             ballot.push(BallotOption({
                 voteCount: 0
             }));
@@ -59,9 +59,9 @@ contract LiquidDemocracy {
     }
 
     /**
-    * @notice TODO
-    * @param voter TODO
-    * @param voteOption TODO
+    * @notice Record a vote in the ballot
+    * @param voter The address of the voter
+    * @param voteOption The integer option chosen by voter
     */
     function vote(address voter, uint voteOption) public {
         // Cannot vote more than once and must be registered
