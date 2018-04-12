@@ -62,6 +62,7 @@ contract LiquidDemocracy {
     /**
      * Delegate the voting power of a voter to another voter
      * Only the person calling this function has the power of delegating his/her vote
+     * @param representative voter to delegate the voting power to
      */
     function delegate(address representative) public {
 
@@ -92,11 +93,19 @@ contract LiquidDemocracy {
 
     }
 
+    /**
+    * Gets the weight of the voter that calls this method
+    */
     function getMyWeight() public view returns (uint) {
+        require(votersData[msg.sender].registered);
         return votersData[msg.sender].weight;
     }
 
+    /**
+    * Gets the representative of the voter that calls this method
+    */
     function getMyRepresentative() public view returns (address) {
+        require(votersData[msg.sender].registered);
         return delegations[msg.sender];
     }
 }
