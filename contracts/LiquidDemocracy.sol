@@ -42,7 +42,7 @@ contract LiquidDemocracy {
     * @notice Getter for ballot option vote count
     * @param ballotOption The desired option to read vote count from
     */
-    function getBallotVoteCount(uint ballotOption) public constant returns (uint voteCount) {
+    function getBallotVoteCount(uint ballotOption) public view returns (uint voteCount) {
         return ballot[ballotOption].voteCount;
     }
 
@@ -65,8 +65,8 @@ contract LiquidDemocracy {
     */
     function vote(address voter, uint voteOption) public {
         // Cannot vote more than once and must be registered
-        require(votersData[voter].registered == true);
-        require(votersData[voter].voted != true);
+        require(votersData[voter].registered);
+        require(!votersData[voter].voted);
         
         votersData[voter].voted = true;
         
