@@ -14,10 +14,10 @@ PRs and feedback are welcomed. A good place to start is to review the current [o
 
 ## How to test locally
 
-Project is being developed with Truffle. First follow the instructions to install [Truffle](http://truffleframework.com/):
+Project is being developed with NodeJs and Truffle, please make sure you have the latest version of npm before continuing. First follow the instructions to install [Truffle](http://truffleframework.com/):
 
 ```sh
 $ npm install -g truffle
 ```
 
-Then clone or fork the repo, do an `npm install`, and you can start running the tests. You will need to run `truffle develop` to start a testing blockchain and then `truffle test` to execute testing files. Please read the [Truffle docs](http://truffleframework.com/docs/getting_started/testing) to learn more about the tool.
+Then clone or fork the repo, do an `npm install`, and you can start running the tests. You will need to run `truffle develop` to start a testing blockchain and then `test` to execute testing files. Please read the [Truffle docs](http://truffleframework.com/docs/getting_started/testing) to learn more about the tool.
