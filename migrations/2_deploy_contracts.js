@@ -1,5 +1,5 @@
-var Delegation = artifacts.require("./Delegation.sol");
+var LiquidDemocracy = artifacts.require("./LiquidDemocracy.sol");
 
 module.exports = function(deployer) {
-  deployer.deploy(Delegation);
+  deployer.deploy(LiquidDemocracy);
 };
