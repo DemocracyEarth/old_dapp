@@ -65,9 +65,9 @@ contract('LiquidDemocracy', function (accounts){
             const representativeWeight = await this.liquidDemocracyBallot.getMyWeight({ from: accounts[1] })
             const representeeWeight = await this.liquidDemocracyBallot.getMyWeight({ from: accounts[0] })
 
-            assert.equal(representative, accounts[1]);
-            assert.equal(representativeWeight, 2);
-            assert.equal(representeeWeight, 0);
+            representative.should.equal(accounts[1]);
+            representativeWeight.toNumber().should.equal(2);
+            representeeWeight.toNumber().should.equal(0);
         });
 
         it('should perform 1 hop transitive delegation', async function () {
@@ -80,11 +80,11 @@ contract('LiquidDemocracy', function (accounts){
             const representative2Weight = await this.liquidDemocracyBallot.getMyWeight({ from: accounts[2] })
             const representeeWeight = await this.liquidDemocracyBallot.getMyWeight({ from: accounts[0] })
 
-            assert.equal(representative1, accounts[1]);
-            assert.equal(representative2, accounts[2]);
-            assert.equal(representative1Weight, 0);
-            assert.equal(representative2Weight, 3);
-            assert.equal(representeeWeight, 0);
+            representative1.should.equal(accounts[1]);
+            representative2.should.equal(accounts[2]);
+            representative1Weight.toNumber().should.equal(0);
+            representative2Weight.toNumber().should.equal(3);
+            representeeWeight.toNumber().should.equal(0);
         });
 
         it('should perform a fork delegation', async function () {
@@ -97,12 +97,12 @@ contract('LiquidDemocracy', function (accounts){
             const representee1Weight = await this.liquidDemocracyBallot.getMyWeight({ from: accounts[0] })
             const representee2Weight = await this.liquidDemocracyBallot.getMyWeight({ from: accounts[2] })
 
-            assert.equal(representative1, representative2);
-            assert.equal(representative1, accounts[1]);
-            assert.equal(representative2, accounts[1]);
-            assert.equal(representativeWeight, 3);
-            assert.equal(representee1Weight, 0);
-            assert.equal(representee2Weight, 0);
+            representative1.should.equal(representative2);
+            representative1.should.equal(accounts[1]);
+            representative2.should.equal(accounts[1]);
+            representativeWeight.toNumber().should.equal(3);
+            representee1Weight.toNumber().should.equal(0);
+            representee2Weight.toNumber().should.equal(0);
         });
 
     });
