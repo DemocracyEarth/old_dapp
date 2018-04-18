@@ -15,7 +15,9 @@ contract LiquidDemocracy {
         bool voted;
         bool registered;
     }
-    
+
+    mapping(address => address) delegations;
+
     mapping(address => Voter) votersData;
 
     function LiquidDemocracy() public {
@@ -27,7 +29,6 @@ contract LiquidDemocracy {
         }
     }
 
-    // TODO - delegate()
     // TODO - revoke()
     
     /**
@@ -56,6 +57,59 @@ contract LiquidDemocracy {
 
         votersData[voterAddress].weight = 1;
         votersData[voterAddress].registered = true;
+        delegations[voterAddress] = voterAddress;
+    }
+
+    // Delegations
+
+    /**
+     * @notice Delegate the voting power of a voter to another voter
+     * Only the person calling this function has the power of delegating his/her vote
+     * @param representative voter to delegate the voting power to
+     */
+    function delegate(address representative) public {
+
+        address representee = msg.sender;
+        require(delegations[representee] == representee); // At the moment you can apply a delegation once
+        require(votersData[representee].registered);
+        require(votersData[representative].registered);
+
+        delegations[representee] = representative; // Delegate my own vote
+
+        address nextRepresentative = representative;
+        address nextRepresentee = representee;
+
+        // While there is voter that hasn't performed a delegation to another voter
+        // transitively add votes
+        while (delegations[nextRepresentative] != nextRepresentative) {
+
+            votersData[nextRepresentative].weight += votersData[nextRepresentee].weight;
+            votersData[nextRepresentee].weight -= votersData[nextRepresentee].weight;
+
+            nextRepresentee = nextRepresentative;
+            nextRepresentative = delegations[nextRepresentative];
+
+        }
+
+        votersData[nextRepresentative].weight += votersData[nextRepresentee].weight;
+        votersData[nextRepresentee].weight -= votersData[nextRepresentee].weight;
+
+    }
+
+    /**
+    * @notice Gets the weight of the voter that calls this method
+    */
+    function getMyWeight() public view returns (uint) {
+        require(votersData[msg.sender].registered);
+        return votersData[msg.sender].weight;
+    }
+
+    /**
+    * @notice Gets the representative of the voter that calls this method
+    */
+    function getMyRepresentative() public view returns (address) {
+        require(votersData[msg.sender].registered);
+        return delegations[msg.sender];
     }
 
     /**
@@ -67,9 +121,9 @@ contract LiquidDemocracy {
         // Cannot vote more than once and must be registered
         require(votersData[voter].registered);
         require(!votersData[voter].voted);
-        
+
         votersData[voter].voted = true;
-        
+
         uint weight = votersData[voter].weight;
 
         // Record vote for specific options
