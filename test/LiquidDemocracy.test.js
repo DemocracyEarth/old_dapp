@@ -130,7 +130,7 @@ contract('LiquidDemocracy', function (accounts){
             const representative2 = accounts[2];
 
             await this.liquidDemocracyBallot.delegate(representative1, { from: representee });
-            await this.liquidDemocracyBallot.delegate(accounts[2], { from: representative1 });
+            await this.liquidDemocracyBallot.delegate(representative2, { from: representative1 });
 
             await this.liquidDemocracyBallot.revoke({ from: representee });
 
@@ -151,7 +151,7 @@ contract('LiquidDemocracy', function (accounts){
             const representative2 = accounts[2];
 
             await this.liquidDemocracyBallot.delegate(representative1, { from: representee });
-            await this.liquidDemocracyBallot.delegate(accounts[2], { from: representative1 });
+            await this.liquidDemocracyBallot.delegate(representative2, { from: representative1 });
 
             await this.liquidDemocracyBallot.revoke({ from: representative1 });
 
