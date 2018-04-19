@@ -36,9 +36,9 @@ contract('LiquidDemocracy', function (accounts){
 
     describe('voting', function () {
         it('should allow registered voters to vote', async function () {
-            await this.liquidDemocracyBallot.vote(accounts[0], 0);
-            await this.liquidDemocracyBallot.vote(accounts[1], 0);
-            await this.liquidDemocracyBallot.vote(accounts[2], 1);
+            await this.liquidDemocracyBallot.vote(0, { from: accounts[0] });
+            await this.liquidDemocracyBallot.vote(0, { from: accounts[1] });
+            await this.liquidDemocracyBallot.vote(1, { from: accounts[2] });
             const voteCountOption0 = await this.liquidDemocracyBallot.getBallotVoteCount(0);
             const voteCountOption1 = await this.liquidDemocracyBallot.getBallotVoteCount(1);
 
@@ -47,12 +47,12 @@ contract('LiquidDemocracy', function (accounts){
         });
 
         it('should not allow unregistered voters to vote', async function () {
-            await assertRevert(this.liquidDemocracyBallot.vote(accounts[4], 0));
+            await assertRevert(this.liquidDemocracyBallot.vote(0, { from: accounts[4] }));
         });
 
         it('should not allow registered voters to vote more than once', async function () {
-            await this.liquidDemocracyBallot.vote(accounts[0], 0);
-            await assertRevert(this.liquidDemocracyBallot.vote(accounts[0], 0));
+            await this.liquidDemocracyBallot.vote(0, { from: accounts[0] });
+            await assertRevert(this.liquidDemocracyBallot.vote(0, { from: accounts[0] }));
         });
     });
 
