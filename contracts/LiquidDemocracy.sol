@@ -28,28 +28,6 @@ contract LiquidDemocracy {
             }));
         }
     }
-
-    /**
-    * @notice Revoke the delegation and voting power already delegated
-    */
-    function revoke() public {
-
-        address representee = msg.sender;
-        require(votersData[representee].registered);
-        require(delegations[representee] != representee); // You must have a delegation already
-
-        address nextRepresentative = delegations[representee];
-
-        // While there is voter that hasn't performed a delegation to another voter
-        // transitively remove weight from their voting power
-        while (delegations[nextRepresentative] != nextRepresentative) {
-            votersData[nextRepresentative].weight -= votersData[representee].weight;
-            nextRepresentative = delegations[nextRepresentative];
-        }
-        votersData[nextRepresentative].weight -= votersData[representee].weight;
-        delegations[representee] = representee;
-
-    }
     
     /**
     * @notice Getter for votersData
@@ -100,6 +78,13 @@ contract LiquidDemocracy {
     }
 
     /**
+    * @notice Revoke the delegation and voting power already delegated
+    */
+    function revoke() external {
+        revoke(msg.sender);
+    }
+
+    /**
     * @notice Perform a vote in the ballot
     * @param voteOption The integer option chosen by voter
     */
@@ -143,6 +128,29 @@ contract LiquidDemocracy {
         }
 
         votersData[nextRepresentative].weight += votersData[representee].weight;
+
+    }
+
+    /**
+    * @notice Revoke the delegation and voting power already delegated
+    * @param from revoke delegations on this voter
+    */
+    function revoke(address from) private {
+
+        address representee = from;
+        require(votersData[representee].registered);
+        require(delegations[representee] != representee); // You must have a delegation already
+
+        address nextRepresentative = delegations[representee];
+
+        // While there is voter that hasn't performed a delegation to another voter
+        // transitively remove weight from their voting power
+        while (delegations[nextRepresentative] != nextRepresentative) {
+            votersData[nextRepresentative].weight -= votersData[representee].weight;
+            nextRepresentative = delegations[nextRepresentative];
+        }
+        votersData[nextRepresentative].weight -= votersData[representee].weight;
+        delegations[representee] = representee;
 
     }
 
