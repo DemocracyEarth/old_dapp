@@ -67,7 +67,7 @@ contract('LiquidDemocracy', function (accounts){
 
             representative.should.equal(accounts[1]);
             representativeWeight.toNumber().should.equal(2);
-            representeeWeight.toNumber().should.equal(0);
+            representeeWeight.toNumber().should.equal(1);
         });
 
         it('should perform 1 hop transitive delegation', async function () {
@@ -82,9 +82,9 @@ contract('LiquidDemocracy', function (accounts){
 
             representative1.should.equal(accounts[1]);
             representative2.should.equal(accounts[2]);
-            representative1Weight.toNumber().should.equal(0);
+            representative1Weight.toNumber().should.equal(2);
             representative2Weight.toNumber().should.equal(3);
-            representeeWeight.toNumber().should.equal(0);
+            representeeWeight.toNumber().should.equal(1);
         });
 
         it('should perform a fork delegation', async function () {
@@ -101,9 +101,71 @@ contract('LiquidDemocracy', function (accounts){
             representative1.should.equal(accounts[1]);
             representative2.should.equal(accounts[1]);
             representativeWeight.toNumber().should.equal(3);
-            representee1Weight.toNumber().should.equal(0);
-            representee2Weight.toNumber().should.equal(0);
+            representee1Weight.toNumber().should.equal(1);
+            representee2Weight.toNumber().should.equal(1);
         });
 
     });
+
+    describe('revokes produce the expected output', function () {
+
+        it('delegating and revoking are inverse functions', async function () {
+            const representee = accounts[0];
+
+            await this.liquidDemocracyBallot.delegate(accounts[1], { from: representee });
+            await this.liquidDemocracyBallot.revoke({ from: representee });
+
+            const newRepresentative = await this.liquidDemocracyBallot.getMyRepresentative({ from: representee })
+            const newRepresentativeWeight = await this.liquidDemocracyBallot.getMyWeight({ from: accounts[1] })
+            const newRepresenteeWeight = await this.liquidDemocracyBallot.getMyWeight({ from: representee })
+
+            newRepresentative.should.equal(representee);
+            newRepresentativeWeight.toNumber().should.equal(1);
+            newRepresenteeWeight.toNumber().should.equal(1);
+        });
+
+        it('revoking on the leaf of transitive delegation gives the expected results', async function () {
+            const representee = accounts[0];
+            const representative1 = accounts[1];
+            const representative2 = accounts[2];
+
+            await this.liquidDemocracyBallot.delegate(representative1, { from: representee });
+            await this.liquidDemocracyBallot.delegate(accounts[2], { from: representative1 });
+
+            await this.liquidDemocracyBallot.revoke({ from: representee });
+
+            const newRepresentative = await this.liquidDemocracyBallot.getMyRepresentative({ from: representee })
+            const newRepresentative1Weight = await this.liquidDemocracyBallot.getMyWeight({ from: representative1 })
+            const newRepresentative2Weight = await this.liquidDemocracyBallot.getMyWeight({ from: representative2 })
+            const newRepresenteeWeight = await this.liquidDemocracyBallot.getMyWeight({ from: representee })
+
+            newRepresentative.should.equal(representee);
+            newRepresentative1Weight.toNumber().should.equal(1);
+            newRepresentative2Weight.toNumber().should.equal(2);
+            newRepresenteeWeight.toNumber().should.equal(1);
+        });
+
+        it('revoking on the middle of transitive delegation gives the expected results', async function () {
+            const representee = accounts[0];
+            const representative1 = accounts[1];
+            const representative2 = accounts[2];
+
+            await this.liquidDemocracyBallot.delegate(representative1, { from: representee });
+            await this.liquidDemocracyBallot.delegate(accounts[2], { from: representative1 });
+
+            await this.liquidDemocracyBallot.revoke({ from: representative1 });
+
+            const newRepresentative = await this.liquidDemocracyBallot.getMyRepresentative({ from: representative1 })
+            const newRepresentative1Weight = await this.liquidDemocracyBallot.getMyWeight({ from: representative1 })
+            const newRepresentative2Weight = await this.liquidDemocracyBallot.getMyWeight({ from: representative2 })
+            const newRepresenteeWeight = await this.liquidDemocracyBallot.getMyWeight({ from: representee })
+
+            newRepresentative.should.equal(representative1);
+            newRepresentative1Weight.toNumber().should.equal(2);
+            newRepresentative2Weight.toNumber().should.equal(1);
+            newRepresenteeWeight.toNumber().should.equal(1);
+        });
+
+    });
+
 });

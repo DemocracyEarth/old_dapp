@@ -29,7 +29,27 @@ contract LiquidDemocracy {
         }
     }
 
-    // TODO - revoke()
+    /**
+    * @notice Revoke the delegation and voting power already delegated
+    */
+    function revoke() public {
+
+        address representee = msg.sender;
+        require(votersData[representee].registered);
+        require(delegations[representee] != representee); // You must have a delegation already
+
+        address nextRepresentative = delegations[representee];
+
+        // While there is voter that hasn't performed a delegation to another voter
+        // transitively remove weight from their voting power
+        while (delegations[nextRepresentative] != nextRepresentative) {
+            votersData[nextRepresentative].weight -= votersData[representee].weight;
+            nextRepresentative = delegations[nextRepresentative];
+        }
+        votersData[nextRepresentative].weight -= votersData[representee].weight;
+        delegations[representee] = representee;
+
+    }
     
     /**
     * @notice Getter for votersData
@@ -77,22 +97,15 @@ contract LiquidDemocracy {
         delegations[representee] = representative; // Delegate my own vote
 
         address nextRepresentative = representative;
-        address nextRepresentee = representee;
 
         // While there is voter that hasn't performed a delegation to another voter
-        // transitively add votes
+        // transitively add weight from their voting power
         while (delegations[nextRepresentative] != nextRepresentative) {
-
-            votersData[nextRepresentative].weight += votersData[nextRepresentee].weight;
-            votersData[nextRepresentee].weight -= votersData[nextRepresentee].weight;
-
-            nextRepresentee = nextRepresentative;
+            votersData[nextRepresentative].weight += votersData[representee].weight;
             nextRepresentative = delegations[nextRepresentative];
-
         }
 
-        votersData[nextRepresentative].weight += votersData[nextRepresentee].weight;
-        votersData[nextRepresentee].weight -= votersData[nextRepresentee].weight;
+        votersData[nextRepresentative].weight += votersData[representee].weight;
 
     }
 
