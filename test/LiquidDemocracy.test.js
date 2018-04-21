@@ -14,7 +14,9 @@ contract('LiquidDemocracy', function (accounts){
         // Set up ballot instance and register 4 voters
         this.liquidDemocracyBallot = await LiquidDemocracy.new();
         for (let i = 0; i < 4; i++) {
-            await this.liquidDemocracyBallot.registerNewVoter({ from: accounts[i] });
+            const dummyIpfsName = accounts[i];
+            const dummyIpfsEmail = accounts[i];
+            await this.liquidDemocracyBallot.registerNewVoter(dummyIpfsName, dummyIpfsEmail, { from: accounts[i] });
         }
     });
 
