@@ -1,4 +1,5 @@
-pragma solidity ^0.4.4;
+pragma solidity 0.4.23;
+
 
 contract LiquidDemocracy {
 
@@ -30,13 +31,15 @@ contract LiquidDemocracy {
         address ipfsEmail;
     }
 
+    address[] public voters;
+
     BallotData ballotData;
 
     mapping(address => address) delegations;
 
-    mapping(address => Voter) votersData;
+    mapping(address => Voter) public votersData;
 
-    function LiquidDemocracy() public {
+    constructor() public {
 
     }
     
@@ -138,6 +141,7 @@ contract LiquidDemocracy {
         votersData[voterAddress].weight = 1;
         votersData[voterAddress].registered = true;
         delegations[voterAddress] = voterAddress;
+        voters.push(voterAddress);
     }
 
     /**

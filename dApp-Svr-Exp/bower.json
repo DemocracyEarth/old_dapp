@@ -1,0 +1,15 @@
+{
+  "name": "dAppSvr-Explorer",
+  "description": "dApp Sovereign Contract Explorer",
+  "main": "app.js",
+  "license": "MIT",
+  "dependencies": {
+    "angular-material": "^1.1.8",
+    "angular-route": "^1.6.10",
+    "angular-material-icons": "^0.7.1",
+    "angular-cache": "^4.6.0",
+    "angular-messages": "^1.6.10",
+    "angular": "^1.6.10",
+    "angular-aria": "^1.6.10"
+  }
+}

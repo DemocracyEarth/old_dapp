@@ -1,0 +1,20 @@
+<md-subheader class="md-no-sticky">
+  <md-button md-no-ink class="md-primary" ng-click="vm.back()">Back</md-button>
+  Ballot Detail
+</md-subheader>
+<md-card md-theme="{{ showDarkTheme ? 'dark-purple' : 'default' }}" md-theme-watch>
+    <md-card-title>
+      <md-card-title-text>
+        <span class="md-headline">{{vm.ballot.desc}}</span>
+        <span class="md-subhead">{{vm.ballot.author}}</span>
+        {{vm.ballot.id}}
+      </md-card-title-text>
+      <md-card-title-media>
+        <div class="md-media-sm card-media"></div>
+      </md-card-title-media>
+    </md-card-title>
+    <md-card-actions layout="row" layout-align="end center">
+      <md-button>Action 1</md-button>
+      <md-button>Action 2</md-button>
+    </md-card-actions>
+  </md-card>
