@@ -1,4 +1,5 @@
-pragma solidity ^0.4.4;
+pragma solidity 0.4.23;
+
 
 contract LiquidDemocracy {
 
@@ -9,6 +10,7 @@ contract LiquidDemocracy {
 
     address public ipfsBallotQuestion;
     BallotOption[] public ballot;
+    address[] public voters;
 
     // This is the type for a single voter metadata
     struct Voter {
@@ -21,9 +23,9 @@ contract LiquidDemocracy {
 
     mapping(address => address) delegations;
 
-    mapping(address => Voter) votersData;
+    mapping(address => Voter) public votersData;
 
-    function LiquidDemocracy() public {
+    constructor() public {
         // For simplicity, ballot is binary only
         for (uint i = 0; i < 2; i++) {
             ballot.push(BallotOption({
@@ -107,6 +109,7 @@ contract LiquidDemocracy {
         votersData[voterAddress].weight = 1;
         votersData[voterAddress].registered = true;
         delegations[voterAddress] = voterAddress;
+        voters.push(voterAddress);
     }
 
     /**
