@@ -1,0 +1,22 @@
+<md-subheader class="md-no-sticky">Ballots</md-subheader>
+
+  <md-radio-group ng-model="selected">
+      <md-radio-button ng-repeat="option in ballotOptions"
+                       ng-value="option.value"
+                       aria-label="{{option.title}}">
+          <md-icon md-icon="{{option.id}}"></md-icon>
+      </md-radio-button>
+    </md-radio-group>
+
+<md-list ng-cloak>
+  <md-list-item class="md-3-line" ng-repeat="ballot in vm.ballots" ng-click="vm.ballotDetail(ballot)" class="noright">
+    <ng-md-icon icon="speaker_notes" style="fill:#abcdef" class="md-avatar" size="54"></ng-md-icon>
+    <div class="md-list-item-text" layout="column">
+        <p>Description {{ballot.desc}}</p>
+        <p>Author: {{ballot.author}}</p>
+    </div>    
+  </md-list-item>
+  <md-button class="md-fab md-fab-bottom-right" aria-label="Add a new ballot" ng-click="vm.addBallot($event)">
+    <ng-md-icon icon="add"></ng-md-icon>
+  </md-button>
+</md-list>
