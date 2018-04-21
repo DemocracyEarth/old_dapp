@@ -38,10 +38,6 @@ contract LiquidDemocracy {
     mapping(address => address) delegations;
 
     mapping(address => Voter) public votersData;
-
-    constructor() public {
-
-    }
     
     /**
     * @notice Getter for votersData
