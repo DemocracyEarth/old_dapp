@@ -2,13 +2,24 @@ pragma solidity ^0.4.4;
 
 contract LiquidDemocracy {
 
+    // All the information about ballots is stored here
+    struct BallotData {
+        uint number;
+        Ballot[] ballots;
+    }
+
+    // A ballot that shows options to choose
+    struct Ballot {
+        uint id;
+        address ipfsBallotTitle;
+        BallotOption option1;
+        BallotOption option2;
+    }
+
     // This is the type for a single option shown in a ballot
     struct BallotOption {
         uint voteCount; // number of accumulated votes
     }
-
-    address public ipfsBallotQuestion;
-    BallotOption[] public ballot;
 
     // This is the type for a single voter metadata
     struct Voter {
@@ -19,17 +30,14 @@ contract LiquidDemocracy {
         address ipfsEmail;
     }
 
+    BallotData ballotData;
+
     mapping(address => address) delegations;
 
     mapping(address => Voter) votersData;
 
     function LiquidDemocracy() public {
-        // For simplicity, ballot is binary only
-        for (uint i = 0; i < 2; i++) {
-            ballot.push(BallotOption({
-                voteCount: 0
-            }));
-        }
+
     }
     
     /**
@@ -41,11 +49,27 @@ contract LiquidDemocracy {
     }
 
     /**
-    * @notice Getter for ballot option vote count
-    * @param ballotOption The desired option to read vote count from
+    * @notice Getter for ballot option vote count for option 1
+    * @param ballotId The desired option to read vote count from
     */
-    function getBallotVoteCount(uint ballotOption) public view returns (uint voteCount) {
-        return ballot[ballotOption].voteCount;
+    function getBallotVoteOption1Count(uint ballotId) public view returns (uint votes) {
+        return ballotData.ballots[ballotId].option1.voteCount;
+    }
+
+    /**
+    * @notice Getter for ballot option vote count for option 2
+    * @param ballotId The desired option to read vote count from
+    */
+    function getBallotVoteOption2Count(uint ballotId) public view returns (uint votes) {
+        return ballotData.ballots[ballotId].option2.voteCount;
+    }
+
+    /**
+    * @notice Getter for ballot title
+    * @param ballotId The desired option to read vote count from
+    */
+    function getBallotTitle(uint ballotId) public view returns (address ipfsTitle) {
+        return ballotData.ballots[ballotId].ipfsBallotTitle;
     }
 
     /**
@@ -72,6 +96,13 @@ contract LiquidDemocracy {
     }
 
     /**
+    * @notice Create a new ballot
+    */
+    function createNewBallot(address ipfsTitle) external {
+        createNewBallot(msg.sender, ipfsTitle);
+    }
+
+    /**
      * @notice Delegate the voting power of a voter to another voter
      * Only the person calling this function has the power of delegating his/her vote
      * @param representative voter to delegate the voting power to
@@ -91,8 +122,8 @@ contract LiquidDemocracy {
     * @notice Perform a vote in the ballot
     * @param voteOption The integer option chosen by voter
     */
-    function vote(uint voteOption) external {
-        vote(msg.sender, voteOption);
+    function vote(uint ballotId, uint voteOption) external {
+        vote(msg.sender, ballotId, voteOption);
     }
 
     /**
@@ -107,6 +138,17 @@ contract LiquidDemocracy {
         votersData[voterAddress].weight = 1;
         votersData[voterAddress].registered = true;
         delegations[voterAddress] = voterAddress;
+    }
+
+    /**
+    * @notice Create a new ballot
+    */
+    function createNewBallot(address from, address ipfsTitle) private {
+        require(votersData[from].registered);
+
+        Ballot memory ballot = Ballot(ballotData.number, ipfsTitle, BallotOption(0), BallotOption(0));
+        ballotData.ballots.push(ballot);
+        ballotData.number += 1;
     }
 
     /**
@@ -164,7 +206,7 @@ contract LiquidDemocracy {
     * @param voter The address of the voter
     * @param voteOption The integer option chosen by voter
     */
-    function vote(address voter, uint voteOption) private {
+    function vote(address voter, uint ballotId, uint voteOption) private {
         // Cannot vote more than once and must be registered
         require(votersData[voter].registered);
         require(!votersData[voter].voted);
@@ -172,8 +214,11 @@ contract LiquidDemocracy {
         votersData[voter].voted = true;
 
         uint weight = votersData[voter].weight;
+        if (voteOption == 1) {
+            ballotData.ballots[ballotId].option1.voteCount += weight;
+        } else {
+            ballotData.ballots[ballotId].option2.voteCount += weight;
+        }
 
-        // Record vote for specific options
-        ballot[voteOption].voteCount += weight;
     }
 }
