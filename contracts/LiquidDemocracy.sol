@@ -6,7 +6,8 @@ contract LiquidDemocracy {
     struct BallotOption {
         uint voteCount; // number of accumulated votes
     }
-    
+
+    address public ipfsBallotQuestion;
     BallotOption[] public ballot;
 
     // This is the type for a single voter metadata
@@ -14,6 +15,8 @@ contract LiquidDemocracy {
         uint weight;
         bool voted;
         bool registered;
+        address ipfsName;
+        address ipfsEmail;
     }
 
     mapping(address => address) delegations;
@@ -64,8 +67,8 @@ contract LiquidDemocracy {
     /**
     * @notice Register a new voter
     */
-    function registerNewVoter() external {
-        registerNewVoter(msg.sender);
+    function registerNewVoter(address ipfsName, address ipfsEmail) external {
+        registerNewVoter(msg.sender, ipfsName, ipfsEmail);
     }
 
     /**
@@ -95,10 +98,12 @@ contract LiquidDemocracy {
     /**
     * @notice Register a new voter setting initial Voter elements
     */
-    function registerNewVoter(address voterAddress) private {
+    function registerNewVoter(address voterAddress, address ipfsName, address ipfsEmail) private {
         // Voters already registered cannot register again
         require(!votersData[voterAddress].registered);
 
+        votersData[voterAddress].ipfsName = ipfsName;
+        votersData[voterAddress].ipfsEmail = ipfsEmail;
         votersData[voterAddress].weight = 1;
         votersData[voterAddress].registered = true;
         delegations[voterAddress] = voterAddress;
