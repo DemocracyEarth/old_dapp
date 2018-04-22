@@ -78,11 +78,12 @@
               if (ballots == 0) {
                 vm.ballots = [];
               } else {
-                getBallots(function (ballotTitle) {
+                getBallots(function (ballotTitle, ballotOwner) {
                     console.log(vm.ballots);
                     vm.ballots.push({
                         id: ballots - 1,
-                        desc: ballotTitle
+                        desc: ballotTitle,
+                        icon: new Identicon(ballotOwner, 30).toString()
                     });
                     $scope.$apply();
                     console.log(vm.ballots);
@@ -175,9 +176,12 @@
         const node = new Ipfs({ repo: 'ipfs-' + 1 });
             node.once('ready', () => {
             contract.deployed().then(function(instance) {
-                  instance.getLastBallot.call().then(function(ipfsAddress) {
-                    console.log('Ballot IPFS address: ' + ipfsAddress);
-                    const validIpfsAddress = getIpfsHashFromBytes32(ipfsAddress);
+                  instance.getLastBallot.call().then(function(ballot) {
+                    const ipfsBallotTitle = ballot[0];
+                    const owner = ballot[1];
+                    console.log('Ballot: ', ballot);
+                    console.log('Ballot IPFS address: ' + ipfsBallotTitle);
+                    const validIpfsAddress = getIpfsHashFromBytes32(ipfsBallotTitle);
                     console.log("Valid IPFS address: ", validIpfsAddress);
 
                     node.files.cat(validIpfsAddress, function (err, file) {
@@ -188,7 +192,7 @@
                       console.log("Ballot data: ", data);
                       const ballotTitle = JSON.parse(data).desc;
                       console.log("Ballot title: " + ballotTitle);
-                      callback(ballotTitle);
+                      callback(ballotTitle, owner);
                     });
                   });
             });

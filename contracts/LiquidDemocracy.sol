@@ -11,6 +11,7 @@ contract LiquidDemocracy {
 
     // A ballot that shows options to choose
     struct Ballot {
+        address owner;
         uint id;
         bytes32 ipfsBallotTitle;
         BallotOption option1;
@@ -97,8 +98,11 @@ contract LiquidDemocracy {
     /**
     * @notice Gets ballots
     */
-    function getLastBallot() public view returns (bytes32) {
-        return ballotData.ballots[ballotData.number - 1].ipfsBallotTitle;
+    function getLastBallot() public view returns (bytes32, address) {
+        return (
+            ballotData.ballots[ballotData.number - 1].ipfsBallotTitle,
+            ballotData.ballots[ballotData.number - 1].owner
+        );
     }
 
     /**
@@ -160,7 +164,7 @@ contract LiquidDemocracy {
     function createNewBallot(address from, bytes32 ipfsTitle) private {
 //        require(votersData[from].registered); TODO
 
-        Ballot memory ballot = Ballot(ballotData.number, ipfsTitle, BallotOption(0), BallotOption(0));
+        Ballot memory ballot = Ballot(from, ballotData.number, ipfsTitle, BallotOption(0), BallotOption(0));
         ballotData.ballots.push(ballot);
         ballotData.number += 1;
     }
