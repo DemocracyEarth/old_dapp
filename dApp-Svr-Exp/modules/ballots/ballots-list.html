@@ -6,7 +6,7 @@
       <md-radio-button ng-repeat="option in ballotOptions"
                        ng-value="option.value"
                        aria-label="{{option.title}}">
-          <md-icon md-icon="{{option.id}}"></md-icon>
+                       {{option.title}}
       </md-radio-button>
     </md-radio-group>
 
@@ -54,8 +54,5 @@
     
       <md-button class="md-fab md-fab-bottom-right" aria-label="Add a new ballot" ng-click="vm.addBallot($event)">
         <ng-md-icon icon="add"></ng-md-icon>
-      </md-button>
-
-    
+      </md-button>    
 </div>
-
