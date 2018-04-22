@@ -121,6 +121,12 @@ body {
 .button-container {
   text-align: right;
 }
+.md-button.md-fab {
+  background-color: #FFA085;
+}
+.md-button.md-fab:not([disabled]):hover {
+  background-color: #FFE079;
+}
 
 .view-ballot {
   margin-top: 12px;
