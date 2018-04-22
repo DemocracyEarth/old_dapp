@@ -1,6 +1,6 @@
 (function () {
   'use strict';
-  angular.module('dAppSvrApp').controller('BallotsListCtrl', ['$http', '$log', '$mdDialog', '$location','$scope', '$mdToast',
+  angular.module('dAppSvrApp').controller('BallotsListCtrl', ['$http', '$log', '$mdDialog', '$location', '$scope', '$mdToast',
     function BallotsListCtrl($http, $log, $mdDialog, $location, $scope, $mdToast) {
       var vm = this;
 
@@ -47,7 +47,7 @@
             });
             return;
         });
-     
+
       vm.addBallot = addBallot;
       vm.ballotDetail = ballotDetail;
       vm.filterBallots = filterBallots
@@ -57,18 +57,18 @@
         id: "speaker_notes",
         title: 'View all ballots',
         value: 'all'
-      },{
+      }, {
         id: "swap_vertial_circle",
         title: 'View ballots you\'ve voted on',
         value: 'voted'
-      },{
+      }, {
         id: "avatars:svg-3",
         title: 'View ballots with delegated votes',
         value: 'delegated'
-    }];
+      }];
 
 
-      vm.ballotsTest=[
+      vm.ballotsTest = [
         {
           desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
           author: 'awssi123',
@@ -91,8 +91,8 @@
         }
       ];
       vm.ballots = vm.ballotsTest;
-      function filterBallots (filterOption) {
-        if (filterOption !== 'all'){
+      function filterBallots(filterOption) {
+        if (filterOption !== 'all') {
           vm.ballots = ballotsTest.filter(ballot => {
             ballot[filterOption] === true;
           })
@@ -101,14 +101,14 @@
         }
       }
 
-      function NewBallotDialogCtrl ($scope, $mdDialog) {
-        $scope.hide = function() {
+      function NewBallotDialogCtrl($scope, $mdDialog) {
+        $scope.hide = function () {
           $mdDialog.hide();
         };
-        $scope.cancel = function() {
+        $scope.cancel = function () {
           $mdDialog.cancel();
         };
-        $scope.answer = function(answer) {
+        $scope.answer = function (answer) {
           $mdDialog.hide(answer);
           console.log("data", answer)
         };
@@ -121,16 +121,16 @@
           targetEvent: ev,
           clickOutsideToClose: true
         })
-        .then(function(newBallot) {
-          if (newBallot === undefined) {
-            $log.log( 'You cancelled the dialog.');
-          } else {
-            $log.log( 'New ballot' + newBallot);
-            // putBallot()
-          }
-        }, function(err) {
-          $log.log( 'addCoin modal error:', err);
-        });
+          .then(function (newBallot) {
+            if (newBallot === undefined) {
+              $log.log('You cancelled the dialog.');
+            } else {
+              $log.log('New ballot' + newBallot);
+              // potBallot()
+            }
+          }, function (err) {
+            $log.log('addCoin modal error:', err);
+          });
       };
 
       function ballotDetail(ballot) {
@@ -167,4 +167,4 @@
         // TODO: add ballot to ETH including file.hash as ipfsBallotTitle
       }
     }]);
-})(); 
+})();
