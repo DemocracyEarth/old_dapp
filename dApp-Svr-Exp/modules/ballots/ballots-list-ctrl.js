@@ -3,6 +3,11 @@
   angular.module('dAppSvrApp').controller('BallotsListCtrl', ['$http', '$log', '$mdDialog', '$location', '$scope', '$mdToast',
     function BallotsListCtrl($http, $log, $mdDialog, $location, $scope, $mdToast) {
       var vm = this;
+      vm.addBallot = addBallot;
+      vm.ballotDetail = ballotDetail;
+      vm.filterBallots = filterBallots
+      vm.selected = 'all';
+
       let contract;
 
         // Return bytes32 hex string from base58 encoded ipfs hash,
@@ -68,55 +73,53 @@
             contract.deployed().then(function(instance) {
                 instance.getBallotCount.call().then(function(ballots) {
                     console.info("There are " + ballots + " ballots");
+
+            // TODO: supporting a single ballot atm
+              if (ballots == 0) {
+                vm.ballots = [];
+              } else {
+                getBallots(function (ballotTitle) {
+                    console.log(vm.ballots);
+                    vm.ballots.push({
+                        id: ballots - 1,
+                        desc: ballotTitle
+                    });
+                    console.log(vm.ballots);
+                });
+              }
+
+
                 });
             });
             return;
         });
 
-      vm.addBallot = addBallot;
-      vm.ballotDetail = ballotDetail;
-      vm.filterBallots = filterBallots
-      vm.selected = 'all';
 
-      vm.ballotOptions = [{
-        id: "speaker_notes",
-        title: 'View all ballots',
-        value: 'all'
-      }, {
-        id: "swap_vertial_circle",
-        title: 'View ballots you\'ve voted on',
-        value: 'voted'
-      }, {
-        id: "avatars:svg-3",
-        title: 'View ballots with delegated votes',
-        value: 'delegated'
-      }];
+              vm.ballotsTest = [
+                {
+                  desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+                  author: 'awssi123',
+                  date: '21-04-2018-18:36:15',
+                  voted: true,
+                  id: 1
+                },
+                {
+                  desc: 'Nulla venenatis ante augue.',
+                  author: 'aerti123',
+                  date: '21-04-2018-18:37:15',
+                  delegated: true,
+                  id: 2
+                },
+                {
+                  desc: 'Phasellus volutpat neque ac dui mattis vulputate.',
+                  author: 'aeyui123',
+                  date: '21-04-2018-18:38:15',
+                  id: 3
+                }
+              ];
+              vm.ballots = vm.ballotsTest;
 
-
-      vm.ballotsTest = [
-        {
-          desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-          author: 'awssi123',
-          date: '21-04-2018-18:36:15',
-          voted: true,
-          id: 1
-        },
-        {
-          desc: 'Nulla venenatis ante augue.',
-          author: 'aerti123',
-          date: '21-04-2018-18:37:15',
-          delegated: true,
-          id: 2
-        },
-        {
-          desc: 'Phasellus volutpat neque ac dui mattis vulputate.',
-          author: 'aeyui123',
-          date: '21-04-2018-18:38:15',
-          id: 3
-        }
-      ];
-      vm.ballots = vm.ballotsTest;
-      function filterBallots(filterOption) {
+    function filterBallots(filterOption) {
         if (filterOption !== 'all') {
           vm.ballots = ballotsTest.filter(ballot => {
             ballot[filterOption] === true;
@@ -164,7 +167,7 @@
       };
 
     // TODO: only getting last ballot atm
-      function getBallots () {
+      function getBallots (callback) {
         const node = new Ipfs({ repo: 'ipfs-' + 1 });
             node.once('ready', () => {
             contract.deployed().then(function(instance) {
@@ -180,15 +183,13 @@
                       const data = file.toString('utf8');
                       console.log("Ballot data: ", data);
                       const ballotTitle = JSON.parse(data).desc;
-                    // TODO: use here 'ballotTitle' to populate the ballot title
                       console.log("Ballot title: " + ballotTitle);
+                      callback(ballotTitle);
                     });
                   });
             });
         });
       }
-
-      getBallots(); // TODO: remove
 
       function putBallot (ballot) {
         const node = new Ipfs({ repo: 'ipfs-' + 1 });
@@ -210,9 +211,10 @@
                       });
                   });
 
-                }) 
+                })
             });
         });
       }
+
     }]);
 })();
