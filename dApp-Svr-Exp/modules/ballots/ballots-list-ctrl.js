@@ -3,7 +3,7 @@
   angular.module('dAppSvrApp').controller('BallotsListCtrl', ['$http', '$log', '$mdDialog', '$location', '$scope', '$mdToast',
     function BallotsListCtrl($http, $log, $mdDialog, $location, $scope, $mdToast) {
       var vm = this;
-
+      let contract;
       // WEB 3 initialization
       var web3Provider;
       if (typeof web3 !== 'undefined') {
@@ -34,7 +34,7 @@
             // Get the necessary contract artifact file and instantiate it with truffle-contract
             console.info("Loading json contract...: " + data);
 
-            const contract = TruffleContract(data);
+            contract = TruffleContract(data);
 
             // Set the provider for our contract
             contract.setProvider(web3Provider);
@@ -126,7 +126,7 @@
               $log.log('You cancelled the dialog.');
             } else {
               $log.log('New ballot' + newBallot);
-              // potBallot()
+              putBallot(newBallot);
             }
           }, function (err) {
             $log.log('addCoin modal error:', err);
@@ -154,14 +154,19 @@
 
       getBallots ();
 
-      function putBallot (coin) {
+      function putBallot (ballot) {
         const node = new Ipfs({ repo: 'ipfs-' + 1 });
         node.once('ready', () => {
-            node.files.add(new node.types.Buffer(coin), (err, filesAdded) => {
+            node.files.add(new node.types.Buffer(JSON.stringify(ballot)), (err, filesAdded) => {
                 if (err) {
                   return console.error('Error - ipfs files add', err, res)
                 }
-                filesAdded.forEach((file) => console.log('successfully stored', file.hash)) // TODO use this hash in ethereum
+                console.log('filesAdded', filesAdded);
+                filesAdded.forEach((file) => {
+                  console.log('successfully stored', file.hash);
+                  // TODO use this hash in ethereum
+                  console.log('contract', contract);
+                }) 
             });
         });
         // TODO: add ballot to ETH including file.hash as ipfsBallotTitle
