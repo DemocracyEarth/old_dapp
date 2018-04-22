@@ -88,7 +88,8 @@
         name: "breadthfirst",
         directed:true,
         animate: true,
-        roots:0
+        roots:0,
+
 
 
       }
@@ -179,7 +180,8 @@
       layout: {
         name: "breadthfirst",
         directed:true,
-        roots:1
+        roots:1,
+        animate:true
       }
 
     });
