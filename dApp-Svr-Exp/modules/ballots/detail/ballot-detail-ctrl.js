@@ -212,19 +212,23 @@
     $scope.users = [
       {
         name: 'Virgile',
-        id: 'v123456'
+        id: 'v123456',
+        icon: new Identicon('0x7700edddd3fc34c18fe2ab14b5345f1596d10551', 30).toString()
       },
       {
         name: 'Alex',
-        id: 'a123456'
+        id: 'a123456',
+        icon: new Identicon('0x39f0B5C5D50AEB7F9Ea8BA003733f8e2678A8017', 30).toString()
       },
       {
         name: 'Alessandro',
-        id: 'a654321'
+        id: 'a654321',
+        icon: new Identicon('0x0473a8fffa27305e60c5d0e78c26d9d1f4321c64', 30).toString()
       },
       {
         name: 'Lucas',
-        id: 'l654321'
+        id: 'l654321',
+        icon: new Identicon('0x0473a8fffa27305e60c5d0e78c26d9d1f4321c64', 30).toString()
       }
     ];
 
