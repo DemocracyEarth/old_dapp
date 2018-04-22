@@ -278,3 +278,7 @@ body {
   display: inline-block;
   padding-left: 6px;
 }
+
+md-input-container {
+width:100%;
+}
