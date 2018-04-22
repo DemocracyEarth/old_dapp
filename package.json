@@ -24,6 +24,7 @@
     "lite-server": "^2.3.0"
   },
   "dependencies": {
+    "bs58": "^4.0.1",
     "truffle-hdwallet-provider": "0.0.3"
   }
 }

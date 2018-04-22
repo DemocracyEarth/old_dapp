@@ -4,6 +4,31 @@
     function BallotsListCtrl($http, $log, $mdDialog, $location, $scope, $mdToast) {
       var vm = this;
       let contract;
+
+        // Return bytes32 hex string from base58 encoded ipfs hash,
+        // stripping leading 2 bytes from 34 byte IPFS hash
+        // Assume IPFS defaults: function:0x12=sha2, size:0x20=256 bits
+        // E.g. "QmNSUYVKDSvPUnRLKmuxk9diJ6yS96r1TrAXzjTiBcCLAL" -->
+        // "0x017dfd85d4f6cb4dcd715a88101f7b1f06cd1e009b2327a0809d01eb9c91f231"
+
+        function getBytes32FromIpfsHash(ipfsListing) {
+          return "0x"+bs58.decode(ipfsListing).slice(2).toString('hex')
+        }
+
+        // Return base58 encoded ipfs hash from bytes32 hex string,
+        // E.g. "0x017dfd85d4f6cb4dcd715a88101f7b1f06cd1e009b2327a0809d01eb9c91f231"
+        // --> "QmNSUYVKDSvPUnRLKmuxk9diJ6yS96r1TrAXzjTiBcCLAL"
+
+        function getIpfsHashFromBytes32(bytes32Hex) {
+          // Add our default ipfs values for first 2 bytes:
+          // function:0x12=sha2, size:0x20=256 bits
+          // and cut off leading "0x"
+          const hashHex = "1220" + bytes32Hex.slice(2)
+          const hashBytes = Buffer.from(hashHex, 'hex');
+          const hashStr = bs58.encode(hashBytes)
+          return hashStr
+        }
+
       // WEB 3 initialization
       var web3Provider;
       if (typeof web3 !== 'undefined') {
@@ -138,21 +163,32 @@
         localStorage.setItem('ballot', JSON.stringify(ballot));
       };
 
+    // TODO: only getting last ballot atm
       function getBallots () {
         const node = new Ipfs({ repo: 'ipfs-' + 1 });
             node.once('ready', () => {
-            // get ipfsBallotTitle from ETH
-            const ipfsBallot = 'QmQzCQn4puG4qu8PVysxZmscmQ5vT1ZXpqo7f58Uh9QfyY'; // TODO fetch from ethereum
-            node.files.cat(ipfsBallot, function (err, data) {
-              console.log("IPFS: " + data); // TODO: use this data to populate the ballot title
-              if (err) {
-                  console.log('Error - ipfs files cat', err, res)
-              }
+            contract.deployed().then(function(instance) {
+                  instance.getLastBallot.call().then(function(ipfsAddress) {
+                    console.log('Ballot IPFS address: ' + ipfsAddress);
+                    const validIpfsAddress = getIpfsHashFromBytes32(ipfsAddress);
+                    console.log("Valid IPFS address: ", validIpfsAddress);
+
+                    node.files.cat(validIpfsAddress, function (err, file) {
+                     if (err) {
+                       throw err
+                     }
+                      const data = file.toString('utf8');
+                      console.log("Ballot data: ", data);
+                      const ballotTitle = JSON.parse(data).desc;
+                    // TODO: use here 'ballotTitle' to populate the ballot title
+                      console.log("Ballot title: " + ballotTitle);
+                    });
+                  });
             });
         });
       }
 
-      getBallots ();
+      getBallots(); // TODO: remove
 
       function putBallot (ballot) {
         const node = new Ipfs({ repo: 'ipfs-' + 1 });
@@ -164,12 +200,19 @@
                 console.log('filesAdded', filesAdded);
                 filesAdded.forEach((file) => {
                   console.log('successfully stored', file.hash);
-                  // TODO use this hash in ethereum
-                  console.log('contract', contract);
+                  contract.deployed().then(function(instance) {
+                      const validETHHash = getBytes32FromIpfsHash(file.hash)
+                      console.log("ETH byte32: " + validETHHash);
+                      instance.createNewBallot(validETHHash, {gas: 1000000}).then(function(result) {
+                        console.log('New Ballot created:', JSON.stringify(ballot));
+                      }).catch(function(err) {
+                         console.log(err.message);
+                      });
+                  });
+
                 }) 
             });
         });
-        // TODO: add ballot to ETH including file.hash as ipfsBallotTitle
       }
     }]);
 })();

@@ -12,7 +12,7 @@ contract LiquidDemocracy {
     // A ballot that shows options to choose
     struct Ballot {
         uint id;
-        address ipfsBallotTitle;
+        bytes32 ipfsBallotTitle;
         BallotOption option1;
         BallotOption option2;
     }
@@ -27,8 +27,8 @@ contract LiquidDemocracy {
         uint weight;
         bool voted;
         bool registered;
-        address ipfsName;
-        address ipfsEmail;
+        bytes32 ipfsName;
+        bytes32 ipfsEmail;
     }
 
     address[] public voters;
@@ -74,7 +74,7 @@ contract LiquidDemocracy {
     * @notice Getter for ballot title
     * @param ballotId The desired option to read vote count from
     */
-    function getBallotTitle(uint ballotId) public view returns (address ipfsTitle) {
+    function getBallotTitle(uint ballotId) public view returns (bytes32 ipfsTitle) {
         return ballotData.ballots[ballotId].ipfsBallotTitle;
     }
 
@@ -95,16 +95,23 @@ contract LiquidDemocracy {
     }
 
     /**
+    * @notice Gets ballots
+    */
+    function getLastBallot() public view returns (bytes32) {
+        return ballotData.ballots[ballotData.number - 1].ipfsBallotTitle;
+    }
+
+    /**
     * @notice Register a new voter
     */
-    function registerNewVoter(address ipfsName, address ipfsEmail) external {
+    function registerNewVoter(bytes32 ipfsName, bytes32 ipfsEmail) external {
         registerNewVoter(msg.sender, ipfsName, ipfsEmail);
     }
 
     /**
     * @notice Create a new ballot
     */
-    function createNewBallot(address ipfsTitle) external {
+    function createNewBallot(bytes32 ipfsTitle) external {
         createNewBallot(msg.sender, ipfsTitle);
     }
 
@@ -135,7 +142,7 @@ contract LiquidDemocracy {
     /**
     * @notice Register a new voter setting initial Voter elements
     */
-    function registerNewVoter(address voterAddress, address ipfsName, address ipfsEmail) private {
+    function registerNewVoter(address voterAddress, bytes32 ipfsName, bytes32 ipfsEmail) private {
         // Voters already registered cannot register again
         require(!votersData[voterAddress].registered);
 
@@ -150,8 +157,8 @@ contract LiquidDemocracy {
     /**
     * @notice Create a new ballot
     */
-    function createNewBallot(address from, address ipfsTitle) private {
-        require(votersData[from].registered);
+    function createNewBallot(address from, bytes32 ipfsTitle) private {
+//        require(votersData[from].registered); TODO
 
         Ballot memory ballot = Ballot(ballotData.number, ipfsTitle, BallotOption(0), BallotOption(0));
         ballotData.ballots.push(ballot);
