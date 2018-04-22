@@ -153,11 +153,12 @@
             if (newBallot === undefined) {
               $log.log('You cancelled the dialog.');
             } else {
+              newBallot.date = new Date();
               $log.log('New ballot' + newBallot);
               putBallot(newBallot);
             }
           }, function (err) {
-            $log.log('addCoin modal error:', err);
+            $log.error('addBallot modal error:', err);
           });
       };
 

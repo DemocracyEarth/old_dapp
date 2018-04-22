@@ -267,3 +267,8 @@ body {
   margin-top: -12px;
   margin-bottom: 12px;
 }
+.tab-div {
+  width: 464px;
+  display: inline-block;
+  padding-left: 6px;
+}
