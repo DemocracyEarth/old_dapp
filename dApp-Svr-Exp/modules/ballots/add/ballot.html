@@ -1,9 +1,9 @@
-<md-dialog aria-label="Add Ballot">
-  <md-content class="md-padding">
+<md-dialog aria-label="Add Ballot" class="layout-md">
+  <md-content class="md-padding" style="width:500px;">
     <form name="addBallotForm"> <h2>Add Ballot</h2>
-      <md-input-container flex>
+      <md-input-container>
           <label>Description</label>
-            <input ng-model="newBallot.desc">
+            <textarea md-maxlength="140" rows="3" ng-model="newBallot.desc"></textarea>
         </md-input-container>
     </form> </md-content>
   <div class="md-actions" layout="row">
