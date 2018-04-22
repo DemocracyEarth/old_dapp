@@ -207,91 +207,37 @@
 
     function back(){
       $location.path('/ballots')
+    };
+
+    $scope.users = [
+      {
+        name: 'Virgile',
+        id: 'v123456'
+      },
+      {
+        name: 'Alex',
+        id: 'a123456'
+      },
+      {
+        name: 'Alessandro',
+        id: 'a654321'
+      },
+      {
+        name: 'Lucas',
+        id: 'l654321'
+      }
+    ];
+
+    function vote(voteValue) {
+      // call ETH vote
+      console.log(voteValue);
     }
+
+    function delegate(delegateValue) {
+      // call ETH delegate
+      console.log(delegateValue);
+    }
+
   }]);
 
-      // Graph for no-container
-
-    // TODO: dummy data atm
-    // var nodesAndEdgesNo = [];
-    //   for (let i = 0; i < 2; i++) {
-    //       nodesAndEdgesNo.push({ group: "nodes", data: { id: i }});
-    //   }
-
-    //    for (let i = 0; i < 1; i++) {
-    //         const id = Math.random();
-    //         nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: 0, target: 1 }});
-    //     }
-
-    // var cn = cntoscape({
-    //     container: document.getElementById('no-container'), // container to render in
-
-    //     elements: nodesAndEdgesNo,
-
-    //     style: [ // the stylesheet for the graph
-    //         {
-    //             selector: 'node',
-    //             style: {
-    //                 'background-color': '#F66',
-    //                 'label': 'data(id)',
-    //                 'font-size' : 20,
-    //                 'text-valign': 'bottom',
-    //                 'text-opacity': '0.2',
-    //                 'text-rotation': '0.2',
-    //                 'text-margin-y': '10px'
-    //             }
-    //         },
-
-    //         {
-    //             selector: 'edge',
-    //             style: {
-    //                 'curve-style': 'bezier',
-    //                 'width': 2,
-    //                 'line-color': '#666',
-    //                 'target-arrow-color': '#000',
-    //                 'target-arrow-shape': 'triangle'
-    //             }
-    //         }
-    //     ],
-
-    //     layout: {
-    //         name: 'circle'
-    //     }
-
-    // });
-
-    // cn.zoom(0.5);
-    // cn.center();
-
-
-      $scope.users = [
-        {
-          name: 'Virgile',
-          id: 'v123456'
-        },
-        {
-          name: 'Alex',
-          id: 'a123456'
-        },
-        {
-          name: 'Alessandro',
-          id: 'a654321'
-        },
-        {
-          name: 'Lucas',
-          id: 'l654321'
-        }
-      ];
-      function back(){
-        $location.path('/ballots')
-      }
-      function vote(voteValue) {
-        // call ETH vote
-        console.log(voteValue);
-      }
-      function delegate(delegateValue) {
-        // call ETH delegate
-        console.log(delegateValue);
-      }
-    }]);
 })(); 
