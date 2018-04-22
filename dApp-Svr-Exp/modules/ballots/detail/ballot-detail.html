@@ -13,23 +13,8 @@
   <div class="author-div">
     <!-- FILLER FOR METAMASK IMAGE-->
     <div class="identicon">
-      <div class="author-text" style="display: flex; align-items: center; justify-content: center; height: 30px; width: 30px; border-radius: 31px; overflow: hidden;">
-        <div style="border-radius: 50px; overflow: hidden; padding: 0px; margin: 0px; width: 62px; height: 62px; display: inline-block;">
-          <svg height="100" version="1.1" width="100" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            style="overflow: hidden; position: relative;">
-            <desc style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);">Created with Raphaël 2.2.0</desc>
-            <defs style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></defs>
-            <rect x="0" y="0" width="62" height="62" rx="0" ry="0" fill="#18b0f2" stroke="none" style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect>
-            <rect x="0" y="0" width="62" height="62" rx="0" ry="0" fill="#f92601" stroke="none" transform="matrix(0.5662,0.8243,-0.8243,0.5662,53.6437,-19.9601)"
-              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect>
-            <rect x="0" y="0" width="62" height="62" rx="0" ry="0" fill="#f28602" stroke="none" transform="matrix(0.7479,0.6638,-0.6638,0.7479,63.9682,-31.2215)"
-              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect>
-            <rect x="0" y="0" width="62" height="62" rx="0" ry="0" fill="#2379e1" stroke="none" transform="matrix(-0.9252,-0.3795,0.3795,-0.9252,-5.9154,84.1094)"
-              style="-webkit-tap-highlight-color: rgba(0, 0, 0, 0);"></rect>
-          </svg>
-        </div>
+        <img width=30 height=30 src="data:image/png;base64,{{vm.ballot.icon}}">
       </div>
-    </div>
     <div class="ballot-author">
       <span class="ballot-author-text">{{vm.ballot.author}}</span>
       <span class="ballot-date">{{vm.ballot.date}}</span>
@@ -69,7 +54,9 @@
                       <md-radio-button ng-repeat="user in users"
                                        ng-value="user.id"
                                        aria-label="{{user.name}}">
-                          <md-icon md-svg-icon="{{user.id}}"></md-icon>
+                          <div class="identicon">
+                              <img width=30 height=30 src="data:image/png;base64,{{user.icon}}">
+                            </div>
                           {{user.name}}
                       </md-radio-button>
                     </md-radio-group>
