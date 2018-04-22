@@ -53,3 +53,65 @@ body {
 .md-toolbar-tools {
   background-color: #33273E;
 }
+
+.md-toolbar-tools img {
+  width: 30px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.description-div {
+  width: 100%;
+}
+
+.author-div {
+  width: 100%;
+  display: block;
+}
+
+.ballot-container {
+  width: 500px;
+  min-height: 80px;
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+  border: 1px #CCCCCC solid;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  padding: 6px;
+}
+
+.author-div {
+  width: 500px;
+  margin: 0 auto;
+  float: left;
+}
+
+.identicon {
+  width: 30px;
+  display: inline-block;
+  float: left;
+}
+
+.ballot-author {
+  width: 464px;
+  display: inline-block;
+  padding-left: 6px;
+}
+
+.ballot-date {
+  float: right;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+.container-div {
+  height: 500px;
+  background: red;
+}
+
+.description-div {
+  padding-bottom: 12px;
+}
