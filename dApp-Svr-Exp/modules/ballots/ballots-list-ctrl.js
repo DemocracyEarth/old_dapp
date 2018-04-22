@@ -29,7 +29,7 @@
           // function:0x12=sha2, size:0x20=256 bits
           // and cut off leading "0x"
           const hashHex = "1220" + bytes32Hex.slice(2)
-          const hashBytes = Buffer.from(hashHex, 'hex');
+          const hashBytes = buffer.Buffer(hashHex, 'hex');
           const hashStr = bs58.encode(hashBytes)
           return hashStr
         }
