@@ -115,3 +115,19 @@ body {
 .description-div {
   padding-bottom: 12px;
 }
+
+.button-container {
+  text-align: right;
+}
+
+.view-ballot {
+  margin-top: 12px;
+  background: #008CFE;
+  color: #FFFFFF;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border: 1px transparent;
+  border-radius: 6px;
+}

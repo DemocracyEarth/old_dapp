@@ -11,7 +11,7 @@
     </md-radio-group>
 
 
-  <md-list-item ng-repeat="ballot in vm.ballots" ng-click="vm.ballotDetail(ballot)">
+  <div ng-repeat="ballot in vm.ballots">
     <div class="ballot-container">
       <div class="description-div">
         <div>
@@ -43,6 +43,11 @@
           <span class="ballot-date">{{ballot.date}}</span>
         </div>
       </div>
+      <div class="button-container">
+        <button ng-click="vm.ballotDetail(ballot)" class="view-ballot">
+          View Ballot
+        </button>
+      </div>
     </div>
 
 
@@ -51,6 +56,5 @@
       <ng-md-icon icon="add"></ng-md-icon>
     </md-button>
   -->
-  
-</md-list>
+</div>
 
