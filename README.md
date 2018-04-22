@@ -26,11 +26,11 @@ Then clone or fork the repo, do an `npm install`, and you can start running the 
 
 ```sh
 truffle compile
-cp build/contracts/* dApp-Svr-Exp/contracts/
 ```
 
 ## How to deploy the contracts
 
 ```sh
 $ truffle migrate --network ropsten
+cp build/contracts/* dApp-Svr-Exp/contracts/
 ```

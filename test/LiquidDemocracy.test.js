@@ -38,7 +38,7 @@ contract('LiquidDemocracy', function (accounts){
 
     describe('ballot creation', function () {
         it('a registered user should be able to create a ballot with IPFS name', async function () {
-            const ballotTitle = accounts[0];
+            const ballotTitle = "0x627306090abab3a6e1400e9345bc60c78a8bef57000000000000000000000000";
             const voter = accounts[0];
             await this.liquidDemocracyBallot.createNewBallot(ballotTitle, { from: voter });
             const fetchedTitle = await this.liquidDemocracyBallot.getBallotTitle(0, { from: voter });
