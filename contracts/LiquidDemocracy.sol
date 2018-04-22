@@ -38,6 +38,13 @@ contract LiquidDemocracy {
     mapping(address => address) delegations;
 
     mapping(address => Voter) public votersData;
+
+    /**
+    * @notice Gets number of ballots created
+    */
+    function getBallotCount() public view returns (uint) {
+        return ballotData.number;
+    }
     
     /**
     * @notice Getter for votersData
