@@ -84,6 +84,7 @@
                         id: ballots - 1,
                         desc: ballotTitle
                     });
+                    $scope.$apply();
                     console.log(vm.ballots);
                 });
               }
