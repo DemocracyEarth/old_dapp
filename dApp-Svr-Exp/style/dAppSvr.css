@@ -63,6 +63,7 @@ body {
 
 .description-div {
   width: 100%;
+  font-weight: bold;
 }
 
 .author-div {
@@ -79,7 +80,7 @@ body {
   border: 1px #CCCCCC solid;
   border-radius: 6px;
   margin-bottom: 12px;
-  padding: 6px;
+  padding: 12px;
 }
 
 .author-div {
@@ -98,6 +99,7 @@ body {
   width: 464px;
   display: inline-block;
   padding-left: 6px;
+  padding-top: 3px;
 }
 
 .ballot-date {
@@ -130,4 +132,130 @@ body {
   padding-right: 24px;
   border: 1px transparent;
   border-radius: 6px;
+  font-weight: bold;
+  margin-top: 18px;
+}
+
+.create-ballot-button {
+  margin-top: 3px;
+  background: #FD6581;
+  color: #FFFFFF;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border: 1px transparent;
+  border-radius: 6px;
+}
+
+.header-spacer-right {
+  width: 200px;
+  text-align: left;
+}
+
+.header-spacer-left {
+  width: 200px;
+  text-align: right;
+}
+
+.md-fab md-fab-bottom-right {
+  background: black;
+}
+
+.graph-container {
+  height: 1000px;
+  width: 100%;
+  min-width: 500px;
+  float: left;
+  padding: 0;
+  margin: 0;
+}
+
+.yes-container {
+  width: 49%;
+  height: 1000px;
+  display: inline-block;
+  border: 1px #CCCCCC solid;
+  border-radius: 6px;
+}
+
+.no-container {
+  width: 49%;
+  display: inline-block;
+  height: 1000px;
+  float: right;
+  border: 1px #CCCCCC solid;
+  border-radius: 6px;
+}
+
+.yes-graph-title {
+  font-weight: bold;
+  text-align: center;
+}
+
+.no-graph-title {
+  font-weight: bold;
+  text-align: center;
+}
+
+.ballot-author-text {}
+
+.ballot-date {
+  color: #BBBBBB;
+}
+
+.yes-no-results-container {
+  padding: 0;
+  margin: 0;
+}
+
+.yes-no-results-container {
+  display: block;
+  margin-top: 48px;
+}
+
+.votes-cast {
+  margin: 0;
+  padding: 0;
+}
+
+.yes-votes-cast {
+  margin: 0;
+  padding: 0;
+  color: #FFFFFF;
+}
+
+.no-votes-cast {
+  margin: 0;
+  padding: 0;
+  color: #FFFFFF;
+}
+
+.yes-vote-cast-div {
+  width: 236px;
+  display: inline-block;
+  background: #00C091;
+  padding: 6px;
+  margin: 0;
+  text-align: center;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  float: left;
+}
+
+.no-vote-cast-div {
+  width: 236px;
+  display: inline-block;
+  background: #FD6581;
+  padding: 6px;
+  margin: 0;
+  text-align: center;
+  border-top-right-radius: 24px;
+  border-bottom-right-radius: 24px;
+  float: left;
+}
+
+.vote-representation-container {
+  padding: 0;
+  margin: 0;
 }
