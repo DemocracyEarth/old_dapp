@@ -94,27 +94,29 @@
             return;
         });
 
-
               vm.ballotsTest = [
                 {
                   desc: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                   author: 'awssi123',
                   date: '21-04-2018-18:36:15',
                   voted: true,
-                  id: 1
+                  id: 1,
+                  icon: new Identicon('0x7700edddd3fc34c18fe2ab14b5345f1596d10551', 30).toString()
                 },
                 {
                   desc: 'Nulla venenatis ante augue.',
                   author: 'aerti123',
                   date: '21-04-2018-18:37:15',
                   delegated: true,
-                  id: 2
+                  id: 2,
+                  icon: new Identicon('0x39f0B5C5D50AEB7F9Ea8BA003733f8e2678A8017', 30).toString()
                 },
                 {
                   desc: 'Phasellus volutpat neque ac dui mattis vulputate.',
                   author: 'aeyui123',
                   date: '21-04-2018-18:38:15',
-                  id: 3
+                  id: 3,
+                  icon: new Identicon('0x0473a8fffa27305e60c5d0e78c26d9d1f4321c64', 30).toString()
                 }
               ];
               vm.ballots = vm.ballotsTest;
