@@ -30,12 +30,38 @@
       </div>
     </div>
     <div class="ballot-author">
-      <span>{{vm.ballot.author}}</span>
+      <span class="ballot-author-text">{{vm.ballot.author}}</span>
       <span class="ballot-date">{{vm.ballot.date}}</span>
+    </div>
+  </div>
+  <div class="yes-no-results-container">
+    <p class="votes-cast">
+      2000 votes cast:
+    </p>
+    <div class="vote-representation-container">
+      <div class="yes-vote-cast-div">
+        <p class="yes-votes-cast">
+          Yes: 50%
+        </p>
+      </div>
+      <div class="no-vote-cast-div">
+        <p class="no-votes-cast">
+          No: 50%
+        </p>
+      </div>
     </div>
   </div>
   <div>
     <md-button>Action 1</md-button>
     <md-button>Action 2</md-button>
+  </div>
+</div>
+
+<div class="graph-container">
+  <div class="yes-container">
+    <p class="yes-graph-title">Yes</p>
+  </div>
+  <div class="no-container">
+    <p class="no-graph-title">No</p>
   </div>
 </div>
