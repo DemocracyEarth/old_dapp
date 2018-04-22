@@ -131,3 +131,29 @@ body {
   border: 1px transparent;
   border-radius: 6px;
 }
+
+.create-ballot-button {
+  margin-top: 3px;
+  background: #FD6581;
+  color: #FFFFFF;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  padding-left: 24px;
+  padding-right: 24px;
+  border: 1px transparent;
+  border-radius: 6px;
+}
+
+.header-spacer-right {
+  width: 200px;
+  text-align: left;
+}
+
+.header-spacer-left {
+  width: 200px;
+  text-align: right;
+}
+
+.md-fab md-fab-bottom-right {
+  background: black;
+}
