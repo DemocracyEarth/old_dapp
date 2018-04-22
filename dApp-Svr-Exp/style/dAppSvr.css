@@ -136,16 +136,17 @@ body {
   margin-top: 18px;
 }
 
-.create-ballot-button {
+.signup-login-button {
   margin-top: 3px;
-  background: #FD6581;
+  background: none;
+  border: 1px solid #FFFFFF;
   color: #FFFFFF;
   padding-top: 6px;
   padding-bottom: 6px;
   padding-left: 24px;
   padding-right: 24px;
-  border: 1px transparent;
   border-radius: 6px;
+  font-size: 14px;
 }
 
 .header-spacer-right {
@@ -258,4 +259,16 @@ body {
 .vote-representation-container {
   padding: 0;
   margin: 0;
+}
+
+.back-button-div {
+  margin: 0;
+  padding:0;
+  margin-top: -12px;
+  margin-bottom: 12px;
+}
+.tab-div {
+  width: 464px;
+  display: inline-block;
+  padding-left: 6px;
 }

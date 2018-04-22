@@ -1,14 +1,28 @@
 (function () {
   'use strict';
   angular.module('dAppSvrApp').controller('BallotDetailCtrl',
-    ['$http', '$log', '$mdDialog', '$routeParams', '$location', '$mdToast',
-    function BallotDetailCtrl($http, $log, $mdDialog, $routeParams, $location, $mdToast) {
+    ['$http', '$log', '$mdDialog', '$routeParams', '$location', '$mdToast', '$scope',
+    function BallotDetailCtrl($http, $log, $mdDialog, $routeParams, $location, $mdToast, $scope) {
       var vm = this;
 
       vm.back = back;
+      vm.vote = vote;
+      vm.delegate = delegate;
+      vm.revokeVote = revokeVote;
+      vm.revokeDelegation = revokeDelegation;
 
       vm.ballotId = $routeParams.id;
       vm.ballot = JSON.parse(localStorage.getItem('ballot'));
+
+      function revokeVote() {
+        console.log("revoke vote");
+        // Call ETH revoke vote
+      }
+
+      function revokeDelegation() {
+        console.log("revoke delegation");
+        // Call ETH revoke delegation
+      }
 
       // Graph for yes-container
 
@@ -250,4 +264,34 @@
     // cn.center();
 
 
+      $scope.users = [
+        {
+          name: 'Virgile',
+          id: 'v123456'
+        },
+        {
+          name: 'Alex',
+          id: 'a123456'
+        },
+        {
+          name: 'Alessandro',
+          id: 'a654321'
+        },
+        {
+          name: 'Lucas',
+          id: 'l654321'
+        }
+      ];
+      function back(){
+        $location.path('/ballots')
+      }
+      function vote(voteValue) {
+        // call ETH vote
+        console.log(voteValue);
+      }
+      function delegate(delegateValue) {
+        // call ETH delegate
+        console.log(delegateValue);
+      }
+    }]);
 })(); 

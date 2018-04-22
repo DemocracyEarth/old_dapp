@@ -1,7 +1,8 @@
-<md-subheader class="md-no-sticky">
-  <md-button md-no-ink class="md-primary" ng-click="vm.back()">Back</md-button>
-</md-subheader>
-
+<div class="back-button-div">
+  <button ng-click="vm.back()" class="view-ballot">
+    Back
+  </button>
+</div>
 
 <div class="ballot-container">
   <div class="description-div">
@@ -52,10 +53,34 @@
     </div>
   </div>
   <div>
-    <md-button>Action 1</md-button>
-    <md-button>Action 2</md-button>
+    <div ng-hide="vm.ballot.delegated == true || vm.ballot.voted == true" class="tab-div">
+          <md-tabs>
+              <md-tab label="vote">
+                <md-content class="md-padding">
+                    <md-radio-group ng-model="voteValue">
+                        <md-radio-button value="yes" class="md-primary">Yes</md-radio-button>
+                        <md-radio-button value="no"> No </md-radio-button>
+                      </md-radio-group>
+                </md-content>
+                <md-button ng-disabled="voteValue ? false: true" class="md-raised md-primary" ng-click="vm.vote(voteValue)">Vote</md-button>
+              </md-tab>
+              <md-tab label="delegate">
+                  <md-radio-group ng-model="delegateValue">
+                      <md-radio-button ng-repeat="user in users"
+                                       ng-value="user.id"
+                                       aria-label="{{user.name}}">
+                          <md-icon md-svg-icon="{{user.id}}"></md-icon>
+                          {{user.name}}
+                      </md-radio-button>
+                    </md-radio-group>
+                  <md-button ng-disabled="delegateValue ? false: true" class="md-raised md-primary" ng-click="vm.delegate(delegateValue)">Delegate</md-button>
+              </md-tab>
+            </md-tabs>
+    </div>
+    <md-button ng-show="vm.ballot.voted == true" class="md-raised md-primary" ng-click="vm.revokeVote()">Revoke</md-button>
+    <md-button ng-show="vm.ballot.delegated == true" class="md-raised md-primary" ng-click="vm.revokeDelegation()">Revoke</md-button>
   </div>
-</div>
+  </div>
 
 <div class="graph-container">
   <div class="yes-container" id="yes-container" style="height:  50vh;">
