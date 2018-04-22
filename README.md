@@ -21,3 +21,16 @@ $ npm install -g truffle
 ```
 
 Then clone or fork the repo, do an `npm install`, and you can start running the tests. You will need to run `truffle develop` to start a testing blockchain and then `test` to execute testing files. Please read the [Truffle docs](http://truffleframework.com/docs/getting_started/testing) to learn more about the tool.
+
+## Compile contracts
+
+```sh
+truffle compile
+cp build/contracts/* dApp-Svr-Exp/contracts/
+```
+
+## How to deploy the contracts
+
+```sh
+$ truffle migrate --network ropsten
+```
