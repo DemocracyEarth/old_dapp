@@ -13,7 +13,7 @@
   <div class="author-div">
     <!-- FILLER FOR METAMASK IMAGE-->
     <div class="identicon">
-        <img width=30 height=30 src="data:image/png;base64,{{vm.ballot.icon}}">
+        <img width=30 height=30 data-ng-src="data:image/png;base64,{{vm.ballot.icon}}">
       </div>
     <div class="ballot-author">
       <span class="ballot-author-text">{{vm.ballot.author}}</span>
@@ -55,7 +55,7 @@
                                        ng-value="user.id"
                                        aria-label="{{user.name}}">
                           <div class="identicon">
-                              <img width=30 height=30 src="data:image/png;base64,{{user.icon}}">
+                              <img width=30 height=30 data-ng-src="data:image/png;base64,{{user.icon}}">
                             </div>
                           {{user.name}}
                       </md-radio-button>
