@@ -45,6 +45,11 @@
       } else {
         loadBallots();
       }
+      if(apiIPFS.node === undefined){
+        apiIPFS.initializeNode(function(node){
+          apiIPFS.node = node;
+        });
+      }
       function loadBallots(){
         apiETH.instance.getBallotCount.call().then(function(ballots) {
           $log.info("There are " + ballots + " ballots");

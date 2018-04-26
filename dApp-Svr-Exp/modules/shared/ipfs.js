@@ -1,13 +1,18 @@
 (function () {
   'use strict';
   angular.module('dAppSvrApp').factory('apiIPFS', [function() {
-    const node = new Ipfs({ repo: 'ipfs-' + 1 });
+    let node;
 
-    node.once('ready', () => {
-      console.log('IPFS node ready');
-    });
+    function initializeNode(ready){
+      node = new Ipfs({ repo: 'ipfs-' + 1 });
+      node.once('ready', () => {
+        console.log('IPFS node ready');
+        ready(node);
+      });
+    }
     return {
       node: node,
+      initializeNode: initializeNode,
       getBytes32FromIpfsHash: getBytes32FromIpfsHash,
       getIpfsHashFromBytes32: getIpfsHashFromBytes32
     }
