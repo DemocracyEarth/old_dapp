@@ -114,11 +114,11 @@
       };
 
       function ballotDetail(ballot) {
-        $location.path('/ballots/' + ballot.id)
+        $location.path('/ballots/' + ballot.id);
         localStorage.setItem('ballot', JSON.stringify(ballot));
       };
 
-    // TODO: only getting last ballot atm
+      // TODO: only getting last ballot atm
       function getBallots (callback) {
         //apiIPFS.node.once('ready', () => {
           apiETH.instance.getLastBallot.call().then(function(ballot) {

@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="bower_components/angular-material/angular-material.min.css">
     <link href="style/dAppSvr.css" rel="stylesheet">
     <link href="//fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
+    <link rel="shortcut icon" type="image/x-icon" href="/images/olive.png">
     <title>Sovereign dApp</title>
     <!--link rel="manifest" href="manifest.json"-->    
   </head>
@@ -19,8 +19,14 @@
           <!-- Replace button text with profile when logged in-->
           <div class="header-spacer-right">
 
-              <button class="signup-login-button">
-                Sign Up & Log In
+              <button ng-show="user == null" class="signup-login-button" ng-click="profile()">
+                  Profile
+              </button>
+              <button ng-show="user != null" class="signup-login-button" ng-click="profile()">
+                  <div class="identicon">
+                      <img width=30 height=30 data-ng-src="data:image/png;base64,{{user.icon}}">
+                    </div>
+                    {{user.name}}
               </button>
 
           </div>
@@ -47,6 +53,7 @@
     <script src="app.js"></script>
     <script src="modules/shared/eth.js"></script>
     <script src="modules/shared/ipfs.js"></script>
+    <script src="modules/user/profile-ctrl.js"></script>
     <script src="modules/ballots/ballots-list-ctrl.js"></script>
     <script src="modules/ballots/detail/ballot-detail-ctrl.js"></script>
     <script src="bower_components/buffer/buffer.min.js"></script> 

@@ -13,20 +13,27 @@
           templateUrl: 'modules/ballots/detail/ballot-detail.html',
           controller: 'BallotDetailCtrl as vm'
         })
+        .when('/profile', {
+          templateUrl: 'modules/user/profile.html',
+          controller: 'ProfileCtrl as vm'
+        })
         .otherwise({
           redirectTo: '/ballots'
         });
         $mdThemingProvider.theme('default').primaryPalette('indigo').accentPalette('orange');      
-    }]).controller('AppCtrl', ['$scope', '$mdSidenav','$log', function($scope, $mdSidenav, $log){
-        $scope.toggleSidenav = function(menuId) {
+    }]).controller('AppCtrl', ['$scope', '$mdSidenav', '$log', '$location', function($scope, $mdSidenav, $log, $location){
+        $scope.toggleSidenav = function (menuId) {
           $mdSidenav(menuId).toggle();
         };
         $scope.close = function (menuId) {
-          // Component lookup should always be available since we are not using `ng-if`
           $mdSidenav(menuId).close()
             .then(function () {
               $log.debug("close "+menuId+" is done");
             });
-        };    
+        };
+        $scope.user = JSON.parse(localStorage.getItem('user'));
+        $scope.profile = function () {
+          $location.path('/profile/');
+        }
     }]);
 })();

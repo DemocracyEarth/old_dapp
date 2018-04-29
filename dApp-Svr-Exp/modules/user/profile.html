@@ -1,0 +1,37 @@
+<div class="back-button-div">
+  <button ng-click="vm.back()" class="view-ballot">
+    Back
+  </button>
+</div>
+
+<md-content class="inset" ng-if="vm.user.name==null">
+    <md-input-container class="md-block" flex-gt-sm>
+      <label>Name</label>
+      <input ng-model="vm.profile.name">
+    </md-input-container>
+    <md-input-container class="md-block">
+        <label>Address</label>
+        <input ng-model="vm.profile.address">
+      </md-input-container>
+    <md-subheader>
+      <md-button md-no-ink class="md-raised" ng-click="vm.setProfile()">set Profile</md-button>
+    </md-subheader>
+</md-content>
+
+<md-content class="inset" ng-if="vm.user.name!=null">
+    USER PROFILE FORM
+    <md-input-container class="md-block md-icon-float" flex-gt-sm>
+        <label>Name</label>
+        <input ng-model="vm.user.name" disabled>
+        <div class="identicon">
+            <img width=60 height=60 data-ng-src="data:image/png;base64,{{vm.user.icon}}">
+        </div>
+      </md-input-container>
+      <md-input-container class="md-block">
+          <label>Address</label>
+          <input ng-model="vm.user.address" disabled>
+        </md-input-container>
+    <md-subheader>
+      <md-button md-no-ink class="md-raised md-warn" ng-click="vm.clearProfile()">Clear Profile</md-button>
+    </md-subheader>
+  </md-content>
