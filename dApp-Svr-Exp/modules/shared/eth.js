@@ -45,6 +45,7 @@
           // Set the provider for our contract
           contract.setProvider(web3Provider);
           resolve(contract);
+          getEthAccounts();
     
         }, function(err){
           reject(err);
