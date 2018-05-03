@@ -1,249 +1,143 @@
 (function () {
   'use strict';
   angular.module('dAppSvrApp').controller('BallotDetailCtrl',
-    ['$http', '$log', '$mdDialog', '$routeParams', '$location', '$mdToast', '$scope',
-    function BallotDetailCtrl($http, $log, $mdDialog, $routeParams, $location, $mdToast, $scope) {
-      var vm = this;
+    ['$http', '$log', '$mdDialog', '$routeParams', '$location', '$mdToast', '$scope', 'apiETH', 'apiIPFS', 'graph',
+      function BallotDetailCtrl($http, $log, $mdDialog, $routeParams, $location, $mdToast, $scope, apiETH, apiIPFS, graph) {
+        var vm = this;
 
-      vm.back = back;
-      vm.vote = vote;
-      vm.delegate = delegate;
-      vm.revokeVote = revokeVote;
-      vm.revokeDelegation = revokeDelegation;
+        vm.back = back;
+        vm.vote = vote;
+        vm.delegate = delegate;
+        vm.revokeVote = revokeVote;
+        vm.revokeDelegation = revokeDelegation;
 
-      vm.ballotId = $routeParams.id;
-      vm.ballot = JSON.parse(localStorage.getItem('ballot'));
+        vm.ballotId = $routeParams.id;
+        vm.ballot = JSON.parse(localStorage.getItem('ballot'));
 
-      function revokeVote() {
-        console.log("revoke vote");
-        // Call ETH revoke vote
-      }
+        $scope.users = [];
 
-      function revokeDelegation() {
-        console.log("revoke delegation");
-        // Call ETH revoke delegation
-      }
+        populateVoters();
+        renderYesGraph();
+        renderNoGraph();
 
-      // Graph for yes-container
+        function back() {
+          $location.path('/ballots')
+        };
 
-    // TODO: dummy data atm
-
-    var nodesAndEdgesYes = [];
-    nodesAndEdgesYes.push({ group: "nodes", data: { id: 0, name:"yes", type: "option" }});
-    // populating dummy data
-    for (let i = 2; i < 6; i++) {
-      let voterName = "Voter " + i;
-      nodesAndEdgesYes.push({ group: "nodes", data: { id: i, name: voterName, type: "voter" }});
-    }
-
-    for (let j = 2; j < 4; j++) {
-          const id = j + 100
-          nodesAndEdgesYes.push({ group: "edges", data: { id: id, source: 0, target: j }});
-    }
-    for (let j = 4; j < 6; j++) {
-      const id = j + 100
-      let k = j-2
-      nodesAndEdgesYes.push({ group: "edges", data: { id: id, source: k, target: j }});
-    }
-    let cy = cytoscape({
-      container: document.getElementsByClassName('yes-container'), // container to render in
-
-      elements: nodesAndEdgesYes,
-
-      style: [ // the stylesheet for the graph
-          {
-            selector: 'node',
-            style: {
-                'background-color': ' #9F9',
-                'label': 'data(name)',
-                  'font-size' : 24,
-                  // 'text-valign': 'bottom',
-                  'text-opacity': '0.4',
-                  'text-rotation': '0.2',
-                  'text-margin-y': '10px'
-              }
-          },
-          {
-            selector: '.option',
-            style: {
-              'font-size' : 32,
-              'text-valign': 'top',
-              'text-opacity': '0.9',
-              shape: "hexagon",
-            }
-          },
-          {
-              selector: 'edge',
-              style: {
-                  'curve-style': 'bezier',
-                  'width': 4,
-                  'line-color': '#666',
-                  'source-arrow-color': '#000',
-                  'source-arrow-shape': 'triangle'
-              }
+        /**
+         * Renders 'Yes' delegations graph
+         */
+        function renderYesGraph() {
+          // TODO: populating with dummy data atm
+          var nodesAndEdgesYes = [];
+          nodesAndEdgesYes.push({ group: "nodes", data: { id: 0, name: "yes", type: "option" } });
+          for (let i = 2; i < 6; i++) {
+            let voterName = "Voter " + i;
+            nodesAndEdgesYes.push({ group: "nodes", data: { id: i, name: voterName, type: "voter" } });
           }
-      ],
 
-      layout: {
-        name: "breadthfirst",
-        directed:true,
-        animate: true,
-        roots:0,
-
-
-
-      }
-
-    });
-  
-
-    cy.ready(function() {
-
-      // cy.filter("node[id = '0']").addClass("yes-vote-cast-div");
-      // cy.filter("node[id = '1']").addClass("no-vote-cast-div")
-
-
-      var opt = cy.filter("node[type = 'option']");
-
-      
-
-      for (var i = 0; i < opt.length; i++) {
-        opt[i].addClass("option");
-      }
-
-      // cy.zoom(0.5);
-      // cy.center();
-    });
-
-    var nodesAndEdgesNo = [];
-    nodesAndEdgesNo.push({ group: "nodes", data: { id: 1, name:"no", type: "option" }});
-    // populating dummy data
-    for (let i = 9; i < 19; i++) {
-      let voterName = "Voter " + i;
-      nodesAndEdgesNo.push({ group: "nodes", data: { id: i, name: voterName, type: "voter" }});
-    }
-
-    for (let j = 9; j < 12; j++) {
-          const id = j + 100
-          let k = 1
-          nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j }});
-    }
-    for (let j = 12; j < 17; j++) {
-      const id = j + 100
-      let k = j-2
-      nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j }});
-    }
-    for (let j = 17; j < 19; j++) {
-      const id = j + 100
-      let k = 16
-      nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j }});
-    }
-    let cn = cytoscape({
-      container: document.getElementsByClassName('no-container'), // container to render in
-
-      elements: nodesAndEdgesNo,
-
-      style: [ // the stylesheet for the graph
-          {
-            selector: 'node',
-            style: {
-                'background-color': ' #F99',
-                'label': 'data(name)',
-                  'font-size' : 24,
-                  // 'text-valign': 'bottom',
-                  'text-opacity': '0.4',
-                  'text-rotation': '0.2',
-                  'text-margin-y': '10px'
-              }
-          },
-          {
-            selector: '.option',
-            style: {
-              'font-size' : 32,
-              'text-valign': 'top',
-              'text-opacity': '0.9',
-              shape: "hexagon",
-            }
-          },
-          {
-              selector: 'edge',
-              style: {
-                  'curve-style': 'bezier',
-                  'width': 4,
-                  'line-color': '#666',
-                  'source-arrow-color': '#000',
-                  'source-arrow-shape': 'triangle'
-              }
+          for (let j = 2; j < 4; j++) {
+            const id = j + 100
+            nodesAndEdgesYes.push({ group: "edges", data: { id: id, source: 0, target: j } });
           }
-      ],
+          for (let j = 4; j < 6; j++) {
+            const id = j + 100
+            let k = j - 2
+            nodesAndEdgesYes.push({ group: "edges", data: { id: id, source: k, target: j } });
+          }
 
-      layout: {
-        name: "breadthfirst",
-        directed:true,
-        roots:1,
-        animate:true
-      }
+          graph.renderGraph(nodesAndEdgesYes, 'yes-container', '#9F9');
+        }
 
-    });
-  
+        /**
+         * Renders 'No' delegations graph
+         */
+        function renderNoGraph() {
+          // TODO: populating with dummy data atm          
+          var nodesAndEdgesNo = [];
+          nodesAndEdgesNo.push({ group: "nodes", data: { id: 1, name: "no", type: "option" } });
+          for (let i = 9; i < 19; i++) {
+            let voterName = "Voter " + i;
+            nodesAndEdgesNo.push({ group: "nodes", data: { id: i, name: voterName, type: "voter" } });
+          }
 
-    cn.ready(function() {
+          for (let j = 9; j < 12; j++) {
+            const id = j + 100
+            let k = 1
+            nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j } });
+          }
+          for (let j = 12; j < 17; j++) {
+            const id = j + 100
+            let k = j - 2
+            nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j } });
+          }
+          for (let j = 17; j < 19; j++) {
+            const id = j + 100
+            let k = 16
+            nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j } });
+          }
 
-      // cn.filter("node[id = '1']").addClass("no-vote-cast-div")
+          graph.renderGraph(nodesAndEdgesNo, 'no-container', '#F99');
+        }
 
+        /**
+        * It populates voters list, fetches the addresses list from the Contract and
+        * creates a request per voter address to fetch IPFS and Contract info. This it's quite inefficient
+        * and likely not to scale, so a better approach needs to be taken.
+        */
+        async function populateVoters() {
 
-      var opt = cn.filter("node[type = 'option']");
+          console.log("Populating available voters to delegate...");
+          const voters = await apiETH.instance.getVoters.call();
+          console.log("There are " + voters.length + " voters");
+          for (let i = 0; i < voters.length; i++) {
+            const voter = await apiETH.instance.getVoterData.call(voters[i]);
+            const voterIpfsName = apiIPFS.getIpfsHashFromBytes32(voter[3]);
+            apiIPFS.node.files.cat(voterIpfsName, function (err, file) {
+              if (err) {
+                throw err
+              }
+              const data = file.toString('utf8');
+              console.log(data);
+              const userName = JSON.parse(data).desc;
+              $scope.users.push(
+                {
+                  name: userName,
+                  id: voters[i],
+                  icon: new Identicon(voters[i], 30).toString()
+                }
+              );
+            });
+          }
+        }
 
-      
+        /**
+        * Delegate call
+        */
+        function delegate(delegateValue) {
+          console.log("Delegating to " + delegateValue);
+          apiETH.instance.delegate(delegateValue).then(function (result) {
+            console.log("Delegation successful");
+          }).catch(function (err) {
+            console.log("ERROR delegating:" + err.message);
+          });
+        }
 
-      for (var i = 0; i < opt.length; i++) {
-        opt[i].addClass("option");
-      }
+        function revokeVote() {
+          console.log("revoke vote");
+          // TODO: Call ETH revoke vote
+        }
 
-      // cn.zoom(0.5);
-      // cn.center();
-    });
+        function revokeDelegation() {
+          console.log("revoke delegation");
+          // TODO: Call ETH revoke delegation
+        }
 
+        function vote(voteValue) {
+          // TODO: call ETH vote
+          console.log(voteValue);
+        }
 
-
-
-    function back(){
-      $location.path('/ballots')
-    };
-
-    $scope.users = [
-      {
-        name: 'Virgile',
-        id: 'v123456',
-        icon: new Identicon('0x7700edddd3fc34c18fe2ab14b5345f1596d10551', 30).toString()
-      },
-      {
-        name: 'Alex',
-        id: 'a123456',
-        icon: new Identicon('0x39f0B5C5D50AEB7F9Ea8BA003733f8e2678A8017', 30).toString()
-      },
-      {
-        name: 'Alessandro',
-        id: 'a654321',
-        icon: new Identicon('0x0473a8fffa27305e60c5d0e78c26d9d1f4321c64', 30).toString()
-      },
-      {
-        name: 'Lucas',
-        id: 'l654321',
-        icon: new Identicon('0x0473a8fffa27305e60c5d0e78c26d9d1f4321c64', 30).toString()
-      }
-    ];
-
-    function vote(voteValue) {
-      // call ETH vote
-      console.log(voteValue);
-    }
-
-    function delegate(delegateValue) {
-      // call ETH delegate
-      console.log(delegateValue);
-    }
-
-  }]);
+      }]);
 
 })(); 

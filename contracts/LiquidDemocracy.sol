@@ -41,6 +41,20 @@ contract LiquidDemocracy {
     mapping(address => Voter) public votersData;
 
     /**
+    * @notice gets the addresses of the voters
+    */
+    function getVoters() public view returns (address[]) {
+        return voters;
+    }
+
+    /**
+    * @notice Gets number of voters registered
+    */
+    function getVotersCount() public view returns (uint) {
+        return voters.length;
+    }
+
+    /**
     * @notice Gets number of ballots created
     */
     function getBallotCount() public view returns (uint) {
@@ -51,8 +65,9 @@ contract LiquidDemocracy {
     * @notice Getter for votersData
     * @param voter The voter to obtain
     */
-    function getVoterData(address voter) public view returns (uint, bool, bool) {
-        return (votersData[voter].weight, votersData[voter].registered, votersData[voter].voted);
+    function getVoterData(address voter) public view returns (uint, bool, bool, bytes32, bytes32) {
+        return (votersData[voter].weight, votersData[voter].registered, votersData[voter].voted,
+            votersData[voter].ipfsName, votersData[voter].ipfsEmail);
     }
 
     /**
