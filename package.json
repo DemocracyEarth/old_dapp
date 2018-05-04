@@ -8,7 +8,9 @@
   },
   "scripts": {
     "dev": "lite-server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "http-server dApp-Svr-Exp/",
+    "postinstall": "cd dApp-Svr-Exp && ../node_modules/bower/bin/bower install"
   },
   "author": "",
   "license": "ISC",
@@ -24,7 +26,9 @@
     "lite-server": "^2.3.0"
   },
   "dependencies": {
+    "bower": "^1.8.4",
     "bs58": "^4.0.1",
+    "http-server": "^0.11.1",
     "truffle-hdwallet-provider": "0.0.3"
   }
 }
