@@ -4,34 +4,71 @@
   </button>
 </div>
 
-<md-content class="inset" ng-if="vm.user.name==null">
-    <md-input-container class="md-block" flex-gt-sm>
-      <label>Name</label>
-      <input ng-model="vm.profile.name">
-    </md-input-container>
-    <md-input-container class="md-block">
-        <label>Address</label>
-        <input ng-model="vm.profile.address">
-      </md-input-container>
-    <md-subheader>
-      <md-button md-no-ink class="md-raised" ng-click="vm.setProfile()">set Profile</md-button>
-    </md-subheader>
-</md-content>
-
-<md-content class="inset" ng-if="vm.user.name!=null">
-    USER PROFILE FORM
-    <md-input-container class="md-block md-icon-float" flex-gt-sm>
-        <label>Name</label>
-        <input ng-model="vm.user.name" disabled>
-        <div class="identicon">
-            <img width=60 height=60 data-ng-src="data:image/png;base64,{{vm.user.icon}}">
-        </div>
-      </md-input-container>
-      <md-input-container class="md-block">
-          <label>Address</label>
-          <input ng-model="vm.user.address" disabled>
+<div ng-if="vm.metamaskOn != true">
+  <div style="font-size:.8em; width: 100%; text-align: center;">
+    <div ng-if="vm.user.address == undefined">
+        <p>Please install and unlock <a href="https://metamask.io/" target="_blank">MetaMask</a></p>
+        Install metamask <br>  
+        create a user <br>
+        login <br>
+        ask for money in Ropsten testnet <br>
+    
+    </div>
+    <div ng-if="vm.user.address != undefined">
+      <p>Please login into metamask to see your user information</p>
+    </div>
+    <md-button md-no-ink class="md-raised" ng-click="vm.checkConnection()">Done</md-button>
+  </div>
+</div>
+<div ng-if="vm.metamaskOn == true">
+  <form name="signUpForm">
+    <md-content class="inset" ng-if="vm.user.registered==undefined">
+        <md-input-container class="md-block" flex-gt-sm>
+          <label>Full name</label>
+          <input ng-model="vm.user.name" ng-required="true">
         </md-input-container>
+        <md-input-container>
+          <label>Email address</label>
+          <input ng-model="vm.user.email" type="email" ng-required="true" minlength="10" maxlength="100" ng-pattern="/^.+@.+\..+$/">
+        </md-input-container>
+        <md-input-container>
+            <label>Address to use</label>
+            <input ng-model="vm.user.address" disabled>
+          </md-input-container>
+        <md-subheader>
+          <md-button  ng-disabled="!signUpForm.$valid" md-no-ink class="md-raised" ng-click="vm.setProfile()">Sign Up</md-button>
+        </md-subheader>
+      </md-content>
+  </form>    
+  <md-content class="inset" ng-if="vm.user.registered!=undefined">
+    <div layout="row" layout-align="center center">
+      Transaction status: <ng-md-icon icon="{{vm.status.icon}}"></ng-md-icon>{{vm.status.message}}
+    </div>
+    <md-input-container class="md-block md-icon-float" flex-gt-sm>
+      <label>Name</label>
+      <input ng-model="vm.user.name" disabled>
+      <div class="identicon">
+          <img width=60 height=60 data-ng-src="data:image/png;base64,{{vm.user.icon}}">
+      </div>
+    </md-input-container>
+    <md-input-container>
+      <label>Email</label>
+      <input ng-model="vm.user.email" type="email" disabled>
+    </md-input-container>
+    <md-input-container>
+      <label>Address</label>
+      <input ng-model="vm.user.address" disabled>
+    </md-input-container>
+  </md-content>
+    
+  <md-content class="inset">
+    <p>This is only for development purposes</p>
+    <md-input-container class="md-block md-icon-float" flex-gt-sm>
+        <label>Delete voter address from contract</label>
+        <input ng-model="vm.user.address">
+      </md-input-container>
     <md-subheader>
-      <md-button md-no-ink class="md-raised md-warn" ng-click="vm.clearProfile()">Clear Profile</md-button>
+      <md-button md-no-ink class="md-raised md-warn" ng-click="vm.clearProfile(vm.user.address)">Clear Profile</md-button>
     </md-subheader>
   </md-content>
+</div>

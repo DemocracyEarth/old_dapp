@@ -92,8 +92,8 @@
           console.log("There are " + voters.length + " voters");
           for (let i = 0; i < voters.length; i++) {
             const voter = await apiETH.instance.getVoterData.call(voters[i]);
-            const voterIpfsName = apiIPFS.getIpfsHashFromBytes32(voter[3]);
-            apiIPFS.node.files.cat(voterIpfsName, function (err, file) {
+            const voterIpfsHash = apiIPFS.getIpfsHashFromBytes32(voter[3]);
+            apiIPFS.node.files.cat(voterIpfsHash, function (err, file) {
               if (err) {
                 throw err
               }
