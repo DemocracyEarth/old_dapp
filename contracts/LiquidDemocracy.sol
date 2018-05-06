@@ -28,8 +28,7 @@ contract LiquidDemocracy {
         uint weight;
         bool voted;
         bool registered;
-        bytes32 ipfsName;
-        bytes32 ipfsEmail;
+        bytes32 ipfsHash;
     }
 
     address[] public voters;
@@ -65,9 +64,9 @@ contract LiquidDemocracy {
     * @notice Getter for votersData
     * @param voter The voter to obtain
     */
-    function getVoterData(address voter) public view returns (uint, bool, bool, bytes32, bytes32) {
+    function getVoterData(address voter) public view returns (uint, bool, bool, bytes32) {
         return (votersData[voter].weight, votersData[voter].registered, votersData[voter].voted,
-            votersData[voter].ipfsName, votersData[voter].ipfsEmail);
+            votersData[voter].ipfsHash);
     }
 
     /**
@@ -123,8 +122,15 @@ contract LiquidDemocracy {
     /**
     * @notice Register a new voter
     */
-    function registerNewVoter(bytes32 ipfsName, bytes32 ipfsEmail) external {
-        registerNewVoter(msg.sender, ipfsName, ipfsEmail);
+    function registerNewVoter(bytes32 ipfsHash) external {
+        registerNewVoter(msg.sender, ipfsHash);
+    }
+
+    /**
+    * @notice Reset voter registered flag
+    */
+    function resetVoter() external {
+        resetVoter(msg.sender);
     }
 
     /**
@@ -161,16 +167,24 @@ contract LiquidDemocracy {
     /**
     * @notice Register a new voter setting initial Voter elements
     */
-    function registerNewVoter(address voterAddress, bytes32 ipfsName, bytes32 ipfsEmail) private {
+    function registerNewVoter(address voterAddress, bytes32 ipfsHash) private {
         // Voters already registered cannot register again
         require(!votersData[voterAddress].registered);
 
-        votersData[voterAddress].ipfsName = ipfsName;
-        votersData[voterAddress].ipfsEmail = ipfsEmail;
+        votersData[voterAddress].ipfsHash = ipfsHash;
         votersData[voterAddress].weight = 1;
         votersData[voterAddress].registered = true;
         delegations[voterAddress] = voterAddress;
         voters.push(voterAddress);
+    }
+
+    /**
+    * @notice Reset registered value for development purposes
+    */
+    function resetVoter(address voterAddress) private {
+        require(votersData[voterAddress].registered);
+
+        votersData[voterAddress].registered = false;
     }
 
     /**
