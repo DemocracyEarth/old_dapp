@@ -45,21 +45,25 @@
               vm.status = {icon: 'done_all', message: 'Confirmed'};
               $scope.$apply();
             }).catch(function(err) {
-              $log.log(err.message);
+              vm.user.registered = undefined;
+              showCancel(err);
             });
           });          
         }
       }
       function clearProfile(address){
         if (checkConnection()){
-          localStorage.setItem('user', null);
-          vm.user = null;
-          $scope.$parent.user = null;
           // Call to ETH
-          apiETH.instance.resetVoter({gas: 1000000, gasPrice: 20000000000}).then(function(result) {
-            $log.info('voter deleted:', result);
+          vm.status = {icon: 'cached', message: 'Verifying'};
+          apiETH.instance.resetVoter({gas: 1000000, gasPrice: 20000000000}).then(function(error, result) {
+            $log.info('voter reseted:', error, result);
+            localStorage.setItem('user', null);
+            vm.user = null;
+            $scope.$parent.user = null;
+            checkConnection();
+            $scope.$apply();
           }).catch(function(err) {
-            $log.log(err.message);
+            showCancel(err);
           });
         }
       }
@@ -72,6 +76,16 @@
           };
         }
         return vm.metamaskOn;
+      }
+
+      function showCancel(err) {
+        $mdToast.show(
+          $mdToast.simple()
+            .textContent('Metamask operation canceled')
+            .hideDelay(2500)
+            .position('top center')
+        );
+        $log.log("operation canceled", err.message);
       }
     }]);
 })();
