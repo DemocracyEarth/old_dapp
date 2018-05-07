@@ -16,9 +16,8 @@ contract('LiquidDemocracy', function (accounts){
         // Set up ballot instance and register 4 voters
         this.liquidDemocracyBallot = await LiquidDemocracy.new();
         for (let i = 0; i < nVoters; i++) {
-            const dummyIpfsName = accounts[i];
-            const dummyIpfsEmail = accounts[i];
-            await this.liquidDemocracyBallot.registerNewVoter(dummyIpfsName, dummyIpfsEmail, { from: accounts[i] });
+            const dummyIpfsHash = accounts[i];
+            await this.liquidDemocracyBallot.registerNewVoter(dummyIpfsHash, { from: accounts[i] });
         }
     });
 
@@ -196,11 +195,10 @@ contract('LiquidDemocracy', function (accounts){
             for (let j = 0; j < 10; j++) { // 40 users' data
                 for (let i = 0; i < voters.length; i++) {
                     const voter = await this.liquidDemocracyBallot.getVoterData.call(voters[i]);
-                    const voterIpfsName = voter[3];
-                    const voterIpfsEmail = voter[4];
-                    voterIpfsName.length.should.equal(66); // IPFS hash in 64 bytes + 0x bytes
-                    voterIpfsEmail.length.should.equal(66); // IPFS hash in 64 bytes + 0x bytes
-                    voter.length.should.equal(5);
+                    const voterIpfsHash = voter[3];
+                    // IPFS hash in 64 bytes + 0x bytes
+                    voterIpfsHash.length.should.equal(66);
+                    voter.length.should.equal(4);
                 }
             }
         });

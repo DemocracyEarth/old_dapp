@@ -19,13 +19,15 @@
     function setEthDefaultAccount() {
       return new Promise((resolve, reject) => {
         try {
-          const web3 = new Web3(web3Provider);
+          web3 = new Web3(web3Provider);
           web3.eth.getAccounts(function(error, accounts) {
             if (error) {
               reject(error);
             }
             const account = accounts[0];
-            web3.eth.defaultAccount = account;
+            if (account !== undefined) {
+              web3.eth.defaultAccount = account;
+            }
             resolve(web3.eth.defaultAccount);
           });
         } catch (e) {
@@ -51,11 +53,17 @@
     const checkInstance = async (contract) => {
       return await contract.deployed();
     }
+
+    const metamaskOn = () => {
+      return web3.eth.defaultAccount === undefined ? false : true;
+    }
     return {
       loadContract: loadContract,
       checkInstance: checkInstance,
+      metamaskOn: metamaskOn,
       contract: contract,
-      instance: instance
+      instance: instance,
+      web3: web3
     }
   }]);
 })();
