@@ -227,6 +227,13 @@ contract LiquidDemocracy {
         delegations[representee] = representative; // Delegate my own vote
         votersData[representee].representative = representative;
 
+        // Remove votes if they exist. NOTE: this doesn't yet update total number of votes
+        if (votersData[representee].voted) {
+          votersData[representee].voted = false;
+          votersData[representee].votedOption1 = false;
+          votersData[representee].votedOption2 = false;
+        }
+
         address nextRepresentative = representative;
 
         // While there is voter that hasn't performed a delegation to another voter
