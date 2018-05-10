@@ -145,13 +145,21 @@
          * @param {*} voteValue
          */
         function vote(voteValue) {
+          var option;
           if (voteValue == "yes") {
-            apiETH.instance.vote(0, 1, { gas: 1000000 });
+            option = 1;
           } else if (voteValue == "no") {
-            apiETH.instance.vote(0, 2, { gas: 1000000 });
+            option = 2;
           } else {
             console.error("Wrong vote value");
+            return;
           }
+
+          apiETH.instance.vote(0, option, { gas: 1000000 }).then(function (result) {
+            console.log("Vote successful");
+          }).catch(function (err) {
+            console.log("ERROR voting:" + err.message);
+          });
         }
 
         /**
