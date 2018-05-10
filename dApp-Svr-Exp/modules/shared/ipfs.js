@@ -4,11 +4,9 @@
     let node;
 
     function initializeNode(ready){
-      node = new Ipfs({ repo: 'ipfs-' + 1 });
-      node.once('ready', () => {
-        console.log('IPFS node ready');
-        ready(node);
-      });
+      node = window.IpfsApi('server.cryptopolitics.global', '5001');
+      console.log("IPFS node ready");
+      ready(node);
     }
     return {
       node: node,
