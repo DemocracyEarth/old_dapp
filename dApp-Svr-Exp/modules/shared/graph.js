@@ -7,14 +7,15 @@
         }
 
         /**
-         * It will render a delegation graph
+         * It will render a delegation graph, elements are hidden by default and only the mainNode chain will be visible
          * @param {*} nodesAndEdges list of nodes and edges in the form:
          * { group: "nodes", data: { id: 0, name: "yes", type: "option" } }
          * { group: "edges", data: { id: id, source: 0, target: j } }
          * @param {*} classContainer DOM class where the graph will be visualized
          * @param {*} color Color of the nodes
+         * @param {*} option main node used to filter all its reachable nodes
          */
-        function renderGraph(nodesAndEdges, classContainer, color) {
+        function renderGraph(nodesAndEdges, classContainer, color, mainNode = null) {
 
             let cy = cytoscape({
                 container: document.getElementsByClassName(classContainer), // container to render in
@@ -22,24 +23,38 @@
 
                 style: [ // the stylesheet for the graph
                     {
+                        selector: '*',
+                        style: {
+                            visibility: 'hidden'
+                        }
+                    },
+                    {
                         selector: 'node',
                         style: {
                             'background-color': color,
                             'label': 'data(name)',
                             'font-size': 24,
-                            // 'text-valign': 'bottom',
                             'text-opacity': '0.4',
-                            'text-rotation': '0.2',
-                            'text-margin-y': '10px'
+                            // 'text-rotation': '0.2',
+                            'text-margin-y': '0px'
                         }
                     },
                     {
                         selector: '.option',
                         style: {
-                            'font-size': 32,
-                            'text-valign': 'top',
-                            'text-opacity': '0.9',
-                            shape: "hexagon",
+                            'font-size': 40,
+                            'text-valign': 'center',
+                            'text-opacity': '1.0',
+                            'height': '60px',
+                            'width': '100px',
+                            shape: "roundrectangle",
+                            visibility: 'visible'
+                        }
+                    },
+                    {
+                        selector: '.chain',
+                        style: {
+                            visibility: 'visible'
                         }
                     },
                     {
@@ -63,9 +78,15 @@
             });
 
             cy.ready(function () {
-                var opt = cy.filter("node[type = 'option']");
-                for (var i = 0; i < opt.length; i++) {
-                    opt[i].addClass("option");
+                console.log("Graph ready");
+                // Makes visible (applies some style) only the successors nodes of the main Node
+                if (mainNode != null) {
+                    var root = '#' + mainNode;
+                    cy.$(root).addClass("option");
+                    var successors0 = cy.$(root).successors();
+                    for (var i = 0; i < successors0.length; i++) {
+                        successors0[i].addClass("chain");
+                    }
                 }
             });
         }

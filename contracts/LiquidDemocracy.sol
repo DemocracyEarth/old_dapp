@@ -27,8 +27,11 @@ contract LiquidDemocracy {
     struct Voter {
         uint weight;
         bool voted;
+        bool votedOption1;
+        bool votedOption2;
         bool registered;
         bytes32 ipfsHash;
+        address representative;
     }
 
     address[] public voters;
@@ -64,9 +67,10 @@ contract LiquidDemocracy {
     * @notice Getter for votersData
     * @param voter The voter to obtain
     */
-    function getVoterData(address voter) public view returns (uint, bool, bool, bytes32) {
+    function getVoterData(address voter) public view returns (uint, bool, bool, bytes32, address, bool, bool) {
         return (votersData[voter].weight, votersData[voter].registered, votersData[voter].voted,
-            votersData[voter].ipfsHash);
+            votersData[voter].ipfsHash, votersData[voter].representative,
+            votersData[voter].votedOption1, votersData[voter].votedOption2);
     }
 
     /**
@@ -105,8 +109,7 @@ contract LiquidDemocracy {
     * @notice Gets the representative of the voter that calls this method
     */
     function getMyRepresentative() public view returns (address) {
-        require(votersData[msg.sender].registered);
-        return delegations[msg.sender];
+        return getRepresentative(msg.sender);
     }
 
     /**
@@ -117,6 +120,14 @@ contract LiquidDemocracy {
             ballotData.ballots[ballotData.number - 1].ipfsBallotTitle,
             ballotData.ballots[ballotData.number - 1].owner
         );
+    }
+
+    /**
+    * @notice Gets the representative of the given voter
+    */
+    function getRepresentative(address voter) public view returns (address) {
+        require(votersData[voter].registered);
+        return delegations[voter];
     }
 
     /**
@@ -174,6 +185,10 @@ contract LiquidDemocracy {
         votersData[voterAddress].ipfsHash = ipfsHash;
         votersData[voterAddress].weight = 1;
         votersData[voterAddress].registered = true;
+        votersData[voterAddress].representative = voterAddress;
+        votersData[voterAddress].voted = false;
+        votersData[voterAddress].votedOption1 = false;
+        votersData[voterAddress].votedOption2 = false;
         delegations[voterAddress] = voterAddress;
         voters.push(voterAddress);
     }
@@ -191,8 +206,7 @@ contract LiquidDemocracy {
     * @notice Create a new ballot
     */
     function createNewBallot(address from, bytes32 ipfsTitle) private {
-//        require(votersData[from].registered); TODO
-
+        require(votersData[from].registered);
         Ballot memory ballot = Ballot(from, ballotData.number, ipfsTitle, BallotOption(0), BallotOption(0));
         ballotData.ballots.push(ballot);
         ballotData.number += 1;
@@ -211,6 +225,7 @@ contract LiquidDemocracy {
         require(votersData[representative].registered);
 
         delegations[representee] = representative; // Delegate my own vote
+        votersData[representee].representative = representative;
 
         address nextRepresentative = representative;
 
@@ -245,6 +260,7 @@ contract LiquidDemocracy {
         }
         votersData[nextRepresentative].weight -= votersData[representee].weight;
         delegations[representee] = representee;
+        votersData[representee].representative = representee;
 
     }
 
@@ -257,13 +273,16 @@ contract LiquidDemocracy {
         // Cannot vote more than once and must be registered
         require(votersData[voter].registered);
         require(!votersData[voter].voted);
+        require(delegations[voter] == voter); // Cannot vote if it has a representative
 
         votersData[voter].voted = true;
 
         uint weight = votersData[voter].weight;
         if (voteOption == 1) {
+            votersData[voter].votedOption1 = true;
             ballotData.ballots[ballotId].option1.voteCount += weight;
         } else {
+            votersData[voter].votedOption2 = true;
             ballotData.ballots[ballotId].option2.voteCount += weight;
         }
 

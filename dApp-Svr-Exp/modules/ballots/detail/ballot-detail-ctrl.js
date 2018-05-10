@@ -17,67 +17,27 @@
         $scope.users = [];
 
         populateVoters();
-        renderYesGraph();
-        renderNoGraph();
-
-        function back() {
-          $location.path('/ballots')
-        };
 
         /**
          * Renders 'Yes' delegations graph
          */
-        function renderYesGraph() {
-          // TODO: populating with dummy data atm
-          var nodesAndEdgesYes = [];
+        function renderYesGraph(nodesAndEdges) {
+          var nodesAndEdgesYes = nodesAndEdges.slice();
           nodesAndEdgesYes.push({ group: "nodes", data: { id: 0, name: "yes", type: "option" } });
-          for (let i = 2; i < 6; i++) {
-            let voterName = "Voter " + i;
-            nodesAndEdgesYes.push({ group: "nodes", data: { id: i, name: voterName, type: "voter" } });
-          }
+          nodesAndEdgesYes.push({ group: "nodes", data: { id: 1, name: "no", type: "option" } });
 
-          for (let j = 2; j < 4; j++) {
-            const id = j + 100
-            nodesAndEdgesYes.push({ group: "edges", data: { id: id, source: 0, target: j } });
-          }
-          for (let j = 4; j < 6; j++) {
-            const id = j + 100
-            let k = j - 2
-            nodesAndEdgesYes.push({ group: "edges", data: { id: id, source: k, target: j } });
-          }
-
-          graph.renderGraph(nodesAndEdgesYes, 'yes-container', '#9F9');
+          graph.renderGraph(nodesAndEdgesYes, 'yes-container', '#9F9', 0);
         }
 
         /**
          * Renders 'No' delegations graph
          */
-        function renderNoGraph() {
-          // TODO: populating with dummy data atm          
-          var nodesAndEdgesNo = [];
+        function renderNoGraph(nodesAndEdges) {
+          var nodesAndEdgesNo = nodesAndEdges.slice();
+          nodesAndEdgesNo.push({ group: "nodes", data: { id: 0, name: "yes", type: "option" } });
           nodesAndEdgesNo.push({ group: "nodes", data: { id: 1, name: "no", type: "option" } });
-          for (let i = 9; i < 19; i++) {
-            let voterName = "Voter " + i;
-            nodesAndEdgesNo.push({ group: "nodes", data: { id: i, name: voterName, type: "voter" } });
-          }
 
-          for (let j = 9; j < 12; j++) {
-            const id = j + 100
-            let k = 1
-            nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j } });
-          }
-          for (let j = 12; j < 17; j++) {
-            const id = j + 100
-            let k = j - 2
-            nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j } });
-          }
-          for (let j = 17; j < 19; j++) {
-            const id = j + 100
-            let k = 16
-            nodesAndEdgesNo.push({ group: "edges", data: { id: id, source: k, target: j } });
-          }
-
-          graph.renderGraph(nodesAndEdgesNo, 'no-container', '#F99');
+          graph.renderGraph(nodesAndEdgesNo, 'no-container', '#F99', 1);
         }
 
         /**
@@ -87,27 +47,74 @@
         */
         async function populateVoters() {
 
+          var edges = [];
+          var nodes = [];
+
           console.log("Populating available voters to delegate...");
           const voters = await apiETH.instance.getVoters.call();
           console.log("There are " + voters.length + " voters");
           for (let i = 0; i < voters.length; i++) {
-            const voter = await apiETH.instance.getVoterData.call(voters[i]);
-            const voterIpfsHash = apiIPFS.getIpfsHashFromBytes32(voter[3]);
-            apiIPFS.node.files.cat(voterIpfsHash, function (err, file) {
-              if (err) {
-                throw err
+            console.log("Getting voter data " + (i + 1) + " out of " + voters.length);
+            const currentVoter = voters[i];
+            // console.log("Current voter: ", currentVoter);
+            const voter = await apiETH.instance.getVoterData.call(currentVoter);
+            const representative = voter[4];
+            const ipfsHash = voter[3];
+            const voted = voter[2];
+            const voterIpfsHash = apiIPFS.getIpfsHashFromBytes32(ipfsHash);
+            console.log("IPFS voter hash: ", voterIpfsHash);
+
+            // Gets the IPFS data and timeouts if not available in the given time
+            const file = await Promise.race([
+              apiIPFS.node.files.cat(voterIpfsHash),
+              new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 1000))
+            ]).catch(function (err) {
+              console.error("Voter data timed out!. Voter: ", i+1);
+              return null;
+            })
+
+            // Skips the voter if timeouts
+            if (file == null) {
+              continue;
+            }
+
+            const data = file.toString('utf8');
+            const userName = JSON.parse(data).name;
+            $scope.users.push(
+              {
+                name: userName,
+                id: currentVoter,
+                icon: new Identicon(currentVoter, 30).toString()
               }
-              const data = file.toString('utf8');
-              console.log(data);
-              const userName = JSON.parse(data).desc;
-              $scope.users.push(
-                {
-                  name: userName,
-                  id: voters[i],
-                  icon: new Identicon(voters[i], 30).toString()
-                }
-              );
-            });
+            );
+
+            populateGraphFromVoter(nodes, edges, currentVoter, userName, voter, representative, voted);
+          }
+
+          // Renders graphs
+          const nodesAndEdges = nodes.concat(edges);
+          renderYesGraph(nodesAndEdges);
+          renderNoGraph(nodesAndEdges);
+
+        }
+
+        /**
+         * Populate nodes and edges of the graph according to delegations and votes.
+         * NOTE: For visualization purposes, the source and target are inverted, so delegations can be shown as a Tree
+         */
+        function populateGraphFromVoter(nodes, edges, currentVoter, userName, voter, representative, voted) {
+          nodes.push({ group: "nodes", data: { id: currentVoter, name: userName, type: "voter" } });
+          if (representative != currentVoter) { // If there is a delegation
+            edges.push({ group: "edges", data: { id: representative + "-" + currentVoter, source: representative, target: currentVoter } });
+          }
+          if (voted) {
+            const votedYes = voter[5];
+            const votedNo = voter[6];
+            if (votedYes) {
+              edges.push({ group: "edges", data: { id: currentVoter + "-voted", source: 0, target: currentVoter } });
+            } else {
+              edges.push({ group: "edges", data: { id: currentVoter + "-voted", source: 1, target: currentVoter } });
+            }
           }
         }
 
@@ -133,10 +140,26 @@
           // TODO: Call ETH revoke delegation
         }
 
+        /**
+         * Vote for an option, currently only to ballot 0.
+         * @param {*} voteValue
+         */
         function vote(voteValue) {
-          // TODO: call ETH vote
-          console.log(voteValue);
+          if (voteValue == "yes") {
+            apiETH.instance.vote(0, 1, { gas: 1000000 });
+          } else if (voteValue == "no") {
+            apiETH.instance.vote(0, 2, { gas: 1000000 });
+          } else {
+            console.error("Wrong vote value");
+          }
         }
+
+        /**
+         * Back button action
+         */
+        function back() {
+          $location.path('/ballots')
+        };
 
       }]);
 
