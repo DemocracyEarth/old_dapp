@@ -1,12 +1,20 @@
 (function () {
   'use strict';
-  angular.module('dAppSvrApp').factory('apiIPFS', [function() {
+  angular.module('dAppSvrApp').factory('apiIPFS', ['$location', function($location) {
     let node;
 
     function initializeNode(ready){
-      node = window.IpfsApi('server.cryptopolitics.global', '5001');
-      console.log("IPFS node ready");
-      ready(node);
+      if (['127.0.0.1','localhost'].includes(location.hostname)) {
+        node = new Ipfs({ repo: 'ipfs-' + 1 });
+        node.once('ready', () => {
+          console.log('IPFS node ready, running locally');
+          ready(node);
+        });
+      } else {
+        node = window.IpfsApi('server.cryptopolitics.global', '5001');
+        console.log("IPFS node ready, running in cloud");
+        ready(node);
+      }
     }
     return {
       node: node,
