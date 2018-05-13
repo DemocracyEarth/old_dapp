@@ -106,6 +106,13 @@ contract LiquidDemocracy {
     }
 
     /**
+    * @notice Gets voter's data
+    */
+    function getMyData() public view returns (uint, bool, bool, bytes32, address, bool, bool) {
+      return getVoterData(msg.sender);
+    }
+
+    /**
     * @notice Gets the representative of the voter that calls this method
     */
     function getMyRepresentative() public view returns (address) {
@@ -173,6 +180,13 @@ contract LiquidDemocracy {
     */
     function vote(uint ballotId, uint voteOption) external {
         vote(msg.sender, ballotId, voteOption);
+    }
+
+    /**
+    * @notice Removes the vote given
+    */
+    function removeVote() external {
+      removeVote(msg.sender);
     }
 
     /**
@@ -292,6 +306,26 @@ contract LiquidDemocracy {
             votersData[voter].votedOption2 = true;
             ballotData.ballots[ballotId].option2.voteCount += weight;
         }
+
+    }
+
+    /**
+    * @notice Removes the vote given
+    * @param voter The address of the voter
+    */
+    function removeVote(address voter) private {
+
+      require(votersData[voter].voted);
+
+      if (votersData[voter].votedOption1) {
+        ballotData.ballots[0].option1.voteCount -= votersData[voter].weight;
+      } else {
+        ballotData.ballots[0].option2.voteCount -= votersData[voter].weight;
+      }
+
+      votersData[voter].voted = false;
+      votersData[voter].votedOption1 = false;
+      votersData[voter].votedOption2 = false;
 
     }
 }

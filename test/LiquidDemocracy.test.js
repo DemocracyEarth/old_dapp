@@ -208,6 +208,29 @@ contract('LiquidDemocracy', function (accounts){
             }
         });
 
+    describe('removes votes', function () {
+
+        it('removes a voters vote', async function () {
+
+            const voter = accounts[0];
+            await this.liquidDemocracyBallot.createNewBallot(voter);
+            await this.liquidDemocracyBallot.vote(0, 1, { from: voter });
+            await this.liquidDemocracyBallot.removeVote({ from: voter });
+
+            const voterData = await this.liquidDemocracyBallot.getVoterData.call(voter);
+            const voted = voterData[2];
+            const votedOption1 = voterData[5];
+            const votedOption2 = voterData[6];
+            const count = await this.liquidDemocracyBallot.getBallotVoteOption1Count(0);
+
+            voted.should.equal(false);
+            votedOption1.should.equal(false);
+            votedOption2.should.equal(false);
+            count.toNumber().should.equal(0);
+        });
+
+    });
+
     });
 
 });
