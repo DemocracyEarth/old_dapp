@@ -9,6 +9,8 @@
       vm.setProfile = setProfile;
       vm.clearProfile = clearProfile;
       vm.checkConnection = checkConnection;
+      vm.checkAddress = checkAddress;
+      vm.resetLocalUser = resetLocalUser;
       
       vm.user = JSON.parse(localStorage.getItem('user'));
       
@@ -46,7 +48,7 @@
               $scope.$apply();
             }).catch(function(err) {
               vm.user.registered = undefined;
-              showCancel(err);
+              showError('Metamask operation canceled', err);
             });
           });          
         }
@@ -57,13 +59,10 @@
           vm.status = {icon: 'cached', message: 'Verifying'};
           apiETH.instance.resetVoter({gas: 1000000, gasPrice: 20000000000}).then(function(error, result) {
             $log.info('voter reseted:', error, result);
-            localStorage.setItem('user', null);
-            vm.user = null;
-            $scope.$parent.user = null;
-            checkConnection();
+            resetLocalUser();
             $scope.$apply();
           }).catch(function(err) {
-            showCancel(err);
+            showError('Metamask operation canceled', err);
           });
         }
       }
@@ -78,14 +77,41 @@
         return vm.metamaskOn;
       }
 
-      function showCancel(err) {
+      async function checkAddress() {
+        vm.status = {icon: 'cached', message: 'Verifying'};
+        const voter = await apiETH.instance.getVoterData.call(vm.user.address);
+        if (!voter[1]) {
+          showError('User is not registered', null);
+        } else {
+          const voterIpfsHash = apiIPFS.getIpfsHashFromBytes32(voter[3]);
+          const voterInfo = await apiIPFS.node.files.cat(voterIpfsHash);
+          vm.user = JSON.parse(voterInfo.toString('utf8'));
+          vm.user.icon = new Identicon(vm.user.address, 30).toString();
+          vm.user.registered = true;
+          localStorage.setItem('user', JSON.stringify(vm.user));
+          $log.info("vm.user",vm.user);
+          $scope.$parent.user = vm.user;
+          vm.status = {icon: 'done_all', message: 'Confirmed'};
+          $scope.$apply();
+  
+        }
+      }
+
+      function resetLocalUser() {
+        localStorage.setItem('user', null);
+        vm.user = null;
+        $scope.$parent.user = null;
+        checkConnection();
+      }
+
+      function showError(msg, err) {
         $mdToast.show(
           $mdToast.simple()
-            .textContent('Metamask operation canceled')
+            .textContent(msg)
             .hideDelay(2500)
             .position('top center')
         );
-        $log.log("operation canceled", err.message);
+        $log.log("Error", msg, err);
       }
     }]);
 })();

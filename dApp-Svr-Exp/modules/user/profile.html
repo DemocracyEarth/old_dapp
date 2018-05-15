@@ -36,7 +36,8 @@
             <input ng-model="vm.user.address" disabled>
           </md-input-container>
         <md-subheader>
-          <md-button  ng-disabled="!signUpForm.$valid" md-no-ink class="md-raised" ng-click="vm.setProfile()">Sign Up</md-button>
+          <md-button ng-disabled="!signUpForm.$valid" md-no-ink class="md-raised" ng-click="vm.setProfile()">Sign Up</md-button>
+          <md-button ng-disabled="!vm.user.address" md-no-ink class="md-raised" ng-click="vm.checkAddress()">Login</md-button>
         </md-subheader>
       </md-content>
   </form>    
@@ -59,6 +60,9 @@
       <label>Address</label>
       <input ng-model="vm.user.address" disabled>
     </md-input-container>
+    <md-subheader>
+      <md-button md-no-ink class="md-raised" ng-click="vm.resetLocalUser()">Logout</md-button>
+    </md-subheader>
   </md-content>
     
   <md-content class="inset">
