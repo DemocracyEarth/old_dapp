@@ -136,37 +136,8 @@
         });
       }
 
-      function NewBallotDialogCtrl($scope, $mdDialog) {
-        $scope.hide = function () {
-          $mdDialog.hide();
-        };
-        $scope.cancel = function () {
-          $mdDialog.cancel();
-        };
-        $scope.answer = function (answer) {
-          $mdDialog.hide(answer);
-          $log.log("data", answer)
-        };
-      };
-
-      function addBallot(ev) {
-        $mdDialog.show({
-          controller: NewBallotDialogCtrl,
-          templateUrl: '../modules/ballots/add/ballot.html',
-          targetEvent: ev,
-          clickOutsideToClose: true
-        })
-          .then(function (newBallot) {
-            if (newBallot === undefined) {
-              $log.log('You cancelled the dialog.');
-            } else {
-              newBallot.date = new Date();
-              $log.log('New ballot' + newBallot);
-              putBallot(newBallot);
-            }
-          }, function (err) {
-            $log.error('addBallot modal error:', err);
-          });
+      function addBallot() {
+        $location.path('/ballots/add');
       };
 
       function ballotDetail(ballot) {
@@ -192,25 +163,6 @@
             $log.log("Ballot title: " + ballotTitle);
             callback(ballotTitle, owner);
           });
-        });
-      }
-
-      function putBallot (ballot) {
-        apiIPFS.node.files.add(new apiIPFS.node.types.Buffer(JSON.stringify(ballot)), (err, filesAdded) => {
-          if (err) {
-            return $log.error('Error - ipfs files add', err, res);
-          }
-          $log.log('filesAdded', filesAdded);
-          filesAdded.forEach((file) => {
-            $log.log('successfully stored', file.hash);
-            const validETHHash = apiIPFS.getBytes32FromIpfsHash(file.hash)
-            $log.log("ETH byte32: " + validETHHash);
-            apiETH.instance.createNewBallot(validETHHash, {gas: 1000000}).then(function(result) {
-              $log.log('New Ballot created:', JSON.stringify(ballot));
-            }).catch(function(err) {
-              $log.log(err.message);
-            });
-          })
         });
       }
     }]);

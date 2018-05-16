@@ -1,0 +1,20 @@
+  <div class="back-button-div">
+    <button ng-click="vm.back()" class="view-ballot">
+      Back
+    </button>
+  </div>
+  
+  <div class="ballot-container">
+    <div class="description-div">
+        <form name="addBallotForm"> <h2>Add Ballot</h2>
+          <md-input-container>
+              <label>Description</label>
+                <textarea md-maxlength="140" rows="3" ng-model="newBallot.desc"></textarea>
+            </md-input-container>
+        </form>
+      <div class="md-actions" layout="row">
+        <span flex></span>
+        <md-button md-no-ink class="md-raised" ng-click="vm.add(newBallot)" class="md-primary"> Add </md-button>
+        </div>
+    </div>
+  </div>
