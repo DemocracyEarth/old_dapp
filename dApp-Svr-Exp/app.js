@@ -13,6 +13,10 @@
           templateUrl: 'modules/ballots/detail/ballot-detail.html',
           controller: 'BallotDetailCtrl as vm'
         })
+        .when('/ballot-dashboard/:id', {
+          templateUrl: 'modules/ballot/ballot-dashboard.html',
+          controller: 'BallotDashboardCtrl as vm'
+        })
         .when('/profile', {
           templateUrl: 'modules/user/profile.html',
           controller: 'ProfileCtrl as vm'

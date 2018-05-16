@@ -5,6 +5,7 @@
       var vm = this;
       vm.addBallot = addBallot;
       vm.ballotDetail = ballotDetail;
+      vm.ballotDashboard = ballotDashboard;
       vm.filterBallots = filterBallots;
       vm.getStatus = getStatus;
       vm.getTotalVotes = getTotalVotes;
@@ -172,6 +173,11 @@
       function ballotDetail(ballot) {
         $location.path('/ballots/' + ballot.id);
         localStorage.setItem('ballot', JSON.stringify(ballot));
+      };
+
+      function ballotDashboard(ballot) {
+        localStorage.setItem('ballot', JSON.stringify(ballot));
+        $location.path('/ballot-dashboard/' + ballot.id);
       };
 
       // TODO: only getting last ballot atm
