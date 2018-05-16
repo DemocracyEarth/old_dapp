@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  font-family: 'Roboto', 'Noto', sans-serif;
+  padding: 0;
+  font-family: 'Lato', sans-serif;
   line-height: 1.5;
   min-height: 100vh;
   background-color: #eee;
@@ -121,9 +122,11 @@ body {
 .button-container {
   text-align: right;
 }
+
 .md-button.md-fab {
   background-color: #FFA085;
 }
+
 .md-button.md-fab:not([disabled]):hover {
   background-color: #FFE079;
 }
@@ -269,10 +272,11 @@ body {
 
 .back-button-div {
   margin: 0;
-  padding:0;
+  padding: 0;
   margin-top: -12px;
   margin-bottom: 12px;
 }
+
 .tab-div {
   width: 464px;
   display: inline-block;
@@ -280,5 +284,94 @@ body {
 }
 
 md-input-container {
-width:100%;
+  width: 100%;
+}
+
+/* ATOMS */
+
+/* BALLOT DASHBOARD */
+
+/*Top Titles*/
+
+.ballot-dashboard-top-container {
+  width: 984px;
+  margin: 0;
+  padding: 0px;
+  border: none;
+  margin-top: 36px;
+  margin-right: auto;
+  margin-left: auto;
+  display: block;
+}
+
+.ballot-dashboard-top-titles {
+  margin: 0;
+  padding: 0;
+  border: none;
+}
+
+.ballot-details-container-title {
+  width: 648px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  display: inline-block;
+}
+
+.box-title {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 24px;
+  padding: 0;
+  margin: 0;
+  border: none;
+  color: #979797;
+}
+
+.ballot-actions-container-title {
+  width: 312px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  margin-left: 19px;
+  /*WHY ?!?!!?!*/
+  display: inline-block;
+}
+
+/* Ballot Details*/
+
+.ballot-details-container {
+  width: 648px;
+  height: 400px;
+  margin: 0;
+  padding: 0;
+  background: #FFFFFF;
+  border: solid 1px #D8D8D8;
+  border-radius: 6px;
+  display: inline-block;
+  float: left;
+}
+
+.ballot-title {
+  margin: 0;
+  padding: 0;
+  max-width: 528px;
+  font-style: regular;
+  font-size: 24px;
+  line-height: 30px;
+  padding-top: 24px;
+  padding-left: 24px;
+}
+
+.ballot-action-container {
+  width: 312px;
+  height: 400px;
+  margin: 0;
+  margin-left: 19px;
+  /*WHY?!?*/
+  padding: 0;
+  background: #FFFFFF;
+  border: solid 1px #D8D8D8;
+  border-radius: 6px;
+  display: inline-block;
 }
