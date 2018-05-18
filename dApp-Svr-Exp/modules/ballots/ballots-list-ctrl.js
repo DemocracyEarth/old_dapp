@@ -12,46 +12,7 @@
       vm.getWidth = getWidth;
       vm.selected = localStorage.getItem('filter') || 'all';
 
-      vm.ballotsTest = [
-        {
-          desc: 'Brexit?',
-          author: 'awssi123',
-          date: '21-04-2018-18:36:15',
-          voted: 1,
-          id: 1,
-          votes: {
-            options: ['Yes', 'No'],
-            totals: [46, 84]
-          },
-          icon: new Identicon('0x7700edddd3fc34c18fe2ab14b5345f1596d10551', 30).toString()
-        },
-        {
-          desc: 'Euro?',
-          author: 'aerti123',
-          date: '21-04-2018-18:37:15',
-          delegated: 5,
-          id: 2,
-          votes: {
-            options: ['Yes', 'No'],
-            totals: [84, 46]
-          },
-          icon: new Identicon('0x39f0B5C5D50AEB7F9Ea8BA003733f8e2678A8017', 30).toString()
-        },
-        {
-          desc: 'Nuclear?',
-          author: 'aeyui123',
-          date: '21-04-2018-18:38:15',
-          open: true,
-          id: 3,
-          votes: {
-            options: ['Yes', 'No'],
-            totals: [25, 95]
-          },
-          icon: new Identicon('0x0473a8fffa27305e60c5d0e78c26d9d1f4321c64', 30).toString()
-        }
-      ];
-      
-      vm.ballots = vm.ballotsTest;
+      vm.ballots = [];
       
       function getStatus(ballot) {
           if (ballot.open)
