@@ -22,17 +22,17 @@
   </div>
   <div class="yes-no-results-container">
     <p class="votes-cast">
-      2000 votes cast:
+      {{vm.ballot.total}} votes cast:
     </p>
     <div class="vote-representation-container">
-      <div class="yes-vote-cast-div">
+      <div class="yes-vote-cast-div" ng-style="{'width':'{{vm.op1.width}}%'}">
         <p class="yes-votes-cast">
-          Yes: 50%
+          {{vm.op1.desc}} {{vm.op1.porc}} % ({{vm.ballot.option1}})
         </p>
       </div>
-      <div class="no-vote-cast-div">
+      <div class="no-vote-cast-div" ng-style="{'width':'{{vm.op2.width}}%'}">
         <p class="no-votes-cast">
-          No: 50%
+          {{vm.op2.desc}} {{vm.op2.porc}}% ({{vm.ballot.option2}})
         </p>
       </div>
     </div>

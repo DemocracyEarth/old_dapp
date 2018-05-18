@@ -18,6 +18,57 @@
 
         populateVoters();
 
+        function calculateTotals() {
+          const porc1 = vm.ballot.option1 * 100 / vm.ballot.total || 0;
+          const porc2 = vm.ballot.option2 * 100 / vm.ballot.total || 0;
+          let width1 = porc1;
+          let width2 = porc2;
+          if (width1 < 10 ) {
+            width1 = 10;
+          }
+          if (width2 < 10 ) {
+            width2 = 10;
+          }
+          vm.op1 = {
+            width: width1,
+            desc: 'Yes',
+            porc: porc1
+          }
+          vm.op2 = {
+            width: width2,
+            desc: 'No',
+            porc: porc2
+          }
+
+        }
+
+        function getBallot(position) {
+          const pos = Number(position);
+          console.log("pos", pos);
+          apiETH.instance.getBallot(pos).then(function(ballot) {
+            const ipfsBallotTitle = ballot[0];
+            const owner = ballot[1];
+            vm.ballot.option1 = ballot[2].toNumber();
+            vm.ballot.option2 = ballot[3].toNumber();
+            vm.ballot.total = vm.ballot.option1 + vm.ballot.option2;
+            $log.log('Ballot: ', vm.ballot);
+            $log.log('Ballot IPFS address: ' + ipfsBallotTitle);
+            calculateTotals();
+            $scope.$apply();
+            // const validIpfsAddress = apiIPFS.getIpfsHashFromBytes32(ipfsBallotTitle);
+            // $log.log("Valid IPFS address: ", validIpfsAddress);
+  
+            // apiIPFS.node.files.cat(validIpfsAddress, function (err, file) {
+            //   if (err) throw err;
+            //   const data = file.toString('utf8');
+            //   $log.log("Ballot data: ", data);
+            //   const ballotTitle = JSON.parse(data).desc;
+            //   $log.log("Ballot title: " + ballotTitle);
+            //   callback(ballotTitle, owner);
+            // });
+          });
+        }
+        getBallot(vm.ballotId);
         /**
          * Renders 'Yes' delegations graph
          */
