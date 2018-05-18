@@ -11,7 +11,7 @@
       vm.getOption = getOption;
       vm.getWidth = getWidth;
       vm.selected = localStorage.getItem('filter') || 'all';
-
+      
       vm.ballots = [];
       
       function getStatus(ballot) {
@@ -28,9 +28,9 @@
 
       function filterBallots() {
         if (vm.selected !== 'all') {
-          vm.ballots = vm.ballotsTest.filter(ballot => ballot[vm.selected]);
+          vm.ballots = vm.ballots.filter(ballot => ballot[vm.selected]);
         } else {
-          vm.ballots = vm.ballotsTest;
+          vm.ballots = vm.ballots;
         }
         localStorage.setItem('filter', vm.selected);
       }
@@ -43,15 +43,17 @@
       function getOption(votes, pos) {
         const totalVoted = getTotalVotes(votes);
         const desc = votes.options[pos-1];
-        const total = getPorcent(totalVoted, votes.totals[pos-1]);
+        const total = getPorcent(totalVoted, votes.totals[pos-1]) || 0;
         return `${desc} ${total}%`;
       }
 
       function getWidth(votes, pos) {
-        const total = getTotalVotes(votes) + 10;
-        return getPorcent(total, votes.totals[pos-1]);
+        const total = getTotalVotes(votes);
+        if (total < 5) return 50;
+        return getPorcent(total || 50, votes.totals[pos-1]);
       }
       function getPorcent(total, number) {
+        if (total === 0) return 0;
         const porcent = number * 100 / total;
         return porcent.toFixed(2);
       }
@@ -76,23 +78,26 @@
         apiETH.instance.getBallotCount.call().then(function(ballots) {
           $log.info("There are " + ballots + " ballots");
           // TODO: supporting a single ballot atm
-          if (ballots == 0) {
-            vm.ballots = [];
-          } else {
-            getBallots(function (ballotTitle, ballotOwner) {
-                $log.log(vm.ballots);
-                vm.ballots.push({
-                    id: ballots - 1,
-                    desc: ballotTitle,
-                    icon: new Identicon(ballotOwner, 30).toString(),
-                    votes: {
-                      options: ['Yes', 'No'],
-                      totals: [Math.floor(Math.random()*100), Math.floor(Math.random()*100)]
-                    }
-                });
-                $scope.$apply();
-                $log.log(vm.ballots);
-            });
+          if (ballots > 0) {
+            for(let ballotPos = 0; ballotPos < ballots; ballotPos++ ) {
+              getBallots(ballotPos, function (err, ballot) {
+                if (!err) {
+                  $log.log(vm.ballots);
+                  vm.ballots.push({
+                      id: ballotPos,
+                      desc: ballot.desc,
+                      date: ballot.date,
+                      icon: new Identicon(ballot.owner, 30).toString(),
+                      votes: {
+                        options: ['Yes', 'No'],
+                        totals: [ballot.option1, ballot.option2]
+                      }
+                  });
+                  $scope.$apply();
+                  $log.log(vm.ballots);
+                }
+              });
+            }
           }
         });
       }
@@ -136,24 +141,28 @@
       };
 
       // TODO: only getting last ballot atm
-      function getBallots (callback) {
-        apiETH.instance.getLastBallot.call().then(function(ballot) {
-          const ipfsBallotTitle = ballot[0];
-          const owner = ballot[1];
-          $log.log('Ballot: ', ballot);
-          $log.log('Ballot IPFS address: ' + ipfsBallotTitle);
-          const validIpfsAddress = apiIPFS.getIpfsHashFromBytes32(ipfsBallotTitle);
-          $log.log("Valid IPFS address: ", validIpfsAddress);
+      async function getBallots (position, callback) {
+        const ethBallot = await apiETH.instance.getBallot(position);
+        $log.log('[ETH] - Ballot: ', ethBallot);
+        if(ethBallot[0] !== '0x'){
+          const ballot = {
+            ipfsHash: apiIPFS.getIpfsHashFromBytes32(ethBallot[0]),
+            owner: ethBallot[1],
+            option1: ethBallot[2].toNumber(),
+            option2: ethBallot[3].toNumber()
+          }
+          $log.log('ballot', ballot);
 
-          apiIPFS.node.files.cat(validIpfsAddress, function (err, file) {
-            if (err) throw err;
-            const data = file.toString('utf8');
-            $log.log("Ballot data: ", data);
-            const ballotTitle = JSON.parse(data).desc;
-            $log.log("Ballot title: " + ballotTitle);
-            callback(ballotTitle, owner);
-          });
-        });
+          const file = await apiIPFS.node.files.cat(ballot.ipfsHash);
+          const data = file.toString('utf8');
+          $log.log("[IPFS] - Ballot data: ", data);
+          ballot.desc = JSON.parse(data).desc;
+          ballot.date = JSON.parse(data).date;
+          $log.log("Ballot detail: " + ballot);
+          callback(null, ballot);
+        } else {
+          callback('No address', null);
+        }
       }
 
       function putBallot (ballot) {
