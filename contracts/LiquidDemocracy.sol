@@ -123,6 +123,20 @@ contract LiquidDemocracy {
     }
 
     /**
+    * @notice Gets ballot by position in array
+    */
+    function getBallot(uint position) public view returns (bytes32, address, uint, uint) {
+        require(0 < position - 1);
+        require(position < ballotData.number);
+        return (
+            ballotData.ballots[position].ipfsBallotTitle,
+            ballotData.ballots[position].owner,
+            ballotData.ballots[position].option1.voteCount,
+            ballotData.ballots[position].option2.voteCount
+        );
+    }
+
+    /**
     * @notice Gets the representative of the given voter
     */
     function getRepresentative(address voter) public view returns (address) {
