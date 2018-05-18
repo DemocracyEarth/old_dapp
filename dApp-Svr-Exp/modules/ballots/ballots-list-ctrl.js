@@ -159,15 +159,15 @@
       function putBallot (ballot) {
         apiIPFS.node.files.add(new apiIPFS.node.types.Buffer(JSON.stringify(ballot)), (err, filesAdded) => {
           if (err) {
-            return $log.error('Error - ipfs files add', err, res);
+            return $log.error('[IPFS] - Error - ipfs files add', err, res);
           }
-          $log.log('filesAdded', filesAdded);
+          $log.log('[IPFS] - filesAdded', filesAdded);
           filesAdded.forEach((file) => {
-            $log.log('successfully stored', file.hash);
-            const validETHHash = apiIPFS.getBytes32FromIpfsHash(file.hash)
-            $log.log("ETH byte32: " + validETHHash);
-            apiETH.instance.createNewBallot(validETHHash, {gas: 1000000}).then(function(result) {
-              $log.log('New Ballot created:', JSON.stringify(ballot));
+            $log.log('[IPFS] - successfully stored', file.hash);
+            const ipfsHashEncoded = apiIPFS.getBytes32FromIpfsHash(file.hash)
+            $log.log("ETH byte32: " + ipfsHashEncoded);
+            apiETH.instance.createNewBallot(ipfsHashEncoded, {gas: 1000000}).then(function(result) {
+              $log.log('[ETH] - New Ballot created:', JSON.stringify(ballot));
             }).catch(function(err) {
               $log.log(err.message);
             });
