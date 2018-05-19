@@ -9,34 +9,34 @@
         </div>
     </div>
     <div class="ballot-details-container">
-        <p class="ballot-title">Should the United Kingdom remain a part of the European Union?</p>
+        <p class="ballot-title">{{vm.ballot.desc}}</p>
         
         <div class="ballot-subtitles-container">
             <p class="ballot-subtitle">Posted by</p>
             <p class="ballot-subtitle-dynamic">Open Coop Conference, 2hours ago</p>
         </div>
 
-        <div class="yes-bar-container">
-            <div class="yes-bar-slider">
-                <p class="slider-text">
-                    Yes
-                </p>
-            </div>
-            <p class="slider-details">
-                25 Votes / 25%
-            </p>
-        </div>
+			<div class="yes-bar-container">
+					<div class="yes-bar-slider" ng-style="{'width':'{{vm.getWidth(vm.ballot.votes, 1)}}%'}">
+							<p class="slider-text">
+									Yes
+							</p>
+					</div>
+					<p class="slider-details">
+							{{vm.ballot.votes.totals[0]}} Votes / {{vm.getWidth(vm.ballot.votes, 1)}}%
+					</p>
+			</div>
 
-        <div class="no-bar-container">
-            <div class="no-bar-slider">
-                <p class="slider-text">
-                    No
-                </p>
-            </div>
-            <p class="slider-details">
-                75 Votes / 75%
-            </p>
-        </div>
+			<div class="no-bar-container">
+					<div class="no-bar-slider" ng-style="{'width':'{{vm.getWidth(vm.ballot.votes, 2)}}%'}">
+							<p class="slider-text">
+									No
+							</p>
+					</div>
+					<p class="slider-details">
+							{{vm.ballot.votes.totals[1]}} Votes / {{vm.getWidth(vm.ballot.votes, 2)}}%
+					</p>
+			</div>
 
         <div class="ballot-details-tag">
             200 Cast Votes
@@ -46,7 +46,7 @@
         </div>
 
 
-    </div>
+	</div>
    
 	<div class="ballot-action-container">
 		<div class="tab">
@@ -67,6 +67,15 @@
 			</div>
 		</div>
 	</div>
-
+	<div class="ballot-representation-container">
+		<div class="graph-container">
+				<div class="yes-container" id="yes-container" style="height:  50vh;">
+					<!-- <p class="yes-graph-title">Yes</p> -->
+				</div>
+				<div class="no-container" id="no-container" style="height: 50vh;">
+					<!-- <p class="no-graph-title">No</p> -->
+				</div>
+			</div>
+	</div>
 
 </div>

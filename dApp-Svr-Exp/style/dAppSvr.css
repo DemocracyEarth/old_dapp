@@ -510,3 +510,19 @@ md-input-container {
   border: 1px solid #ccc;
   border-top: none;
 }
+
+.ballot-representation-container {
+  width: 984px;
+  height: 400px;
+  margin: 0;
+  padding: 0px;
+  border: none;
+  margin-top: 36px;
+  margin-right: auto;
+  margin-left: auto;
+  background: #FFFFFF;
+  border: solid 1px #D8D8D8;
+  border-radius: 6px;
+  display: inline-block;
+  float: left;
+}

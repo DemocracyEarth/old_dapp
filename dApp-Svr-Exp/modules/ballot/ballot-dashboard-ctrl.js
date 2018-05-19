@@ -10,7 +10,8 @@
       vm.delegate = delegate;
       vm.revokeVote = revokeVote;
       vm.revokeDelegation = revokeDelegation;
-
+      vm.getTotalVotes = getTotalVotes;
+      vm.getWidth = getWidth;
       vm.ballotId = $routeParams.id;
       vm.ballot = JSON.parse(localStorage.getItem('ballot'));
 
@@ -26,6 +27,18 @@
 
       $scope.users = [];
 
+      function getTotalVotes(votes) {
+        return votes.totals.reduce((a, b) => a + b, 0);
+      }
+
+      function getWidth(votes, pos) {
+        const total = getTotalVotes(votes) + 10;
+        return getPorcent(total, votes.totals[pos-1]);
+      }
+      function getPorcent(total, number) {
+        const porcent = number * 100 / total;
+        return porcent.toFixed(2);
+      }
       //populateVoters();
 
       /**
