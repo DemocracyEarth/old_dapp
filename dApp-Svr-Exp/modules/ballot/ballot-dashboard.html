@@ -9,27 +9,27 @@
         </div>
     </div>
     <div class="ballot-details-container">
-        <p class="ballot-title">Should the United Kingdom remain a part of the European Union?</p>
+        <p class="ballot-title">{{vm.ballot.desc}}</p>
 
         <div class="yes-bar-container">
-            <div class="yes-bar-slider">
+            <div class="yes-bar-slider" ng-style="{'width':'{{vm.getWidth(vm.ballot.votes, 1)}}%'}">
                 <p class="slider-text">
                     Yes
                 </p>
             </div>
             <p class="slider-details">
-                25 Votes / 25%
+                {{vm.ballot.votes.totals[0]}} Votes / {{vm.getWidth(vm.ballot.votes, 1)}}%
             </p>
         </div>
 
         <div class="no-bar-container">
-            <div class="no-bar-slider">
+            <div class="no-bar-slider" ng-style="{'width':'{{vm.getWidth(vm.ballot.votes, 2)}}%'}">
                 <p class="slider-text">
                     No
                 </p>
             </div>
             <p class="slider-details">
-                75 Votes / 75%
+                {{vm.ballot.votes.totals[1]}} Votes / {{vm.getWidth(vm.ballot.votes, 2)}}%
             </p>
         </div>
 
