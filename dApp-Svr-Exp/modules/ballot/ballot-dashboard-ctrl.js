@@ -14,9 +14,19 @@
       vm.ballotId = $routeParams.id;
       vm.ballot = JSON.parse(localStorage.getItem('ballot'));
 
+      vm.tab = 1;
+
+      vm.setTab = function (tabId) {
+          vm.tab = tabId;
+      };
+
+      vm.tabIsSet = function (tabId) {
+          return vm.tab === tabId;
+      };
+
       $scope.users = [];
 
-      populateVoters();
+      //populateVoters();
 
       /**
        * Renders 'Yes' delegations graph
@@ -146,6 +156,7 @@
        */
       function vote(voteValue) {
         var option;
+        console.log("voteValue", voteValue);
         if (voteValue == "yes") {
           option = 1;
         } else if (voteValue == "no") {
