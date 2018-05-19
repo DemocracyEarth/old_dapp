@@ -15,14 +15,15 @@
       vm.ballotId = $routeParams.id;
       vm.ballot = JSON.parse(localStorage.getItem('ballot'));
 
-      vm.tab = 1;
+      vm.action = 1;
+      vm.graph = 1;
 
-      vm.setTab = function (tabId) {
-          vm.tab = tabId;
+      vm.setTab = function (type, tabId) {
+        vm[type] = tabId;
       };
 
-      vm.tabIsSet = function (tabId) {
-          return vm.tab === tabId;
+      vm.tabIsSet = function (type, tabId) {
+          return vm[type] === tabId;
       };
 
       $scope.users = [];
@@ -39,7 +40,7 @@
         const porcent = number * 100 / total;
         return porcent.toFixed(2);
       }
-      //populateVoters();
+      populateVoters();
 
       /**
        * Renders 'Yes' delegations graph
