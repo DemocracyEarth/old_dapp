@@ -342,7 +342,7 @@ md-input-container {
 
 .ballot-details-container {
   width: 648px;
-  height: 400px;
+  height: 382px;
   margin: 0;
   padding: 0;
   background: #FFFFFF;
@@ -362,19 +362,6 @@ md-input-container {
   padding-top: 24px;
   padding-left: 24px;
   padding-right: 24px;
-}
-
-.ballot-action-container {
-  width: 312px;
-  height: 400px;
-  margin: 0;
-  margin-left: 19px;
-  /*WHY?!?*/
-  padding: 0;
-  background: #FFFFFF;
-  border: solid 1px #D8D8D8;
-  border-radius: 6px;
-  display: inline-block;
 }
 
 .yes-bar-container {
@@ -465,11 +452,57 @@ md-input-container {
 .ballot-details-tag {
   background: #FAFAFA;
   border: 1px solid #D8D8D8;
-  width: 120px;
-
+  padding-left: 24px;
+  width: 100px;
 }
 
+.ballot-details-tag-list {
+  padding: 0;
+  margin-top: 24px;
+  margin-left: 24px;
+  text-align: left;
+}
 
+.ballot-details-tag-item {
+  display: inline-block;
+  background: #FAFAFA;
+  border: 1px solid #D8D8D8;
+  font-size: 16px;
+  line-height: 18px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-left: 18px;
+  padding-right: 18px;
+}
+
+.not-first-tag-item {
+  margin-left: 6px;
+}
+
+.ballot-refresh-notice {
+  padding: 0;
+  margin: 0;
+  font-size: 16px;
+  line-height: 24px;
+  margin-left: 24px;
+  padding-bottom: 24px;
+  color: #D8D8D8;
+}
+
+/*Ballot Actions*/
+
+.ballot-action-container {
+  width: 312px;
+  height: 382px;
+  margin: 0;
+  margin-left: 19px;
+  /*WHY?!?*/
+  padding: 0;
+  background: #FFFFFF;
+  border: solid 1px #D8D8D8;
+  border-radius: 6px;
+  display: inline-block;
+}
 
 /* Style the tab */
 
