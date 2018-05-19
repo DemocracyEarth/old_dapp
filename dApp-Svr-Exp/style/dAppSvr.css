@@ -361,6 +361,7 @@ md-input-container {
   line-height: 30px;
   padding-top: 24px;
   padding-left: 24px;
+  padding-right: 24px;
 }
 
 .ballot-action-container {
@@ -374,4 +375,69 @@ md-input-container {
   border: solid 1px #D8D8D8;
   border-radius: 6px;
   display: inline-block;
+}
+
+.yes-bar-container {
+  width: 528px;
+  height: 48px;
+  border-radius: 24px;
+  margin-left: 24px;
+  margin-top: 24px;
+  background: #979797;
+  border: 1px solid #D8D8D8;
+}
+
+.yes-bar-slider {
+  width: 138px;
+  /*This width should dynamically change*/
+  height: 48px;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  background: #00C091;
+  border: 1px solid #009873;
+  margin-top: -1px !important;
+  margin-left: -1px !important;
+}
+
+.no-bar-container {
+  width: 528px;
+  height: 48px;
+  border-radius: 24px;
+  margin-left: 24px;
+  margin-top: 12px;
+  background: #979797;
+  border: 1px solid #D8D8D8;
+}
+
+.no-bar-slider {
+  width: 396px;
+  /*This width should dynamically change*/
+  height: 48px;
+  border-top-left-radius: 24px;
+  border-bottom-left-radius: 24px;
+  background: #FD6581;
+  border: 1px solid #D23B57;
+  margin-top: -1px !important;
+  margin-left: -1px !important;
+}
+
+.slider-text {
+  font-size: 16px;
+  font-weight: bold;
+  line-height: 24px;
+  margin-left: 24px !important;
+  margin-top: 12px;
+  color: #FFFFFF;
+  width: 50px;
+  display: inline-block;
+}
+
+.slider-details {
+  font-size: 16px;
+  line-height: 24px;
+  margin-top: -37px;
+  margin-right: 24px;
+  text-align: right;
+  color: #FFFFFF;
+  float: right;
 }
