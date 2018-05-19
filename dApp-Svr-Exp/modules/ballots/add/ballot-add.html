@@ -5,7 +5,7 @@
   </div>
   
   <div class="ballot-container">
-    <div class="description-div">
+    <div class="description-div" ng-if="vm.newBallot=='null'">
         <form name="addBallotForm"> <h2>Add Ballot</h2>
           <md-input-container>
               <label>Description</label>
@@ -14,7 +14,18 @@
         </form>
       <div class="md-actions" layout="row">
         <span flex></span>
-        <md-button md-no-ink class="md-raised" ng-click="vm.add(newBallot)" class="md-primary"> Add </md-button>
+        <md-button ng-disabled="vm.userOk==false" ng-disabled="vm.metamaskOn==false" md-no-ink class="md-raised" ng-click="vm.add(newBallot)" class="md-primary"> Add </md-button>
         </div>
     </div>
+    <div class="description-div" ng-if="vm.newBallot!='null'">
+      <div layout="row" layout-align="center center">
+        Transaction status: <ng-md-icon icon="{{vm.status.icon}}"></ng-md-icon>{{vm.status.message}}
+      </div>
+      <md-input-container>
+        <label>Description</label>
+          <textarea md-maxlength="140" rows="3" ng-model="vm.newBallot.desc" disabled></textarea>
+      </md-input-container>
+    </div>
   </div>
+  <p ng-if="vm.userOk!=true">You must sign in to create a ballot</p>
+  <p ng-if="vm.metamaskOn!=true">You must connect to Metamask to create a ballot</p>
