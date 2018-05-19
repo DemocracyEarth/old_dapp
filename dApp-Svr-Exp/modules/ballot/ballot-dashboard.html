@@ -1,19 +1,35 @@
 <div class="ballot-dashboard-top-container">
-    
-    <div class="ballot-dashboard-top-titles">
-        <div class="ballot-details-container-title">
-            <p class="box-title">BALLOT DETAILS</p>
-        </div>
-        <div class="ballot-actions-container-title">
-            <p class="box-title">YOUR ACTIONS</p>
-        </div>
-    </div>
-    <div class="ballot-details-container">
-        <p class="ballot-title">Should the United Kingdom remain a part of the European Union?</p>
-    </div>
-    <div class="ballot-action-container">
-        For those fucking tabs Lucas!
-    </div>
-    
+
+	<div class="ballot-dashboard-top-titles">
+		<div class="ballot-details-container-title">
+			<p class="box-title">BALLOT DETAILS</p>
+		</div>
+		<div class="ballot-actions-container-title">
+			<p class="box-title">YOUR ACTIONS</p>
+		</div>
+	</div>
+	<div class="ballot-details-container">
+		<p class="ballot-title">Should the United Kingdom remain a part of the European Union?</p>
+	</div>
+	<div class="ballot-action-container">
+		<div class="tab">
+			<button class="tablinks" ng-click="vm.setTab(1)">Vote</button>
+			<button class="tablinks" ng-click="vm.setTab(2)">Delegation</button>
+		</div>
+		<div class="tabcontent">
+			<div ng-show="vm.tabIsSet(1)">
+					<h4>Vote</h4>
+					<form ng-submit="vm.vote(voteValue)">
+						<input type="radio" ng-model="voteValue" value="yes">Yes
+						<input type="radio" ng-model="voteValue" value="no">No
+					</form>
+				<button ng-disabled="voteValue ? false: true" ng-click="vm.vote(voteValue)">Vote</button>
+			</div>
+			<div ng-show="vm.tabIsSet(2)">
+				<h4>Delegation</h4>
+			</div>
+		</div>
+	</div>
+
 
 </div>
