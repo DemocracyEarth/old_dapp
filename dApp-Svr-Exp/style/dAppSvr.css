@@ -498,9 +498,9 @@ md-input-container {
   margin-left: 19px;
   /*WHY?!?*/
   padding: 0;
-  background: #FFFFFF;
+  /*background: #FFFFFF;
   border: solid 1px #D8D8D8;
-  border-radius: 6px;
+  border-radius: 6px;*/
   display: inline-block;
 }
 
@@ -508,32 +508,29 @@ md-input-container {
 
 .tab {
   overflow: hidden;
+  /*
   border: 1px solid #ccc;
   background-color: #f1f1f1;
+  */
 }
 
 /* Style the buttons that are used to open the tab content */
 
 .tab button {
-  background-color: inherit;
+  background: #FFFFFF;
   float: left;
   border: none;
+  border-bottom: 5px solid #FFFFFF;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.3s;
 }
 
-/* Change background color of buttons on hover */
-
-.tab button:hover {
-  background-color: #ddd;
-}
-
 /* Create an active/current tablink class */
 
 .tab button.active {
-  background-color: #ccc;
+  border: 1px solid #D8D8D8;
 }
 
 /* Style the tab content */
@@ -542,6 +539,13 @@ md-input-container {
   padding: 6px 12px;
   border: 1px solid #ccc;
   border-top: none;
+  border: 1px solid #D8D8D8;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: none;
+  border-top-right-radius: none;
+  background: #FFFFFF;
+  height: 320px;
 }
 
 .ballot-representation-container {

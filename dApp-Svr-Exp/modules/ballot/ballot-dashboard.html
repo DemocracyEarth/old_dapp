@@ -55,12 +55,11 @@
    
 	<div class="ballot-action-container">
 		<div class="tab">
-			<button class="tablinks" ng-click="vm.setTab('action', 1)">Vote</button>
-			<button class="tablinks" ng-click="vm.setTab('action', 2)">Delegation</button>
+			<button class="tablinks" ng-click="vm.setTab(1)">Vote</button>
+			<button class="tablinks" ng-click="vm.setTab(2)">Delegate</button>
 		</div>
 		<div class="tabcontent">
-			<div ng-show="vm.tabIsSet('action', 1)">
-					<h4>Vote</h4>
+			<div ng-show="vm.tabIsSet(1)">
 					<form ng-submit="vm.vote(voteValue)">
 						<input type="radio" ng-model="voteValue" value="yes">Yes
 						<input type="radio" ng-model="voteValue" value="no">No
