@@ -19,6 +19,46 @@
         populateVoterData();
         populateVoters();
 
+        function calculateTotals() {
+          const perc1 = vm.ballot.option1 * 100 / vm.ballot.total || 0;
+          const perc2 = vm.ballot.option2 * 100 / vm.ballot.total || 0;
+          let width1 = perc1;
+          let width2 = perc2;
+          if (width1 < 10 ) {
+            width1 = 10;
+          }
+          if (width2 < 10 ) {
+            width2 = 10;
+          }
+          vm.op1 = {
+            width: width1,
+            desc: 'Yes',
+            perc: perc1
+          }
+          vm.op2 = {
+            width: width2,
+            desc: 'No',
+            perc: perc2
+          }
+
+        }
+
+        function getBallot(position) {
+          const pos = Number(position);
+          console.log("pos", pos);
+          apiETH.instance.getBallot(pos).then(function(ballot) {
+            const ipfsBallotTitle = ballot[0];
+            const owner = ballot[1];
+            vm.ballot.option1 = ballot[2].toNumber();
+            vm.ballot.option2 = ballot[3].toNumber();
+            vm.ballot.total = vm.ballot.option1 + vm.ballot.option2;
+            $log.log('Ballot: ', vm.ballot);
+            $log.log('Ballot IPFS address: ' + ipfsBallotTitle);
+            calculateTotals();
+            $scope.$apply();
+          });
+        }
+        getBallot(vm.ballotId);
         /**
          * Populates current voter data
          */
