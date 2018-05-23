@@ -10,13 +10,13 @@
 
       vm.newBallot = localStorage.getItem('new-ballot') || 'null';
       const user = JSON.parse(localStorage.getItem('user'));
+      vm.status =  JSON.parse(localStorage.getItem('tx-status'));
 
       if (user !== null){
         vm.userOk = true;
       }
 
       vm.metamaskOn = apiETH.metamaskOn() || false;
-      console.log("vm.metamaskOn", vm.metamaskOn);
 
       function back() {
         $location.path('/ballots')
@@ -27,6 +27,7 @@
         vm.newBallot.date = new Date();
         localStorage.setItem('new-ballot', vm.newBallot);
         vm.status = {icon: 'cached', message: 'Adding'};
+        localStorage.setItem('tx-status', JSON.stringify(vm.status));
         $log.log('New ballot' + vm.newBallot);
         putBallot(newBallot);
       }
@@ -34,20 +35,21 @@
       function putBallot (ballot) {
         apiIPFS.node.files.add(new apiIPFS.node.types.Buffer(JSON.stringify(ballot)), (err, file) => {
           if (err) {
-            return $log.error('Error - ipfs files add', err, res);
+            return $log.error('[IPFS] Error adding file', err, res);
           }
-          $log.log('successfully stored', file[0].hash);
-          const validETHHash = apiIPFS.getBytes32FromIpfsHash(file[0].hash)
-          $log.log("ETH byte32: " + validETHHash);
+          $log.log('[IPFS] - successfully stored', file[0].hash);
+          const validETHHash = apiIPFS.getBytes32FromIpfsHash(file[0].hash);
           apiETH.instance.createNewBallot(validETHHash, {gas: 1000000}).then(function(result) {
-            $log.log('New Ballot created:', JSON.stringify(ballot));
+            $log.log('[ETH] - New Ballot created:', JSON.stringify(ballot));
             vm.status = {icon: 'done_all', message: 'Completed'};
+            localStorage.setItem('tx-status', JSON.stringify(vm.status));
             localStorage.setItem('new-ballot', null);
             vm.newBallot = 'null';
             $scope.$apply();
           }).catch(function(err) {
             $log.log(err.message);
             vm.status = {icon: 'done_all', message: 'Error'};
+            localStorage.setItem('tx-status', JSON.stringify(vm.status));
             localStorage.setItem('new-ballot', null);
             vm.newBallot = 'null';
             $scope.$apply();
