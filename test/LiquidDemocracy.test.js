@@ -122,13 +122,13 @@ contract('LiquidDemocracy', function (accounts){
 
     });
 
-    describe('revokes produce the expected output', function () {
+    describe('removeDelegation produce the expected output', function () {
 
-        it('delegating and revoking are inverse functions', async function () {
+        it('delegating and removing delegation are inverse functions', async function () {
             const representee = accounts[0];
 
             await this.liquidDemocracyBallot.delegate(accounts[1], { from: representee });
-            await this.liquidDemocracyBallot.revoke({ from: representee });
+            await this.liquidDemocracyBallot.removeDelegation({ from: representee });
 
             const newRepresentative = await this.liquidDemocracyBallot.getMyRepresentative({ from: representee })
             const newRepresentativeWeight = await this.liquidDemocracyBallot.getMyWeight({ from: accounts[1] })
@@ -139,7 +139,7 @@ contract('LiquidDemocracy', function (accounts){
             newRepresenteeWeight.toNumber().should.equal(1);
         });
 
-        it('revoking on the leaf of transitive delegation gives the expected results', async function () {
+        it('removing delegations on the leaf of transitive delegation gives the expected results', async function () {
             const representee = accounts[0];
             const representative1 = accounts[1];
             const representative2 = accounts[2];
@@ -147,7 +147,7 @@ contract('LiquidDemocracy', function (accounts){
             await this.liquidDemocracyBallot.delegate(representative1, { from: representee });
             await this.liquidDemocracyBallot.delegate(representative2, { from: representative1 });
 
-            await this.liquidDemocracyBallot.revoke({ from: representee });
+            await this.liquidDemocracyBallot.removeDelegation({ from: representee });
 
             const newRepresentative = await this.liquidDemocracyBallot.getMyRepresentative({ from: representee })
             const newRepresentative1Weight = await this.liquidDemocracyBallot.getMyWeight({ from: representative1 })
@@ -160,7 +160,7 @@ contract('LiquidDemocracy', function (accounts){
             newRepresenteeWeight.toNumber().should.equal(1);
         });
 
-        it('revoking on the middle of transitive delegation gives the expected results', async function () {
+        it('removing delegations on the middle of transitive delegation gives the expected results', async function () {
             const representee = accounts[0];
             const representative1 = accounts[1];
             const representative2 = accounts[2];
@@ -168,7 +168,7 @@ contract('LiquidDemocracy', function (accounts){
             await this.liquidDemocracyBallot.delegate(representative1, { from: representee });
             await this.liquidDemocracyBallot.delegate(representative2, { from: representative1 });
 
-            await this.liquidDemocracyBallot.revoke({ from: representative1 });
+            await this.liquidDemocracyBallot.removeDelegation({ from: representative1 });
 
             const newRepresentative = await this.liquidDemocracyBallot.getMyRepresentative({ from: representative1 })
             const newRepresentative1Weight = await this.liquidDemocracyBallot.getMyWeight({ from: representative1 })
@@ -207,6 +207,29 @@ contract('LiquidDemocracy', function (accounts){
                 }
             }
         });
+
+    describe('removes votes', function () {
+
+        it('removes a voters vote', async function () {
+
+            const voter = accounts[0];
+            await this.liquidDemocracyBallot.createNewBallot(voter);
+            await this.liquidDemocracyBallot.vote(0, 1, { from: voter });
+            await this.liquidDemocracyBallot.removeVote({ from: voter });
+
+            const voterData = await this.liquidDemocracyBallot.getVoterData.call(voter);
+            const voted = voterData[2];
+            const votedOption1 = voterData[5];
+            const votedOption2 = voterData[6];
+            const count = await this.liquidDemocracyBallot.getBallotVoteOption1Count(0);
+
+            voted.should.equal(false);
+            votedOption1.should.equal(false);
+            votedOption2.should.equal(false);
+            count.toNumber().should.equal(0);
+        });
+
+    });
 
     });
 
