@@ -9,7 +9,7 @@
         vm.vote = vote;
         vm.delegate = delegate;
         vm.removeVote = removeVote;
-        vm.revoke = revoke;
+        vm.removeDelegation = removeDelegation;
 
         vm.ballotId = $routeParams.id;
         vm.ballot = JSON.parse(localStorage.getItem('ballot'));
@@ -142,16 +142,16 @@
          */
         function removeVote() {
           apiETH.instance.removeVote({ gas: 1000000 }).then(function (result) {
-            console.log("Vote removed successfully");
+            console.log("Vote revoked.");
           });
         }
 
         /**
-         * Revoke the current delegation
+         * Remove the current delegation
          */
-        function revoke() {
+        function removeDelegation() {
           apiETH.instance.revoke({ gas: 1000000 }).then(function (result) {
-            console.log("Revoke done successfully");
+            console.log("Delegation revoked.");
           });
         }
 

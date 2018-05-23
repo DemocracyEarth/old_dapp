@@ -168,10 +168,10 @@ contract LiquidDemocracy {
     }
 
     /**
-    * @notice Revoke the delegation and voting power already delegated
+    * @notice Remove the delegation and voting power already delegated
     */
-    function revoke() external {
-        revoke(msg.sender);
+    function removeDelegation() external {
+        removeDelegation(msg.sender);
     }
 
     /**
@@ -262,10 +262,10 @@ contract LiquidDemocracy {
     }
 
     /**
-    * @notice Revoke the delegation and voting power already delegated
-    * @param from revoke delegations on this voter
+    * @notice Remove the delegation and voting power already delegated
+    * @param from remove delegations on this voter
     */
-    function revoke(address from) private {
+    function removeDelegation(address from) private {
 
         address representee = from;
         require(votersData[representee].registered);
