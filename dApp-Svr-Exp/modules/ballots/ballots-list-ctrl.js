@@ -49,7 +49,7 @@
 
       function getWidth(votes, pos) {
         const total = getTotalVotes(votes);
-        if (total < 5) return 50;
+        if (total < 5) return 45;
         return getPercentage(total || 50, votes.totals[pos-1]);
       }
       function getPercentage(total, number) {
