@@ -19,10 +19,10 @@
         populateVoters();
 
         function calculateTotals() {
-          const porc1 = vm.ballot.option1 * 100 / vm.ballot.total || 0;
-          const porc2 = vm.ballot.option2 * 100 / vm.ballot.total || 0;
-          let width1 = porc1;
-          let width2 = porc2;
+          const perc1 = vm.ballot.option1 * 100 / vm.ballot.total || 0;
+          const perc2 = vm.ballot.option2 * 100 / vm.ballot.total || 0;
+          let width1 = perc1;
+          let width2 = perc2;
           if (width1 < 10 ) {
             width1 = 10;
           }
@@ -32,12 +32,12 @@
           vm.op1 = {
             width: width1,
             desc: 'Yes',
-            porc: porc1
+            perc: perc1
           }
           vm.op2 = {
             width: width2,
             desc: 'No',
-            porc: porc2
+            perc: perc2
           }
 
         }
@@ -55,17 +55,6 @@
             $log.log('Ballot IPFS address: ' + ipfsBallotTitle);
             calculateTotals();
             $scope.$apply();
-            // const validIpfsAddress = apiIPFS.getIpfsHashFromBytes32(ipfsBallotTitle);
-            // $log.log("Valid IPFS address: ", validIpfsAddress);
-  
-            // apiIPFS.node.files.cat(validIpfsAddress, function (err, file) {
-            //   if (err) throw err;
-            //   const data = file.toString('utf8');
-            //   $log.log("Ballot data: ", data);
-            //   const ballotTitle = JSON.parse(data).desc;
-            //   $log.log("Ballot title: " + ballotTitle);
-            //   callback(ballotTitle, owner);
-            // });
           });
         }
         getBallot(vm.ballotId);

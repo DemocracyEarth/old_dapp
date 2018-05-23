@@ -43,19 +43,19 @@
       function getOption(votes, pos) {
         const totalVoted = getTotalVotes(votes);
         const desc = votes.options[pos-1];
-        const total = getPorcent(totalVoted, votes.totals[pos-1]) || 0;
+        const total = getPercentage(totalVoted, votes.totals[pos-1]) || 0;
         return `${desc} ${total}%`;
       }
 
       function getWidth(votes, pos) {
         const total = getTotalVotes(votes);
         if (total < 5) return 50;
-        return getPorcent(total || 50, votes.totals[pos-1]);
+        return getPercentage(total || 50, votes.totals[pos-1]);
       }
-      function getPorcent(total, number) {
+      function getPercentage(total, number) {
         if (total === 0) return 0;
         const porcent = number * 100 / total;
-        return porcent.toFixed(2);
+        return porcent.toFixed(0);
       }
 
       if(apiETH.instance === undefined) {

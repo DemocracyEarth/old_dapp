@@ -127,7 +127,7 @@ contract LiquidDemocracy {
     */
     function getBallot(uint position) public view returns (bytes32, address, uint, uint) {
         require(position < ballotData.number);
-        require(0 < position + 1);
+        require(position >= 0);
         return (
             ballotData.ballots[position].ipfsBallotTitle,
             ballotData.ballots[position].owner,
