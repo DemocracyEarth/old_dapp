@@ -8,36 +8,65 @@
         vm.back = back;
         vm.vote = vote;
         vm.delegate = delegate;
-        vm.revokeVote = revokeVote;
-        vm.revokeDelegation = revokeDelegation;
+        vm.removeVote = removeVote;
+        vm.removeDelegation = removeDelegation;
 
         vm.ballotId = $routeParams.id;
         vm.ballot = JSON.parse(localStorage.getItem('ballot'));
 
         $scope.users = [];
 
+        populateVoterData();
         populateVoters();
 
-        /**
-         * Renders 'Yes' delegations graph
-         */
-        function renderYesGraph(nodesAndEdges) {
-          var nodesAndEdgesYes = nodesAndEdges.slice();
-          nodesAndEdgesYes.push({ group: "nodes", data: { id: 0, name: "yes", type: "option" } });
-          nodesAndEdgesYes.push({ group: "nodes", data: { id: 1, name: "no", type: "option" } });
+        function calculateTotals() {
+          const perc1 = vm.ballot.option1 * 100 / vm.ballot.total || 0;
+          const perc2 = vm.ballot.option2 * 100 / vm.ballot.total || 0;
+          let width1 = perc1;
+          let width2 = perc2;
+          if (width1 < 10 ) {
+            width1 = 10;
+          }
+          if (width2 < 10 ) {
+            width2 = 10;
+          }
+          vm.op1 = {
+            width: width1,
+            desc: 'Yes',
+            perc: perc1
+          }
+          vm.op2 = {
+            width: width2,
+            desc: 'No',
+            perc: perc2
+          }
 
-          graph.renderGraph(nodesAndEdgesYes, 'yes-container', '#9F9', 0);
         }
 
+        function getBallot(position) {
+          const pos = Number(position);
+          console.log("pos", pos);
+          apiETH.instance.getBallot(pos).then(function(ballot) {
+            const ipfsBallotTitle = ballot[0];
+            const owner = ballot[1];
+            vm.ballot.option1 = ballot[2].toNumber();
+            vm.ballot.option2 = ballot[3].toNumber();
+            vm.ballot.total = vm.ballot.option1 + vm.ballot.option2;
+            $log.log('Ballot: ', vm.ballot);
+            $log.log('Ballot IPFS address: ' + ipfsBallotTitle);
+            calculateTotals();
+            $scope.$apply();
+          });
+        }
+        getBallot(vm.ballotId);
         /**
-         * Renders 'No' delegations graph
+         * Populates current voter data
          */
-        function renderNoGraph(nodesAndEdges) {
-          var nodesAndEdgesNo = nodesAndEdges.slice();
-          nodesAndEdgesNo.push({ group: "nodes", data: { id: 0, name: "yes", type: "option" } });
-          nodesAndEdgesNo.push({ group: "nodes", data: { id: 1, name: "no", type: "option" } });
-
-          graph.renderGraph(nodesAndEdgesNo, 'no-container', '#F99', 1);
+        async function populateVoterData() {
+          const voterData = await apiETH.instance.getMyData.call();    
+          vm.ballot.voted = voterData[2];
+          const representative = voterData[4];  
+          vm.ballot.delegated = representative != apiETH.web3.eth.defaultAccount;
         }
 
         /**
@@ -69,7 +98,7 @@
               apiIPFS.node.files.cat(voterIpfsHash),
               new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 1000))
             ]).catch(function (err) {
-              console.error("Voter data timed out!. Voter: ", i+1);
+              console.error("Voter data timed out!. Voter: ", i + 1);
               return null;
             })
 
@@ -93,8 +122,7 @@
 
           // Renders graphs
           const nodesAndEdges = nodes.concat(edges);
-          renderYesGraph(nodesAndEdges);
-          renderNoGraph(nodesAndEdges);
+          renderGraphs(nodesAndEdges);
 
         }
 
@@ -119,25 +147,52 @@
         }
 
         /**
+         * Renders 'Yes' and 'No' delegations graph
+         */
+        function renderGraphs(nodesAndEdges) {
+          renderGraph(nodesAndEdges, 'yes-container', '#9F9', 0);
+          renderGraph(nodesAndEdges, 'no-container', '#F99', 1);
+        }
+
+        /**
+         * Renders a delegations graph
+         */
+        function renderGraph(nodesAndEdges, container, color, mainNode) {
+          var nodesAndEdgesNew = nodesAndEdges.slice();
+          nodesAndEdgesNew.push({ group: "nodes", data: { id: 0, name: "yes", type: "option" } });
+          nodesAndEdgesNew.push({ group: "nodes", data: { id: 1, name: "no", type: "option" } });
+
+          graph.renderGraph(nodesAndEdgesNew, container, color, mainNode);
+        }
+
+        /**
         * Delegate call
         */
         function delegate(delegateValue) {
           console.log("Delegating to " + delegateValue);
-          apiETH.instance.delegate(delegateValue).then(function (result) {
+          apiETH.instance.delegate(delegateValue, { gas: 1000000 }).then(function (result) {
             console.log("Delegation successful");
           }).catch(function (err) {
             console.log("ERROR delegating:" + err.message);
           });
         }
 
-        function revokeVote() {
-          console.log("revoke vote");
-          // TODO: Call ETH revoke vote
+        /**
+         * Removes the currently assigned vote
+         */
+        function removeVote() {
+          apiETH.instance.removeVote({ gas: 1000000 }).then(function (result) {
+            console.log("Vote revoked.");
+          });
         }
 
-        function revokeDelegation() {
-          console.log("revoke delegation");
-          // TODO: Call ETH revoke delegation
+        /**
+         * Remove the current delegation
+         */
+        function removeDelegation() {
+          apiETH.instance.revoke({ gas: 1000000 }).then(function (result) {
+            console.log("Delegation revoked.");
+          });
         }
 
         /**
