@@ -102,37 +102,8 @@
         });
       }
 
-      function NewBallotDialogCtrl($scope, $mdDialog) {
-        $scope.hide = function () {
-          $mdDialog.hide();
-        };
-        $scope.cancel = function () {
-          $mdDialog.cancel();
-        };
-        $scope.answer = function (answer) {
-          $mdDialog.hide(answer);
-          $log.log("data", answer)
-        };
-      };
-
-      function addBallot(ev) {
-        $mdDialog.show({
-          controller: NewBallotDialogCtrl,
-          templateUrl: '../modules/ballots/add/ballot.html',
-          targetEvent: ev,
-          clickOutsideToClose: true
-        })
-          .then(function (newBallot) {
-            if (newBallot === undefined) {
-              $log.log('You cancelled the dialog.');
-            } else {
-              newBallot.date = new Date();
-              $log.log('New ballot' + newBallot);
-              putBallot(newBallot);
-            }
-          }, function (err) {
-            $log.error('addBallot modal error:', err);
-          });
+      function addBallot() {
+        $location.path('/ballots/add');
       };
 
       function ballotDetail(ballot) {

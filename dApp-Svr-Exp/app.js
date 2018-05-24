@@ -9,6 +9,10 @@
           templateUrl: 'modules/ballots/ballots-list.html',
           controller: 'BallotsListCtrl as vm'
         })
+        .when('/ballots/add', {
+          templateUrl: 'modules/ballots/add/ballot-add.html',
+          controller: 'BallotAddCtrl as vm'
+        })
         .when('/ballots/:id', {
           templateUrl: 'modules/ballots/detail/ballot-detail.html',
           controller: 'BallotDetailCtrl as vm'
