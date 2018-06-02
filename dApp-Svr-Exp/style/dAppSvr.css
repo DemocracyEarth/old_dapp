@@ -516,15 +516,17 @@ md-input-container {
 
 /* Style the buttons that are used to open the tab content */
 
-.tab button {
-  background: #FFFFFF;
+.tablinks {
+  background: none;
   float: left;
   border: none;
-  border-bottom: 5px solid #FFFFFF;
+  border-bottom: 5px solid purple;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.3s;
+  z-index: 100;
+  margin-bottom: -5px;
 }
 
 /* Create an active/current tablink class */
@@ -543,7 +545,7 @@ md-input-container {
   border-bottom-left-radius: 6px;
   border-bottom-right-radius: 6px;
   border-top-left-radius: none;
-  border-top-right-radius: none;
+  border-top-right-radius: 6px;
   background: #FFFFFF;
   height: 320px;
 }
