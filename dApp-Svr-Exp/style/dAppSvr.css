@@ -2,9 +2,9 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Lato', sans-serif;
-  line-height: 1.5;
-  min-height: 100vh;
-  background-color: #eee;
+  font-size: 16px;
+  line-height: 24px;
+  background-color: #FAFAFA;
 }
 
 .bottomSheetdemoBasicUsage .md-inline-list-icon-label {
@@ -175,18 +175,13 @@ body {
 .graph-container {
   height: 1000px;
   width: 100%;
-  min-width: 500px;
-  float: left;
   padding: 0;
   margin: 0;
 }
 
-.yes-container {
-  width: 49%;
-  height: 1000px;
-  display: inline-block;
+.representation-container {
+  height: 90vh;
   border: 1px #CCCCCC solid;
-  border-radius: 6px;
 }
 
 .no-container {
@@ -342,7 +337,7 @@ md-input-container {
 
 .ballot-details-container {
   width: 648px;
-  height: 382px;
+  height: 352px;
   margin: 0;
   padding: 0;
   background: #FFFFFF;
@@ -493,7 +488,7 @@ md-input-container {
 
 .ballot-action-container {
   width: 312px;
-  height: 382px;
+  height: 352px;
   margin: 0;
   margin-left: 19px;
   /*WHY?!?*/
@@ -508,6 +503,7 @@ md-input-container {
 
 .tab {
   overflow: hidden;
+  background: none;
   /*
   border: 1px solid #ccc;
   background-color: #f1f1f1;
@@ -517,16 +513,18 @@ md-input-container {
 /* Style the buttons that are used to open the tab content */
 
 .tablinks {
-  background: none;
+  background: #FFFFFF;
   float: left;
   border: none;
-  border-bottom: 5px solid purple;
+  border: 1px solid #D8D8D8;
   outline: none;
   cursor: pointer;
   padding: 14px 16px;
   transition: 0.3s;
   z-index: 100;
   margin-bottom: -5px;
+  border-radius: 6px;
+  margin-right: 6px;
 }
 
 /* Create an active/current tablink class */
@@ -538,7 +536,7 @@ md-input-container {
 /* Style the tab content */
 
 .tabcontent {
-  padding: 6px 12px;
+  padding: 24px;
   border: 1px solid #ccc;
   border-top: none;
   border: 1px solid #D8D8D8;
@@ -547,7 +545,20 @@ md-input-container {
   border-top-left-radius: none;
   border-top-right-radius: 6px;
   background: #FFFFFF;
-  height: 320px;
+  height: 255px;
+}
+
+.tabcontent-representation {
+  padding: 24px;
+  border: 1px solid #ccc;
+  border-top: none;
+  border: 1px solid #D8D8D8;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-top-left-radius: none;
+  border-top-right-radius: 6px;
+  background: #FFFFFF;
+  height: 100vh;
 }
 
 .ballot-representation-container {
@@ -559,9 +570,37 @@ md-input-container {
   margin-top: 36px;
   margin-right: auto;
   margin-left: auto;
-  background: #FFFFFF;
-  border: solid 1px #D8D8D8;
-  border-radius: 6px;
+  background: none;
   display: inline-block;
   float: left;
+}
+
+.option-container {
+  text-align: center;
+}
+
+.yes-radio {
+  margin-right: 24px;
+}
+
+.cta {
+  padding-right: 24px;
+  padding-left: 24px;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  width: 120px;
+  border-radius: 6px;
+  background: #008CFE;
+  border: 1px solid #0265B6;
+  color: #FFFFFF;
+  float: right;
+  float: bottom;
+  font-weight: 500;
+  font-size: 16px;
+  margin-top: 18px;
+}
+
+.p {
+  margin-top: 0px;
+  margin-bottom: 18px;
 }

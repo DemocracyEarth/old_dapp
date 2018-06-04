@@ -60,12 +60,17 @@
 		</div>
 		<div class="tabcontent">
 			<div ng-show="vm.tabIsSet(1)">
-					<p>Select one</p>
-					<form ng-submit="vm.vote(voteValue)">
-						<input type="radio" ng-model="voteValue" value="yes">Yes
-						<input type="radio" ng-model="voteValue" value="no">No
-					</form>
-				<button ng-disabled="voteValue ? false: true" ng-click="vm.vote(voteValue)">Vote</button>
+					<p class="p">Select one:</p>
+					<div class="option-container">
+						<form ng-submit="vm.vote(voteValue)">
+							<input type="radio" ng-model="voteValue" value="yes">
+							<span class="yes-radio">
+								Yes
+							</span>
+							<input type="radio" ng-model="voteValue" value="no">No
+						</form>
+					</div>
+				<button ng-disabled="voteValue ? false: true" ng-click="vm.vote(voteValue)" class="cta">Vote</button>
 			</div>
 			<div ng-show="vm.tabIsSet('action', 2)">
 				<h4>Delegation</h4>
@@ -84,26 +89,32 @@
 			</div>
 		</div>
 	</div>
+
 	<div class="ballot-representation-container">
-		<div class="tab">
-			<button class="tablinks" ng-click="vm.setTab('graph', 1)">Yes Votes</button>
-			<button class="tablinks" ng-click="vm.setTab('graph', 2)">No Votes</button>
-			<button class="tablinks" ng-click="vm.setTab('graph', 3)">Undecided Votes</button>
+		<div class="ballot-dashboard-top-titles">
+			<div class="ballot-details-container-title">
+				<p class="box-title">LIQUID VOTING REPRESENTATION</p>
+			</div>
 		</div>
-		<div class="tabcontent graph-container">
-				<div ng-show="vm.tabIsSet('graph', 1)">
+		<div class="tab">
+			<div class="tablinks" ng-click="vm.setTab('graph', 1)">Yes Votes</div>
+			<div class="tablinks" ng-click="vm.setTab('graph', 2)">No Votes</div>
+			<div class="tablinks" ng-click="vm.setTab('graph', 3)">Undecided Votes</div>
+		</div>
+		<div class="tabcontent-representation">
+				<div class= "graph-container" ng-show="vm.tabIsSet('graph', 1)">
 						<h3>Yes Votes</h3>
-						<div class="yes-container" style="height:  50vh;">
+						<div class="representation-container">
 						</div>
 				</div>
-				<div ng-show="vm.tabIsSet('graph', 2)">
+				<div class= "graph-container" ng-show="vm.tabIsSet('graph', 2)">
 						<h3>No Votes</h3>
-					<div class="no-container" style="height: 50vh;">
+					<div class="representation-container">
 					</div>
 				</div>
 				<div ng-show="vm.tabIsSet('graph', 3)">
 					<h3>Undecided Votes</h3>
-						<div class="undecided-container" style="height: 50vh;">
+						<div class="representation-container">
 						</div>
 				</div>
 			</div>
