@@ -208,6 +208,8 @@ contract('LiquidDemocracy', function (accounts){
             }
         });
 
+    });
+
     describe('removes votes', function () {
 
         it('removes a voters vote', async function () {
@@ -228,9 +230,7 @@ contract('LiquidDemocracy', function (accounts){
             votedOption2.should.equal(false);
             count.toNumber().should.equal(0);
         });
-
-    });
-
+        
     });
 
 });
