@@ -16,7 +16,7 @@ For mobile, use a dapp browser / wallet like [Toshi](https://www.toshi.org/)
 
 PRs and feedback are welcomed. A good place to start is to review the current [open issues](https://github.com/DemocracyEarth/dapp/issues), please feel free to engage with us by commenting in a specific issue. Remember you can also check out the [Waffle board](https://waffle.io/DemocracyEarth/contracts) to understand what's being worked on now and what is coming up next.
 
-Dapp development is discussed actively in the slack channel [#dev-dapp](https://democracyearth.slack.com/messages/C099CSN93) in democracyearth.slack.com 
+Dapp development is discussed actively in the slack channel [#developers](https://democracyearth.slack.com/messages/C5KCH0PD1) in democracyearth.slack.com 
 
 The dapp consists of mailnly two elements, contracts and frontend, located respectively in the following folders:
 - **contracts**: solidity contracts, to be deployed to a local or remote blockchain.
@@ -24,7 +24,7 @@ The dapp consists of mailnly two elements, contracts and frontend, located respe
 
 ## Development dependencies
 
-- NodeJS
+- NodeJS (make sure you have the latest version of npm, using npm i -g npm)
   - Bower (`npm install -g bower`)
   - Truffle (`npm install -g truffle`)
   - http-server (`npm install -g http-server`)
@@ -36,16 +36,15 @@ The dapp consists of mailnly two elements, contracts and frontend, located respe
 ### Compile, deploy and copy compiled contracts to frontend
 
 Choose the environment.
-Use *development* for local environment or *ropsten* for ropsten ethereum test network in remote environment.
+Use *development* for local environment (start ganache before) or *ropsten* for ropsten ethereum test network in remote environment.
 
  ```sh
+ $ npm install
  $ truffle compile
  $ truffle migrate --network [development / ropsten]
  $ cp build/contracts/* dApp-Svr-Exp/contracts/
  ```
  
-Start **ganache** in case of local environment
-
 ### Start frontend
 
 ```sh
