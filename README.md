@@ -8,8 +8,7 @@
 
 This is a smart contract implementation (Dapp) in the Ethereum blockchain of a [liquid democracy](https://github.com/DemocracyEarth/paper) with three initial main functionalities: `vote()`, `delegate()` and `revoke()`. It mainly consists of `LiquidDemocracy.sol` and its corresponding test file `LiquidDemocracy.test.js`. This is the starting point of a roadmap that seeks to bridge [Sovereign app](https://github.com/DemocracyEarth/sovereign) with blockchain features. Please make sure you check out the [Waffle board](https://waffle.io/DemocracyEarth/contracts) and the [milestones](https://github.com/DemocracyEarth/dapp/milestones) for more information.
 
-The most recent version of the dapp is available at http://dapp.democracy.earth. For desktop instal metamask or a metamask-supported browser to be able to interact with it.
-For mobile, use a dapp browser / wallet like [Toshi](https://www.toshi.org/)
+The most recent version of the dapp is available at http://dapp.democracy.earth. For desktop usage, you will need Metamask and a Metamask-supported browser to be able to interact with it. For mobile usage, use a dapp browser / wallet like [Toshi](https://www.toshi.org/).
 
 ## Contributing
 
