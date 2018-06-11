@@ -46,7 +46,7 @@ Use *development* for local environment (start ganache before) or *ropsten* for 
 ### Start frontend
 
 ```sh
-$ http-server dApp-Svr-Exp/
+$ npm start
 ```
 
 ### Access
