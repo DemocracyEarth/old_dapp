@@ -6,7 +6,7 @@
 
 > 🚨🚧 _Everything in this repo is still a work in progress and higly experimental. It is not secure to use any of this code in production (mainnet) until proper security audits have been conducted._
 
-This is a smart contract implementation (Dapp) in the Ethereum blockchain of a [liquid democracy](https://github.com/DemocracyEarth/paper) with three initial main functionalities: `vote()`, `delegate()` and `revoke()`. It mainly consists of `LiquidDemocracy.sol` and its corresponding test file `LiquidDemocracy.test.js`. This is the starting point of a roadmap that seeks to bridge [Sovereign app](https://github.com/DemocracyEarth/sovereign) with blockchain features. Please make sure you check out the [project board](https://github.com/DemocracyEarth/dapp/projects/3) and the [milestones](https://github.com/DemocracyEarth/dapp/milestones) for more information.
+This is a smart contract implementation (dapp) in the Ethereum blockchain of a [liquid democracy](https://github.com/DemocracyEarth/paper) with three initial main functionalities: `vote()`, `delegate()` and `revoke()`. It mainly consists of `LiquidDemocracy.sol` and its corresponding test file `LiquidDemocracy.test.js`. This is the starting point of a roadmap that seeks to bridge [Sovereign app](https://github.com/DemocracyEarth/sovereign) with blockchain features. Please make sure you check out the [project board](https://github.com/DemocracyEarth/dapp/projects/3) and the [milestones](https://github.com/DemocracyEarth/dapp/milestones) for more information.
 
 The most recent version of the dapp is available at http://dapp.democracy.earth. For desktop usage, you will need Metamask and a Metamask-supported browser to be able to interact with it. For mobile usage, use a dapp browser / wallet like [Toshi](https://www.toshi.org/).
 
@@ -26,8 +26,8 @@ The dapp consists of mailnly two elements, contracts and frontend, located respe
   - Bower (`npm install -g bower`)
   - Truffle (`npm install -g truffle`)
   - http-server (`npm install -g http-server`)
-- Ganache ([http://truffleframework.com/ganache/]())
-- Metamask browser extension ([https://metamask.io/]())
+- Ganache (http://truffleframework.com/ganache/)
+- Metamask browser extension (https://metamask.io/)
 
 ## How to run
 
@@ -51,11 +51,7 @@ $ http-server dApp-Svr-Exp/
 
 ### Access
 
-Make sure to set metamask to the right environment (private network or Ropsten)
-
-http://localhost:8080
-
-### Funding
+You will be able to access the dapp at http://localhost:8080 in development mode. Make sure to set Metamask to the right environment (private network or Ropsten), and also make sure to provision necessary gas for each case:
 
 #### Local environment
 
