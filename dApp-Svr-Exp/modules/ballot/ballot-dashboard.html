@@ -55,11 +55,11 @@
    
 	<div class="ballot-action-container">
 		<div class="tab">
-			<div class="tablinks" ng-click="vm.setTab(1)">Vote</div>
-			<div class="tablinks" ng-click="vm.setTab(2)">Delegate</div>
+			<div class="tablinks" ng-click="vm.setTab('action', 1)">Vote</div>
+			<div class="tablinks" ng-click="vm.setTab('action', 2)">Delegate</div>
 		</div>
 		<div class="tabcontent">
-			<div ng-show="vm.tabIsSet(1)">
+			<div ng-show="vm.tabIsSet('action', 1)">
 					<p class="p">Select one:</p>
 					<div class="option-container">
 						<form ng-submit="vm.vote(voteValue)">
