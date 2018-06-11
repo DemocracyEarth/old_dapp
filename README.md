@@ -6,13 +6,13 @@
 
 > 🚨🚧 _Everything in this repo is still a work in progress and higly experimental. It is not secure to use any of this code in production (mainnet) until proper security audits have been conducted._
 
-This is a smart contract implementation (Dapp) in the Ethereum blockchain of a [liquid democracy](https://github.com/DemocracyEarth/paper) with three initial main functionalities: `vote()`, `delegate()` and `revoke()`. It mainly consists of `LiquidDemocracy.sol` and its corresponding test file `LiquidDemocracy.test.js`. This is the starting point of a roadmap that seeks to bridge [Sovereign app](https://github.com/DemocracyEarth/sovereign) with blockchain features. Please make sure you check out the [Waffle board](https://waffle.io/DemocracyEarth/contracts) and the [milestones](https://github.com/DemocracyEarth/dapp/milestones) for more information.
+This is a smart contract implementation (Dapp) in the Ethereum blockchain of a [liquid democracy](https://github.com/DemocracyEarth/paper) with three initial main functionalities: `vote()`, `delegate()` and `revoke()`. It mainly consists of `LiquidDemocracy.sol` and its corresponding test file `LiquidDemocracy.test.js`. This is the starting point of a roadmap that seeks to bridge [Sovereign app](https://github.com/DemocracyEarth/sovereign) with blockchain features. Please make sure you check out the [project board](https://github.com/DemocracyEarth/dapp/projects/3) and the [milestones](https://github.com/DemocracyEarth/dapp/milestones) for more information.
 
 The most recent version of the dapp is available at http://dapp.democracy.earth. For desktop usage, you will need Metamask and a Metamask-supported browser to be able to interact with it. For mobile usage, use a dapp browser / wallet like [Toshi](https://www.toshi.org/).
 
 ## Contributing
 
-PRs and feedback are welcomed. A good place to start is to review the current [open issues](https://github.com/DemocracyEarth/dapp/issues), please feel free to engage with us by commenting in a specific issue. Remember you can also check out the [Waffle board](https://waffle.io/DemocracyEarth/contracts) to understand what's being worked on now and what is coming up next.
+PRs and feedback are welcomed. A good place to start is to review the current [open issues](https://github.com/DemocracyEarth/dapp/issues), please feel free to engage with us by commenting in a specific issue. Remember you can also check out the [project board](https://github.com/DemocracyEarth/dapp/projects/3) to understand what's being worked on now and what is coming up next.
 
 Dapp development is discussed actively in the slack channel [#developers](https://democracyearth.slack.com/messages/C5KCH0PD1) in democracyearth.slack.com 
 
