@@ -85,7 +85,6 @@
           for (let i = 0; i < voters.length; i++) {
             console.log("Getting voter data " + (i + 1) + " out of " + voters.length);
             const currentVoter = voters[i];
-            // console.log("Current voter: ", currentVoter);
             const voter = await apiETH.instance.getVoterData.call(currentVoter);
             const representative = voter[4];
             const ipfsHash = voter[3];
@@ -122,8 +121,8 @@
 
           // Renders graphs
           const nodesAndEdges = nodes.concat(edges);
-          renderGraphs(nodesAndEdges);
-
+          renderVoteGraphs(nodesAndEdges);
+          renderDelegationGraphs(nodesAndEdges);
         }
 
         /**
@@ -147,22 +146,35 @@
         }
 
         /**
-         * Renders 'Yes' and 'No' delegations graph
+         * Renders 'Yes' and 'No' graphs
          */
-        function renderGraphs(nodesAndEdges) {
-          renderGraph(nodesAndEdges, 'yes-container', '#9F9', 0);
-          renderGraph(nodesAndEdges, 'no-container', '#F99', 1);
-        }
-
-        /**
-         * Renders a delegations graph
-         */
-        function renderGraph(nodesAndEdges, container, color, mainNode) {
+        function renderVoteGraphs(nodesAndEdges) {
           var nodesAndEdgesNew = nodesAndEdges.slice();
           nodesAndEdgesNew.push({ group: "nodes", data: { id: 0, name: "yes", type: "option" } });
           nodesAndEdgesNew.push({ group: "nodes", data: { id: 1, name: "no", type: "option" } });
+          renderGraph(nodesAndEdgesNew, 'yes-container', '#9F9', 0);
+          renderGraph(nodesAndEdgesNew, 'no-container', '#F99', 1);
+        }
 
-          graph.renderGraph(nodesAndEdgesNew, container, color, mainNode);
+        /**
+         * Renders 'Yes' and 'No' graphs
+         */
+        function renderDelegationGraphs(nodesAndEdges) {
+          var mainNode = null;
+          for (var i = 0; i < nodesAndEdges.length; i++) {
+            if (nodesAndEdges[i].group == 'edges' && nodesAndEdges[i].data.source != '0' && nodesAndEdges[i].data.source != '1') {
+              mainNode = nodesAndEdges[i].data.source;
+              renderGraph(nodesAndEdges, 'delegates-container', '#F99', mainNode);
+            }
+          }
+
+        }
+
+        /**
+         * Renders given graph
+         */
+        function renderGraph(nodesAndEdges, container, color, mainNode) {
+          graph.renderGraph(nodesAndEdges, container, color, mainNode);
         }
 
         /**
