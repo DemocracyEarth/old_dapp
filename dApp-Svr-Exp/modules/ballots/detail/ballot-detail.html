@@ -67,7 +67,7 @@
     <md-button ng-show="vm.ballot.voted == true" class="md-raised md-primary" ng-click="vm.removeVote()">Remove vote</md-button>
     <md-button ng-show="vm.ballot.delegated == true" class="md-raised md-primary" ng-click="vm.removeDelegation()">Remove delegation</md-button>
   </div>
-  </div>
+</div>
 
 <div class="graph-container">
   <div class="yes-container" id="yes-container" style="height:  50vh;">
@@ -76,7 +76,11 @@
   <div class="no-container" id="no-container" style="height: 50vh;">
     <!-- <p class="no-graph-title">No</p> -->
   </div>
-  <div class="delegates-container" id="delegates-container" style="height: 50vh;">
-    <!-- <p class="delegates-graph-title">Delegates</p> -->
-  </div>
+  {{#if vm.delegationsList}}
+    {{#each vm.delegationsList}}
+      <div class="{{this}}" id="{{this}}" style="height: 50vh;">
+        <!-- <p class="delegates-graph-title">Delegates</p> -->
+      </div>
+    {{/each}}
+  {{/if}}
 </div>

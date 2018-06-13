@@ -11,6 +11,8 @@
         vm.removeVote = removeVote;
         vm.removeDelegation = removeDelegation;
 
+        vm.delegationsList = [];
+
         vm.ballotId = $routeParams.id;
         vm.ballot = JSON.parse(localStorage.getItem('ballot'));
 
@@ -119,8 +121,10 @@
             populateGraphFromVoter(nodes, edges, currentVoter, userName, voter, representative, voted);
           }
 
-          // Renders graphs
           const nodesAndEdges = nodes.concat(edges);
+          populateDelegationsList(nodesAndEdges);
+          
+          // Renders graphs
           renderVoteGraphs(nodesAndEdges);
           renderDelegationGraphs(nodesAndEdges);
         }
@@ -144,6 +148,23 @@
             }
           }
         }
+        
+        /**
+         * Populates the delegation list, if there any delegations.
+         * Used for appropriate rendering of delegations graphs.
+         */
+        function populateDelegationsList(nodesAndEdges) {
+          var containerCounter = 0;
+          var container = '';
+          for (var i = 0; i < nodesAndEdges.length; i++) {
+            if (nodesAndEdges[i].group == 'edges' && nodesAndEdges[i].data.source != '0' && nodesAndEdges[i].data.source != '1') {
+              container = 'delegates-container' + containerCounter;
+              vm.delegationsList.push(container);
+              containerCounter++;
+              
+            }
+          }
+        }
 
         /**
          * Renders 'Yes' and 'No' graphs
@@ -157,14 +178,18 @@
         }
 
         /**
-         * Renders 'Yes' and 'No' graphs
+         * Renders delegations graphs
          */
         function renderDelegationGraphs(nodesAndEdges) {
           var mainNode = null;
+          var container = null;
+          var containerCounter = 0;
           for (var i = 0; i < nodesAndEdges.length; i++) {
             if (nodesAndEdges[i].group == 'edges' && nodesAndEdges[i].data.source != '0' && nodesAndEdges[i].data.source != '1') {
               mainNode = nodesAndEdges[i].data.source;
-              renderGraph(nodesAndEdges, 'delegates-container', '#F99', mainNode);
+              container = 'delegates-container' + containerCounter;
+              containerCounter++;
+              renderGraph(nodesAndEdges, container, '#F99', mainNode);
             }
           }
 
