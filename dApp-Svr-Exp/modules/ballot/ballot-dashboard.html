@@ -73,10 +73,9 @@
 				<button ng-disabled="voteValue ? false: true" ng-click="vm.vote(voteValue)" class="cta">Vote</button>
 			</div>
 			<div ng-show="vm.tabIsSet('action', 2)">
-				<h4>Delegation</h4>
 				<form ng-submit="vm.delegate(delegateValue)">
-					<label> Delegate to: </label>
-					<select ng-model="delegateValue">
+					<p class="p"> Delegate to: </p>
+					<select ng-model="delegateValue" class="dropdown-select">
 						<option ng-repeat="user in users" value="{{user.id}}">
 							<div class="identicon">
 								<img width=30 height=30 data-ng-src="data:image/png;base64,{{user.icon}}">
@@ -84,7 +83,7 @@
 							{{user.name}}
 						</option>
 					</select>
-					<button type="submit"  ng-disabled="delegateValue ? false: true">Delegate</button>
+					<button class="cta" type="submit"  ng-disabled="delegateValue ? false: true">Delegate</button>
 				</form>
 			</div>
 		</div>
